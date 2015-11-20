@@ -19,7 +19,9 @@ win32 {
     TARGET = $${jwidgets_url}
 }
 
-DESTDIR = $${JSMARTKITS_ROOT}/bin
+!macx {
+    DESTDIR = $${JSMARTKITS_ROOT}/bin/jwidgets
+}
 
 CONFIG += dll warn_on lib_bundle
 #CONFIG += no_keywords silent
@@ -63,4 +65,21 @@ macx: CONFIG(qt_framework, qt_framework|qt_no_framework) {
     CONFIG += lib_bundle
     QMAKE_BUNDLE_DATA += \
         framework_headers_jwidgets
+} else {
+    copyCommand = @echo ---- module $${jwidgets_url} ----
+    ## create folder
+    destdir = $$DESTDIR/include
+    destdir = $$replace(destdir, /, \\)
+    ## copy files
+    excludefile = $$PWD/copy.ignore
+    !exists("$$excludefile"): excludefiles = $$_PRO_FILE_PWD_/copy.ignore
+    !exists("$$excludefile"): error("$$excludefile" is not exists!)
+    excludefile = $$replace(excludefile, /, \\)
+    srcdir = $$PWD/src
+    srcdir = $$replace(srcdir, /, \\)
+    exists("$$destdir"): copyCommand += && rd /s /q "$$destdir"
+    copyCommand += && xcopy "$$srcdir\\*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
+    framework_headers_jwidgets.commands = $$copyCommand
+    first.depends = $(first) framework_headers_jwidgets
+    QMAKE_EXTRA_TARGETS += first framework_headers_jwidgets
 }
