@@ -26,3 +26,17 @@
 *.exe
 *.out
 *.app
+
+# Platform
+.DS_Store
+
+# Expands
+bin
+lib
+temp
+Makefile
+*.user*
+.qmake.stash
+*.doc
+*.docx
+*.autosave
