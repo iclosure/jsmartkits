@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/jsmartkits/examples/jwidgets/other">
+        <file alias="xmltable_demo.xml">other/xmltable_demo.xml</file>
+    </qresource>
+</RCC>

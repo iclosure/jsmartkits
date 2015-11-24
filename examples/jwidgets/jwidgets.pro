@@ -64,6 +64,11 @@ win32: {
 ##
 
 HEADERS += \
+    test_jxmltable.h
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    test_jxmltable.cpp
+
+RESOURCES += \
+    resource/jwidgets.qrc

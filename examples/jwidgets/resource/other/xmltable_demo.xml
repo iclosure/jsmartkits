@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+ product: jxmltable
+ company: smartsoft
+ author: closure (lkh)
+ date: 9/1/2015 15:15
+ link: http://www.smartsoft.com/
+ copyright (c) 2015 smartsoft inc. All right reserved.
+ -->
+<jxmltable version="1.0">
+    <table name="table #1" orientation="horizontal" >
+        <item name="列1" type="numeric" range="[0,1000]" />
+        <item name="列2" type="string" maxLength="200"/>
+        <item name="列3" type="numeric" range="[0,200]"/>
+        <item name="列4" type="enum" default="选项1" >
+        </item>
+    </table>
+</jxmltable>

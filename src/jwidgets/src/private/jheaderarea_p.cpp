@@ -16,6 +16,7 @@
 JHeaderAreaPrivate::JHeaderAreaPrivate(JHeaderArea *parent)
     : QObject(parent)
     , q_ptr(parent)
+    , view(0)
     , horiHeader(0)
     , vertheader(0)
     , actionEnable(0)
@@ -578,14 +579,14 @@ void JHeaderAreaPrivate::init()
     // default properties
     q->setTitleAlignment(Qt::AlignCenter);
     q->setTitleHeight(25);
-    q->setStyleSheet("border:0;"
+    q->setTitleStyle("border:0;"
                      "border-top-left-radius:3px;"
                      "border-top-right-radius:3px;"
                      "border-bottom-left-radius:1px;"
                      "border-bottom-right-radius:1px;"
                      "margin-left:0;margin-right:0;"
-                     "background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0#fffffe,stop:1#a0a0a0));"
-                     "color:darkblue");
+                     "background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0#fffffe,stop:1#a0a0a0);"
+                     "color:darkblue;");
     q->setTitleVisible(true);
     q->setFilterHeight(25);
     q->setFilterVisible(false);
@@ -670,7 +671,7 @@ bool JHeaderAreaPrivate::attach(QAbstractItemView *view)
                 SLOT(_emit_clear()), Qt::QueuedConnection);
         connect(tableView->data(), SIGNAL(_signal_clearContents()),
                 SLOT(_emit_clearContents()), Qt::QueuedConnection);
-        connect(tableView->data(), SIGNAL(_signal_udpateFilterArea()),
+        connect(tableView->data(), SIGNAL(_signal_updateFilterArea()),
                 SLOT(updateArea()), Qt::QueuedConnection);
     } else if (view->inherits("JTreeView")) {
         JTreeView *treeView = qobject_cast<JTreeView *>(view);
@@ -808,9 +809,9 @@ void JHeaderAreaPrivate::setAutpUpdateTitle(bool enable)
     Q_Q(JHeaderArea);
     if (view->inherits("JTableView")) {
         if (view->inherits("JXmlTable")) {
-            disconnect(view, SIGNAL(tableChanged(QString)), q, SLOT(setTItle(QString)));
+            disconnect(view, SIGNAL(tableChanged(QString)), q, SLOT(setTitle(QString)));
             if (enable) {
-                connect(view, SIGNAL(tableChanged(QString)), q, SLOT(setTItle(QString)));
+                connect(view, SIGNAL(tableChanged(QString)), q, SLOT(setTitle(QString)));
             }
         } else {
             //

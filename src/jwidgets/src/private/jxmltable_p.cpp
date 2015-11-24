@@ -1330,7 +1330,7 @@ void JXmlTablePrivate::init()
     q->setItemDelegate(new JXmlItemDelegate(q));
     // signals - slots
     QObject::connect(q, SIGNAL(itemChanged(QStandardItem*)),
-                     q, SLOT(contentChanged()));
+                     q, SIGNAL(contentChanged()));
 }
 
 JItemValue *JXmlTablePrivate::itemData(int row, int column) const
