@@ -19,7 +19,9 @@ win32 {
     TARGET = $${jwidgets_url}
 }
 
-!macx {
+macx {
+    DESTDIR = $${JSMARTKITS_ROOT}/bin
+} else {
     DESTDIR = $${JSMARTKITS_ROOT}/bin/jwidgets
 }
 
@@ -79,7 +81,17 @@ macx: CONFIG(qt_framework, qt_framework|qt_no_framework) {
     srcdir = $$replace(srcdir, /, \\)
     exists("$$destdir"): copyCommand += && rd /s /q "$$destdir"
     copyCommand += && xcopy "$$srcdir\\*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
+
+    first.depends = $(first)
+    # for jwidgets
     framework_headers_jwidgets.commands = $$copyCommand
-    first.depends = $(first) framework_headers_jwidgets
-    QMAKE_EXTRA_TARGETS += first framework_headers_jwidgets
+    first.depends += framework_headers_jwidgets
+
+    # for tools::tinyxml
+    framework_headers_tools_tinyxml.commands = $$copyCommand
+    first.depends += framework_headers_tools_tinyxml
+
+    QMAKE_EXTRA_TARGETS += first \
+        framework_headers_jwidgets \
+        framework_headers_tools_tinyxml
 }

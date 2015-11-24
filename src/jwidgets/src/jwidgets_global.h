@@ -57,4 +57,39 @@ QT_BEGIN_NAMESPACE
     name *q_ptr; \
     Q_DECLARE_PUBLIC(name)
 
+namespace JWIDGETS_NAMESPACE {
+    static const double jDoubleEpsion = 1E-6;
+    static const double jFDoubleEpsion = 1E-6f;
+
+    // ==
+    static inline bool jEqual(double a, double b)
+    { return (a - b > -jDoubleEpsion || a - b < jDoubleEpsion) ? true : false; }
+    static inline bool fEqual(float a, float b)
+    { return (a - b > -jFDoubleEpsion || a - b < jFDoubleEpsion) ? true : false; }
+
+    // >
+    static inline bool fGreater(double a, double b)
+    { return (a - b > jDoubleEpsion) ? true : false; }
+    static inline bool fGreater(float a, float b)
+    { return (a - b > jFDoubleEpsion) ? true : false; }
+
+    // <
+    static inline bool fLess(double a, double b)
+    { return (a - b < -jDoubleEpsion) ? true : false; }
+    static inline bool fLess(float a, float b)
+    { return (a - b < -jFDoubleEpsion) ? true : false; }
+
+    // >=
+    static inline bool fGreaterOrEqual(double a, double b)
+    { return ((a - b > jDoubleEpsion) ||  (a - b >= -jDoubleEpsion && a - b <= jDoubleEpsion)) ? true : false; }
+    static inline bool fGreaterOrEqual(float a, float b)
+    { return ((a - b > jFDoubleEpsion) ||  (a - b >= -jFDoubleEpsion && a - b <= jFDoubleEpsion)) ? true : false; }
+
+    // <=
+    static inline bool fLessOrEqual(double a, double b)
+    { return ((a - b < -jDoubleEpsion) || (a - b >= -jDoubleEpsion && a - b <= jDoubleEpsion)) ? true : false; }
+    static inline bool fLessOrEqual(float a, float b)
+    { return ((a - b < -jFDoubleEpsion) || (a - b >= -jFDoubleEpsion && a - b <= jFDoubleEpsion)) ? true : false; }
+}
+
 #endif // JWIDGETS_GLOBAL_H
