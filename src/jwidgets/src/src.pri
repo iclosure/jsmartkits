@@ -21,6 +21,7 @@ INCLUDEPATH += $$PWD
 ## jwidgets
 
 jwidgets_headers += \
+    $$PWD/jwidgets_global.h \
     $$PWD/jwidgets_inc.h \
     $$PWD/jcheckcombobox.h \
     $$PWD/jipaddressedit.h \
@@ -35,7 +36,6 @@ jwidgets_headers += \
 
 HEADERS += \
     $$jwidgets_headers \
-    $$PWD/jwidgets_global.h \
     $$PWD/private/jspinbox_p.h \
     $$PWD/private/jheaderarea_p.h \
     $$PWD/private/jtableview_p.h \

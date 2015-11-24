@@ -704,7 +704,7 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JValueBase &value)
 
 bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JItemValue &value)
 {
-    if (!parse(emItem, static_cast<JItemValue &>(value))) {
+    if (!parse(emItem, static_cast<JValueBase &>(value))) {
         return false;
     }
 

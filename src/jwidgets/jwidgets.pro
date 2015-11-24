@@ -79,7 +79,7 @@ macx: CONFIG(qt_framework, qt_framework|qt_no_framework) {
     excludefile = $$replace(excludefile, /, \\)
     srcdir = $$PWD/src
     srcdir = $$replace(srcdir, /, \\)
-    exists("$$destdir"): copyCommand += && rd /s /q "$$destdir"
+    #exists("$$destdir"): copyCommand += && rd /s /q "$$destdir"
     copyCommand += && xcopy "$$srcdir\\*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
 
     first.depends = $(first)
