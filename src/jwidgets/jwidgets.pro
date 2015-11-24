@@ -66,7 +66,8 @@ macx: CONFIG(qt_framework, qt_framework|qt_no_framework) {
     QMAKE_LFLAGS_SONAME = -Wl,-install_name,$$DESTDIR/
     CONFIG += lib_bundle
     QMAKE_BUNDLE_DATA += \
-        framework_headers_jwidgets
+        framework_headers_jwidgets \
+        framework_headers_tools_tinyxml
 } else {
     copyCommand = @echo ---- module $${jwidgets_url} ----
     ## create folder
