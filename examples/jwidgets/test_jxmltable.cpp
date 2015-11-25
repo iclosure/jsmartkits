@@ -8,7 +8,7 @@
 TestJXmlTable::TestJXmlTable(QWidget *parent)
     : QDialog(parent, Qt::WindowMinMaxButtonsHint)
 {
-    resize(1100, 700);
+    resize(800, 480);
 
     QHBoxLayout *horiLayoutMain = new QHBoxLayout(this);
 #if 1
@@ -35,7 +35,7 @@ TestJXmlTable::TestJXmlTable(QWidget *parent)
     q_filterTable->view()->setConfig(":/jsmartkits/examples/jwidgets/other/xmltable_demo.xml");
 #endif
 
-    q_filterTable->view()->setTableName("table #1");
+    q_filterTable->view()->setTableName("table #0");
 //    q_filterTable->view()->setTableName("table #2");
 
     switch (q_filterTable->view()->orientations()) {
@@ -112,6 +112,29 @@ TestJXmlTable::TestJXmlTable(QWidget *parent)
     q_filterTable->view()->setItemValue(1, 1, "192.168.1.100");
 
     //qDebug() << q_filterTable->view()->itemValue(1, 17);
+
+    connect(q_filterTable->view(), SIGNAL(readOnlyChanged(bool)), SLOT(onReadOnlyChanged(bool)));
+
+//    q_filterTable->view()->setReadOnly(true);
+
+    QObject *object = q_filterTable->view()->itemObject(2, 4);
+    if (object) {
+        qDebug() << object->property("name");
+        QVariant variant = object->property("range");
+        QObject *object2 = 0;
+        QMetaObject::invokeMethod(object, "withoutAt", Q_RETURN_ARG(QObject *, object2), Q_ARG(int, 0));
+        if (object2) {
+            qDebug() << object2->property("text");
+        }
+    }
+/*
+    q_filterTable->view()->setItemProperty(1, 0, "maximum", 1024);
+    q_filterTable->view()->setItemValue(1, 0, 512);
+    q_filterTable->view()->setItemValue(1, 1, ":/jsmartkits/examples/jwidgets/image/qtlogo.png");
+    q_filterTable->view()->setItemValue(1, 2, 25);
+    q_filterTable->view()->setItemValue(1, 3, "192.168.1.100");
+    q_filterTable->view()->setItemValue(1, 4, 0xa4cd);*/
+
 #else
 
 #endif
@@ -119,10 +142,23 @@ TestJXmlTable::TestJXmlTable(QWidget *parent)
 
 void TestJXmlTable::buttonTable1Clicked()
 {
-
+    q_filterTable->view()->clearContents();
+    q_filterTable->view()->setTableName("table #3");
+    //q_filterTable->view()->setRowCount(100);
+    q_filterTable->view()->setCellWidget(1, 0, new QLabel("<font color='red'>readOnly</font>", this));
 }
 
 void TestJXmlTable::buttonTable2Clicked()
 {
+    q_filterTable->view()->setTableName("table #2");
+    q_filterTable->view()->setItemValue(2, 1, "test1");
+    q_filterTable->view()->setHighlight("red", 2, 1);
+    q_filterTable->view()->setRowCount(50);
 
+    QVariant v = q_filterTable->view()->itemData(1, 1);
+}
+
+void TestJXmlTable::onReadOnlyChanged(bool value)
+{
+    qDebug() << value;
 }

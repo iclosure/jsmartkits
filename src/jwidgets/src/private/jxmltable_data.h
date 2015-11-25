@@ -40,6 +40,7 @@ enum JUserType
     UserRoleItemValue,
     UserRoleItemType,
     UserRoleDelegateType,
+    UserRoleItemData,
 };
 
 // - enum JOrientation
@@ -276,7 +277,7 @@ public:
 
     bool isInteger() const;
     QString toString(const QVariant &value) const;
-    bool inRange(qreal &value) const;
+    bool inRange(qreal &value, bool increase = false) const;
     bool without(qreal &value, bool increase);
 
     QByteArray pack(const QVariant &value) const;
@@ -297,9 +298,9 @@ public:
     qreal scale() const;
     JNumericRange *range() const;
 
-    QList<JNumericRange *> withouts() const;
+    QList<JNumericRange *> &withouts() const;
 
-    Q_INVOKABLE JNumericRange *withoutAt(int index) const;
+    Q_INVOKABLE QObject *withoutAt(int index) const;
     Q_INVOKABLE void addWithout(qreal minimum, qreal maximum, bool minimumEdge, bool maximumEdge);
     Q_INVOKABLE void removeWithoutAt(int index);
     Q_INVOKABLE void clearWithout();
@@ -447,9 +448,9 @@ public:
     bool duplicatesEnabled() const;
     bool multiable() const;
 
-    QList<JEnumOption *> options() const;
+    QList<JEnumOption *> &options() const;
 
-    Q_INVOKABLE JEnumOption *optionAt(int index) const;
+    Q_INVOKABLE QObject *optionAt(int index) const;
     Q_INVOKABLE void insertOption(int index, const QString &text, qulonglong encode);
     Q_INVOKABLE void appendOption(const QString &text, qulonglong encode);
     Q_INVOKABLE void appendOption(const QString &text);

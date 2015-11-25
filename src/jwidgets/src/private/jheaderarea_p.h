@@ -79,6 +79,8 @@ public Q_SLOTS:
 
     // from view -- end
 
+    void _emit_filterChanged(int column, int type, bool visible);
+
 public:
     void init();
 

@@ -687,7 +687,7 @@ QString JNumericValue::toString(const QVariant &value) const
     return str;
 }
 
-bool JNumericValue::inRange(qreal &value) const
+bool JNumericValue::inRange(qreal &value, bool increase) const
 {
     if ((d->range->minimumEdge()
          ? JWIDGETS::fGreaterOrEqual(value, d->range->minimum())
@@ -697,9 +697,15 @@ bool JNumericValue::inRange(qreal &value) const
                 : JWIDGETS::fLess(value, d->range->maximum()))) {
         return true;
     } else {
-        value = d->range->minimumEdge()
-                ? d->range->minimum()
-                : d->range->minimum() + d->step;
+        if (increase) {
+            value = d->range->maximumEdge()
+                    ? d->range->maximum()
+                    : d->range->maximum() - d->step;
+        } else {
+            value = d->range->minimumEdge()
+                    ? d->range->minimum()
+                    : d->range->minimum() + d->step;
+        }
         return false;
     }
 }
@@ -873,12 +879,12 @@ JNumericRange *JNumericValue::range() const
     return d->range;
 }
 
-QList<JNumericRange *> JNumericValue::withouts() const
+QList<JNumericRange *> &JNumericValue::withouts() const
 {
     return d->withouts;
 }
 
-JNumericRange *JNumericValue::withoutAt(int index) const
+QObject *JNumericValue::withoutAt(int index) const
 {
     if (d->withouts.isEmpty()) {
         return 0;
@@ -1419,12 +1425,12 @@ bool JEnumValue::multiable() const
     return d->multiable;
 }
 
-QList<JEnumOption *> JEnumValue::options() const
+QList<JEnumOption *> &JEnumValue::options() const
 {
     return d->options;
 }
 
-JEnumOption *JEnumValue::optionAt(int index) const
+QObject *JEnumValue::optionAt(int index) const
 {
     if (d->options.isEmpty()) {
         return 0;

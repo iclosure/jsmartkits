@@ -74,9 +74,6 @@ void JIPAddressEditPrivate::init()
     horiLayoutMain->setContentsMargins(0, 0, 0, 0);
     horiLayoutMain->setSpacing(0);
     horiLayoutMain->addWidget(this);
-
-    //
-    q->setText("127.0.0.1");
 }
 
 // - class JIPAddressEdit -
@@ -129,13 +126,17 @@ void JIPAddressEdit::setReadOnly(bool value)
 
 void JIPAddressEdit::setText(const QString &text)
 {
-    QRegExp regExp("(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
+    if (QString(text).remove(' ') == this->text()) {
+        return;
+    }
+
+    QRegExp regExp("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
     if (!regExp.exactMatch(text)) {
         return;
     }
 
     Q_D(JIPAddressEdit);
-    QStringList texts = text.split('.');
+    QStringList texts = text.split('.', QString::SkipEmptyParts);
     QListIterator<QSpinBox *> iterSpin(d->spins);
     QStringListIterator iterText(texts);
     while (iterSpin.hasNext() && iterText.hasNext()) {

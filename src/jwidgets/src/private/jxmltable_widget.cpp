@@ -152,7 +152,7 @@ JNumericIBox::JNumericIBox(JNumericValue *property, QWidget *parent)
     if (!property->styleSheet().isEmpty()) {
         setStyleSheet(property->styleSheet());
     }
-    setReadOnly(property->editable());
+    setReadOnly(!property->editable());
     setAlignment(property->alignment());
     if (!property->prefix().isEmpty()) {
         setPrefix(property->prefix() % ' ');
@@ -197,7 +197,15 @@ QVariant JNumericIBox::jvalue() const
 
 QVariant JNumericIBox::jtext() const
 {
-    return d->property->jfromValue(text().toUpper(), Qt::DisplayRole);
+    QString str = text();
+    if (d->property->radix() != 10) {
+        str = str.remove(prefix()).remove(suffix()).toUpper();
+        if (str.count() > d->property->maskCount()) {
+            str = str.mid(str.count() - d->property->maskCount());
+        }
+    }
+    str = prefix() % str % suffix();
+    return d->property->jfromValue(str, Qt::DisplayRole);
 }
 
 QVariant JNumericIBox::jproperty() const
@@ -218,17 +226,25 @@ bool JNumericIBox::jsetData(const QByteArray &data)
 
 void JNumericIBox::jsetValue(const QVariant &value)
 {
-    lineEdit()->setText(d->property->jfromValue(value).toString());
+    if (value.type() == QVariant::String) {
+        QString text = value.toString().remove(prefix()).remove(suffix());
+        lineEdit()->setText(d->property->jfromValue(text).toString());
+    } else {
+        lineEdit()->setText(d->property->jfromValue(value).toString());
+    }
 }
 
 void JNumericIBox::_emit_valueChanged(int value)
 {
-    if (!d->property->withouts().isEmpty()) {
-        qreal v = value;
-        if (d->property->without(v, (value > d->oldValue))) {
-            setValue((int)v);
-        }
-        d->oldValue = (int)v;
+    bool increase = value > d->oldValue;
+    qreal v = value;
+    if (d->property->inRange(v, increase)) {
+        d->property->without(v, increase);
+    }
+
+    d->oldValue = (int)v;
+    if (value != d->oldValue) {
+        setValue(d->oldValue);
     }
 }
 
@@ -302,7 +318,15 @@ QVariant JNumericLBox::jvalue() const
 
 QVariant JNumericLBox::jtext() const
 {
-    return d->property->jfromValue(text().toUpper(), Qt::DisplayRole);
+    QString str = text();
+    if (d->property->radix() != 10) {
+        str = str.remove(prefix()).remove(suffix()).toUpper();
+        if (str.count() > d->property->maskCount()) {
+            str = str.mid(str.count() - d->property->maskCount());
+        }
+    }
+    str = prefix() % str % suffix();
+    return d->property->jfromValue(str, Qt::DisplayRole);
 }
 
 QVariant JNumericLBox::jproperty() const
@@ -323,17 +347,25 @@ bool JNumericLBox::jsetData(const QByteArray &data)
 
 void JNumericLBox::jsetValue(const QVariant &value)
 {
-    lineEdit()->setText(property()->jfromValue(value).toString());
+    if (value.type() == QVariant::String) {
+        QString text = value.toString().remove(prefix()).remove(suffix());
+        lineEdit()->setText(d->property->jfromValue(text).toString());
+    } else {
+        lineEdit()->setText(d->property->jfromValue(value).toString());
+    }
 }
 
 void JNumericLBox::_emit_valueChanged(qlonglong value)
 {
-    if (!d->property->withouts().isEmpty()) {
-        qreal v = value;
-        if (d->property->without(v, (value > d->oldValue))) {
-            setValue((qlonglong)v);
-        }
-        d->oldValue = (qlonglong)v;
+    bool increase = value > d->oldValue;
+    qreal v = value;
+    if (d->property->inRange(v, increase)) {
+        d->property->without(v, increase);
+    }
+
+    d->oldValue = (qlonglong)v;
+    if (value != d->oldValue) {
+        setValue(d->oldValue);
     }
 }
 
@@ -425,17 +457,24 @@ bool JNumericDBox::jsetData(const QByteArray &data)
 
 void JNumericDBox::jsetValue(const QVariant &value)
 {
-    setValue(value.toDouble());
+    if (value.type() == QVariant::String) {
+        setValue(valueFromText(value.toString()));
+    } else {
+        setValue(value.toDouble());
+    }
 }
 
 void JNumericDBox::_emit_valueChanged(double value)
 {
-    if (!d->property->withouts().isEmpty()) {
-        qreal v = value;
-        if (d->property->without(v, (value > d->oldValue))) {
-            setValue(v);
-        }
-        d->oldValue = v;
+    bool increase = value > d->oldValue;
+    qreal v = value;
+    if (d->property->inRange(v, increase)) {
+        d->property->without(v, increase);
+    }
+
+    d->oldValue = v;
+    if (value != d->oldValue) {
+        setValue(d->oldValue);
     }
 }
 

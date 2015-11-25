@@ -11,6 +11,9 @@
 #include "jtreeview_p.h"
 #include "../jtreeview.h"
 
+//! jxmltable
+#include "jxmltable_data.h"
+
 // - class JHeaderAreaPrivate -
 
 JHeaderAreaPrivate::JHeaderAreaPrivate(JHeaderArea *parent)
@@ -39,8 +42,7 @@ JHeaderAreaPrivate::JHeaderAreaPrivate(JHeaderArea *parent)
     vertLayoutMain->addWidget(filterArea);
 
     // signals
-    connect(this, SIGNAL(textChanged(int,QString)),
-            SLOT(setFilterRegExp(int,QString)));
+    connect(this, SIGNAL(textChanged(int,QString)), SLOT(setFilterRegExp(int,QString)));
 }
 
 JHeaderAreaPrivate::~JHeaderAreaPrivate()
@@ -570,6 +572,28 @@ void JHeaderAreaPrivate::_emit_clearContents()
     updateFilterItem();
 }
 
+void JHeaderAreaPrivate::_emit_filterChanged(int column, int type, bool visible)
+{
+    if (!filterVisible()) {
+        return;
+    }
+
+    if (visible) {
+        switch (type) {
+        case StringValue:
+            setFilterItem(column, "");
+            break;
+        case EnumValue:
+            setFilterItem(column);
+            break;
+        default:
+            break;
+        }
+    } else {
+        removeFilterItem(column);
+    }
+}
+
 void JHeaderAreaPrivate::init()
 {
     Q_Q(JHeaderArea);
@@ -673,6 +697,10 @@ bool JHeaderAreaPrivate::attach(QAbstractItemView *view)
                 SLOT(_emit_clearContents()), Qt::QueuedConnection);
         connect(tableView->data(), SIGNAL(_signal_updateFilterArea()),
                 SLOT(updateArea()), Qt::QueuedConnection);
+        if (tableView->inherits("JXmlTable")) {
+            connect(tableView, SIGNAL(filterChanged(int,int,bool)),
+                    SLOT(_emit_filterChanged(int,int,bool)));
+        }
     } else if (view->inherits("JTreeView")) {
         JTreeView *treeView = qobject_cast<JTreeView *>(view);
         if (!treeView) {
@@ -749,6 +777,10 @@ void JHeaderAreaPrivate::detach()
                        this, SLOT(_emit_clearContents()));
             disconnect(tableView->data(), SIGNAL(_signal_udpateFilterArea()),
                        this, SLOT(updateArea()));
+            if (tableView->inherits("JXmlTable")) {
+                disconnect(tableView, SIGNAL(filterChanged(int,int,bool)),
+                           this, SLOT(_emit_filterChanged(int,int,bool)));
+            }
         }
     } else if (view->inherits("JTreeView")) {
         JTreeView *treeView = qobject_cast<JTreeView *>(view);

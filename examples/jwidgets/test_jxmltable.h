@@ -16,6 +16,7 @@ public:
 public Q_SLOTS:
     void buttonTable1Clicked();
     void buttonTable2Clicked();
+    void onReadOnlyChanged(bool value);
 
 private:
     JFilterTableView *q_filterTable;

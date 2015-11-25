@@ -8,11 +8,136 @@
  copyright (c) 2015 smartsoft inc. All right reserved.
  -->
 <jxmltable version="1.0">
-    <table name="table #1" orientation="horizontal" >
-        <item name="列1" type="numeric" range="[0,1000]" />
-        <item name="列2" type="string" maxLength="200"/>
-        <item name="列3" type="numeric" range="[0,200]"/>
-        <item name="列4" type="enum" default="选项1" >
-        </item>
-    </table>
+  <table name="table #0" orientations="horizontal" >
+    <!--<item name="表头1" type="numeric" range="(10, 80)" prefix="频率" suffix="MHz" default="21" >
+      <without>[32, 54)</without>
+    </item>
+    <item name="图片测试" type="delegate" delegateType="picture" default=":/jsmartkits/examples/jwidgets/image/qtlogo.png" />
+    <item name="发送进度" type="delegate" delegateType="progress" default="12" minimum="0" maximum="100" headerSize="120" />
+    <item name="IP地址" type="IPv4" default="127.0.0.1" headerSize="200" />-->
+    <item name="十六进制测试" type="numeric" radix="16" maskCount="4" />
+    <item name="表头4" type="enum" default="选项1" filterType="enum" >
+      <option encode="0">选项1</option>
+      <option encode="1">选项2</option>
+    </item>
+  </table>
+  <table name="table #1" orientation="horizontal" >
+    <item name="表头1" type="numeric" range="[0,1000]" />
+    <item name="表头2" type="string" maxLength="200"/>
+    <item name="表头3" type="numeric" range="[0,200]"/>
+    <item name="表头4" type="enum" default="选项1" >
+      <option encode="0">选项1</option>
+      <option encode="1">选项2</option>
+    </item>
+    <item name="表头5" type="numeric" range="[-100, 1000)">
+      <without>[10, 51]</without>
+      <without>(100, 215)</without>
+    </item>
+    <item name="表头6" type="enum" default="选项2" >
+      <option encode="1">选项1</option>
+      <option encode="2">选项2</option>
+    </item>
+    <item name="表头7" type="numeric" range="[0,100000]" />
+    <item name="表头8" type="numeric" range="[0,100000]" />
+    <item name="表头9" type="numeric" range="[0, 1000000]" />
+    <item name="表头10" type="numeric" range="[0, 100000]" />
+    <item name="表头11" type="numeric" range="[0,100000]" />
+    <item name="表头12" type="numeric" radix="16" maskCount="4" />
+    <item name="表头13" type="numeric" radix="16" maskCount="4" />
+    <item name="表头14" type="numeric" radix="16" maskCount="4" />
+    <item name="表头15" type="numeric" radix="16" maskCount="4" />
+    <item name="表头16" type="enum" default="选项2" >
+      <option encode="0">选项1</option>
+      <option encode="1">选项2</option>
+      <option encode="2">选项3</option>
+    </item>
+    <item name="表头17" type="enum" default="选项1" >
+      <option encode="0">选项1</option>
+      <option encode="1">选项2</option>
+      <option encode="2">选项3</option>
+    </item>
+    <item name="表头18" type="enum" default="选项2">
+      <option encode="1">选项1</option>
+      <option encode="2">选项2</option>
+    </item>
+  </table>
+  <table name="table #2" orientations="horizontal" headerWidth="120" sync="false">
+    <item name="发送进度" type="delegate" delegateType="progress" default="12" minimum="0" maximum="100" headerSize="120" />
+    <item name="IP地址" type="IPv4" default="127.0.0.1" headerSize="200" />
+    <item name="多选组合控件" type="enum" multiable="true" default="选项1|选项2|选项3|选项5|选项8|选项9" headerSize="150" >
+      <option encode="0x01">选项1</option>
+      <option encode="0x02">选项2</option>
+      <option encode="0x04">选项3</option>
+      <option encode="0x08">选项4</option>
+      <option encode="0x10">选项5</option>
+      <option encode="0x20">选项6</option>
+      <option encode="0x40">选项7</option>
+      <option encode="0x80">选项8</option>
+      <option encode="0x101">选项9</option>
+      <option encode="0x102">选项10</option>
+    </item>
+    <item name="表头1" type="numeric" range="[0,1000]" headerSize="200" filterType="string" >
+      <without>[10,50]</without>
+      <without>[100, 124)</without>
+    </item>
+    <item name="表头2" type="string" maxLength="200" headerSize="120" />
+    <item name="表头3" type="numeric" range="[0,200]" headerSize="140" />
+    <item name="表头4" type="enum" default="选项1" headerSize="100" >
+      <option encode="0">选项1</option>
+      <option encode="1">选项2</option>
+    </item>
+    <item name="表头5" type="numeric" range="[0, 100000]" />
+    <item name="表头6" type="numeric" range="[0, 100000]" />
+    <item name="表头7" type="numeric" range="[0, 100000]" />
+    <item name="表头8" type="numeric" decimals="2" ramge="[0, 100000]" />
+    <item name="表头9" type="numeic" radix="16" maskCount="4" />
+    <item name="表头10" type="numeric" radix="16" maskCount="4" />
+    <item name="表头11" type="enum" default="选项2" offset="14" >
+      <option encode="0">选项1</option>
+      <option encode="1">选项2</option>
+    </item>
+    <item name="表头12" type="enum" default="选项1" filterType="enum" >
+      <option>选项1</option>
+      <option>选项2</option>
+      <option>选项3</option>
+    </item>
+    <item name="图片测试0" type="bool" default="true" text="测试00" icon=":/jsmartkits/examples/jwidgets/image/qtlogo.png" />
+    <item name="图片测试" type="delegate" delegateType="picture" default=":/jsmartkits/examples/jwidgets/image/qtlogo.png" />
+  </table>
+  <table name="table #3" orientations="horizontal|vertical" headerWidth="100" sync="false" >
+    <row headerSize="100">
+      <column name="名称" headerSize="100" type="string" editable="false" alignment="right" default="行1" />
+      <column name="数值" type="string" />
+      <column name="单位" type="string" editable="false" />
+      <column name="说明" type="string" editable="false" />
+    </row>
+    <row headerSize="100">
+      <column name="名称" type="string" editable="false" alignment="right" default="行2" />
+      <column name="数值" type="string" />
+      <column name="单位" type="string" editable="false" />
+      <column name="说明" type="string" editable="false" />
+    </row>
+    <row headerSize="100">
+      <column name="名称" type="string" editable="false" alignment="right" default="行3" />
+      <column name="数值" type="enum" default="选项3">
+        <option encode="0">选项1</option>
+        <option encode="1">选项2</option>
+        <option encode="2">选项3</option>
+        <option encode="3">选项4</option>
+        <option encode="4">选项5</option>
+        <option encode="5">选项6</option>
+        <option encode="6">选项7</option>
+        <option encode="7">选项8</option>
+        <option encode="8">选项9</option>
+      </column>
+      <column name="单位" type="string" editable="false" />
+      <column name="说明" type="string" editable="false" />
+    </row>
+    <row>
+      <column name="名称" type="string" editable="false" alignment="right" default="行2" />
+      <column name="数值" type="string" />
+      <column name="单位" type="string" editable="false" containCSS="true" default="测试&lt;font color=&apos;red&apos;&gt;选项&lt;font&gt;" />
+      <column name="说明" type="string" editable="false" />
+    </row>
+  </table>
 </jxmltable>

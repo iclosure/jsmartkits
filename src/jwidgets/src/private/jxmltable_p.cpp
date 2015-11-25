@@ -278,6 +278,9 @@ bool JXmlTablePrivate::updateHeaders()
                             if (stringValue->containCSS()) {
                                 q->setCellWidget(rowValue->index(), column,
                                                  new JStringLabel(const_cast<JStringValue *>(stringValue), q));
+                            } else {
+                                q->setItem(rowValue->index(), column,
+                                           new JStringItem(const_cast<JItemValue *>(columnValue)));
                             }
                             break;
                         }
@@ -806,10 +809,10 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JNumericValue &value)
             } else {
                 value.setOriginal(sVal.at(0));
             }
-        } else {
-            if (emItem->QueryDoubleAttribute("default", &dVal) == TIXML_SUCCESS) {
-                value.setOriginal(dVal);
-            }
+        }
+    } else {
+        if (emItem->QueryDoubleAttribute("default", &dVal) == TIXML_SUCCESS) {
+            value.setOriginal(dVal);
         }
     }
     // radix
@@ -1846,7 +1849,7 @@ void JXmlTablePrivate::connectSignals(Qt::Orientations orientations)
     if (orientations & Qt::Horizontal) {
         connect(q->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)),
                 SLOT(_emit_sectionMoved(int,int,int)));
-        if (data.orientations != (Qt::Horizontal | Qt::Vertical)) {
+        if (data.orientations != JCrossOrientation) {
             connect(q->horizontalHeader(), SIGNAL(sectionResized(int,int,int)),
                     SLOT(_emit_sectionResized(int,int,int)));
         }
@@ -1867,7 +1870,7 @@ void JXmlTablePrivate::disconnectSignals(Qt::Orientations orientations)
     if (orientations & Qt::Horizontal) {
         disconnect(q->horizontalHeader(), SIGNAL(sectionMoved(int,int,int)),
                    this, SLOT(_emit_sectionMoved(int,int,int)));
-        if (data.orientations != (Qt::Horizontal | Qt::Vertical)) {
+        if (data.orientations != JCrossOrientation) {
             disconnect(q->horizontalHeader(), SIGNAL(sectionResized(int,int,int)),
                        this, SLOT(_emit_sectionResized(int,int,int)));
         }
@@ -1980,7 +1983,7 @@ bool JXmlItemDelegate::drawIPv4Item(QPainter *painter,
     }
 
     QStringList s = index.data().toString().trimmed().split('.', QString::SkipEmptyParts);
-    if (s.isEmpty()) {
+    if (s.count() < 4) {
         return false;
     }
 
@@ -1992,7 +1995,7 @@ bool JXmlItemDelegate::drawIPv4Item(QPainter *painter,
     qreal x = 0.;
     for (int i = 0; i < 4; ++i) {
         x = r.left() + r.width() * i;
-        if (x > 0) {
+        if (i > 0) {
             painter->drawEllipse(QPointF(x++, r.top() + r.height()), 1.2, 1.2);
         }
         painter->drawText(QRectF(x, r.top(), r.width(), option.rect.height()), s[i],
