@@ -1236,17 +1236,6 @@ JEnumValue::~JEnumValue()
     delete d;
 }
 
-QStringList JEnumValue::items() const
-{
-    QStringList lst;
-    QListIterator<JEnumOption *> iter(d->options);
-    while (iter.hasNext()) {
-        lst.append(iter.next()->text());
-    }
-
-    return lst;
-}
-
 QString JEnumValue::text(int index) const
 {
     if (index < 0 || index >= d->options.count()) {
@@ -1428,6 +1417,17 @@ bool JEnumValue::multiable() const
 QList<JEnumOption *> &JEnumValue::options() const
 {
     return d->options;
+}
+
+QStringList JEnumValue::items() const
+{
+    QStringList lst;
+    QListIterator<JEnumOption *> iter(d->options);
+    while (iter.hasNext()) {
+        lst.append(iter.next()->text());
+    }
+
+    return lst;
 }
 
 QObject *JEnumValue::optionAt(int index) const

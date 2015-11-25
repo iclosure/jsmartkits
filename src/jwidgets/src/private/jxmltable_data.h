@@ -420,11 +420,10 @@ class JWIDGETS_EXPORT JEnumValue : public JItemValue
     Q_PROPERTY(bool autoCompletion READ autoCompletion WRITE setAutoCompletion NOTIFY autoCompletionChanged)
     Q_PROPERTY(bool duplicatesEnabled READ duplicatesEnabled WRITE setDuplicatesEnabled NOTIFY duplicatesEnabledChanged)
     Q_PROPERTY(bool multiable READ multiable WRITE setMultiable NOTIFY multiableChanged)
+    Q_PROPERTY(QStringList items READ items)
 public:
     explicit JEnumValue(QObject *parent = 0);
     virtual ~JEnumValue();
-
-    QStringList items() const;
 
     QString text(int index) const;
     QString text(qulonglong encode) const;
@@ -449,6 +448,7 @@ public:
     bool multiable() const;
 
     QList<JEnumOption *> &options() const;
+    QStringList items() const;
 
     Q_INVOKABLE QObject *optionAt(int index) const;
     Q_INVOKABLE void insertOption(int index, const QString &text, qulonglong encode);

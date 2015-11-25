@@ -13,6 +13,8 @@
 
 //! jxmltable
 #include "jxmltable_data.h"
+#include "jxmltable_widget.h"
+#include "../jxmltable.h"
 
 // - class JHeaderAreaPrivate -
 
@@ -475,16 +477,23 @@ void JHeaderAreaPrivate::updateFilterItem(int column)
                 comboBox->clear();
                 comboBox->addItem(tr("#All#"));
                 int rowCount = sourceModel->rowCount();
-                for (int i = 0; i < rowCount; ++i) {
-                    QStandardItem *item = sourceModel->item(i, column);
-                    if (item) {
-                        QString text = item->text();
-                        if (text.isEmpty()) {
-                            continue;
-                        }
+                if (view && view->inherits("JXmlTable")) {
+                    QVariant items = qobject_cast<JXmlTable *>(view)->itemProperty(-1, column, "items");
+                    if (items.isValid() && items.canConvert(QVariant::StringList)) {
+                        comboBox->addItems(items.toStringList());
+                    }
+                } else {
+                    for (int i = 0; i < rowCount; ++i) {
+                        QStandardItem *item = sourceModel->item(i, column);
+                        if (item) {
+                            QString text = item->text();
+                            if (text.isEmpty()) {
+                                continue;
+                            }
 
-                        if (comboBox->findText(text) == -1) {
-                            comboBox->addItem(text);
+                            if (comboBox->findText(text) == -1) {
+                                comboBox->addItem(text);
+                            }
                         }
                     }
                 }
