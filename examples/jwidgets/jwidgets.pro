@@ -14,7 +14,7 @@ JSMARTKITS_ROOT = $$PWD/../..
 jwidgets_url = com.smartsoft.jsmartkits.jwidgets
 
 TEMPLATE = app
-TARGET = $$[jwidgets_url].examples
+TARGET = $${jwidgets_url}.examples
 DESTDIR = $${JSMARTKITS_ROOT}/bin
 
 # - output - tmp -
