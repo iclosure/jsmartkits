@@ -340,10 +340,8 @@ void JHeaderArea::setAutoUpdateTitle(bool enable)
 void JHeaderArea::setTitleVisible(bool visible)
 {
     Q_D(JHeaderArea);
-    if (visible != d->titleArea->isVisible()) {
-        d->titleArea->setVisible(visible);
-        Q_EMIT titleVisibleChanged(visible);
-    }
+    d->titleArea->setVisible(visible);
+    Q_EMIT titleVisibleChanged(visible);
 }
 
 void JHeaderArea::setTitle(const QString &text)

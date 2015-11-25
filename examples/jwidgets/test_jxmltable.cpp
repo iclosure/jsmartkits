@@ -86,21 +86,21 @@ TestJXmlTable::TestJXmlTable(QWidget *parent)
     connect(buttonTable1, SIGNAL(clicked(bool)), SLOT(buttonTable1Clicked()));
     connect(buttonTable2, SIGNAL(clicked(bool)), SLOT(buttonTable2Clicked()));
 
-    q_filterTable->view()->setHighlight("gray", -1, 4);
-    q_filterTable->view()->removeHighlight();
-    q_filterTable->view()->setHighlight("gray", -1, 7);
+    //q_filterTable->view()->setHighlight("gray", -1, 4);
+    //q_filterTable->view()->removeHighlight();
+    //q_filterTable->view()->setHighlight("gray", -1, 7);
 
-    q_filterTable->view()->setItemData(1, 1, "AFEDC");
+    //q_filterTable->view()->setItemData(1, 1, "AFEDC");
 
-    connect(q_horiSplitter->handle(1), SIGNAL(handleClicked(bool)), q_areaRight, SLOT(setVisible(bool)));
+    connect(q_horiSplitter->handle(1), SIGNAL(handleClicked(bool)),
+            q_areaRight, SLOT(setVisible(bool)));
 
     //
-    q_filterTable->view()->setItemValue(1, 3, "hello");
-    q_filterTable->view()->setItemValue(1, 16, 0x100);
+    //q_filterTable->view()->setItemValue(1, 3, "hello");
+    //q_filterTable->view()->setItemValue(1, 16, 0x100);
 
     q_filterTable->setFilterItem(5);
     q_filterTable->setFilterItem(6);
-    q_filterTable->setTitleVisible(false);
 
     QStandardItem *item = new QStandardItem;
     item->setCheckable(true);
@@ -109,7 +109,7 @@ TestJXmlTable::TestJXmlTable(QWidget *parent)
 
     q_filterTable->view()->setItemValue(1, 18, Qt::PartiallyChecked);
     q_filterTable->view()->setItemValue(1, 19, "");
-    q_filterTable->view()->setItemValue(1, 1, "192.168.1.100");
+    //q_filterTable->view()->setItemValue(1, 1, "192.168.1.100");
 
     //qDebug() << q_filterTable->view()->itemValue(1, 17);
 
@@ -134,6 +134,9 @@ TestJXmlTable::TestJXmlTable(QWidget *parent)
     q_filterTable->view()->setItemValue(1, 2, 25);
     q_filterTable->view()->setItemValue(1, 3, "192.168.1.100");
     q_filterTable->view()->setItemValue(1, 4, 0xa4cd);*/
+
+//    q_filterTable->setFilterItem(1, "test");
+    q_filterTable->setTitleVisible(false);
 
 #else
 

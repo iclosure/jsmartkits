@@ -195,7 +195,7 @@ void JHeaderAreaPrivate::setFilterItem(int column, const QStringList &texts)
 
     QComboBox *comboBox = qobject_cast<QComboBox *>(widget);
     if (texts.isEmpty()) {
-        updateFilterItem();
+        updateFilterItem(column);
     } else {
         comboBox->clear();
         comboBox->addItem(tr("#All#"));
@@ -540,6 +540,10 @@ void JHeaderAreaPrivate::_emit_removeColumn(int column)
         return;
     }
 
+    if (filterItems.isEmpty()) {
+        return;
+    }
+
     removeFilterItem(column, false);
 
     QMutableMapIterator<int, QWidget *> iter(filterItems);
@@ -690,9 +694,9 @@ bool JHeaderAreaPrivate::attach(QAbstractItemView *view)
         connect(tableView->data(), SIGNAL(_signal_removeRow(int)),
                 SLOT(_emit_removeRow(int)), Qt::QueuedConnection);
         connect(tableView->data(), SIGNAL(_signal_removeColumn(int)),
-                SLOT(_emit_removeColumn(int))/*, Qt::QueuedConnection*/);
+                SLOT(_emit_removeColumn(int)), Qt::QueuedConnection);
         connect(tableView->data(), SIGNAL(_signal_clear()),
-                SLOT(_emit_clear()), Qt::QueuedConnection);
+                SLOT(_emit_clear())/*, Qt::QueuedConnection*/);
         connect(tableView->data(), SIGNAL(_signal_clearContents()),
                 SLOT(_emit_clearContents()), Qt::QueuedConnection);
         connect(tableView->data(), SIGNAL(_signal_updateFilterArea()),
