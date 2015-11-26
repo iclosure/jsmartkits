@@ -225,14 +225,16 @@ void JTableViewPrivate::init()
 
 QModelIndex JTableViewPrivate::mapToSource(const QModelIndex &index) const
 {
-    //Q_Q(const JTableView);
-    //TODO
-    return index;
+    Q_Q(const JTableView);
+    if (q->model()->inherits("QSortFilterProxyModel")) {
+        return qobject_cast<QSortFilterProxyModel *>(q->model())->mapToSource(index);
+    } else {
+        return index;
+    }
 }
 
 QStandardItem *JTableViewPrivate::modelItem(const QModelIndex &index) const
 {
     //Q_Q(const JTableView);
-    //TODO
     return sourceModel->item(index.row(), index.column());
 }
