@@ -70,6 +70,7 @@ macx: CONFIG(qt_framework, qt_framework|qt_no_framework) {
         framework_headers_tools_tinyxml
 } else {
     copyCommand = @echo ---- module $${jwidgets_url} ----
+win32 {
     ## create folder
     destdir = $$DESTDIR/include
     destdir = $$replace(destdir, /, \\)
@@ -82,6 +83,19 @@ macx: CONFIG(qt_framework, qt_framework|qt_no_framework) {
     srcdir = $$replace(srcdir, /, \\)
     #exists("$$destdir"): copyCommand += && rd /s /q "$$destdir"
     copyCommand += && xcopy "$$srcdir\\*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
+} else {
+    ## create folder
+    destdir = $$DESTDIR/include
+    ## copy files
+    excludefile = $$PWD/copy.ignore
+    !exists("$$excludefile"): excludefiles = $$_PRO_FILE_PWD_/copy.ignore
+    !exists("$$excludefile"): error("$$excludefile" is not exists!)
+    srcdir = $$PWD/src
+    !exists("$$destdir"): copyCommand += && mkdir "$$destdir"
+    copyCommand += && cp "$$srcdir/*.h" "$$destdir"
+    #copyCommand += && xcopy "$$srcdir/*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
+    copyCommand += && rm -f -r "$$destdir/precomp.h"
+}
 
     first.depends = $(first)
     # for jwidgets

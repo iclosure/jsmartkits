@@ -762,23 +762,18 @@ QVariant JNumericValue::unpack(const QByteArray &data) const
 
 QVariant JNumericValue::jfromValue(const QVariant &value, int role) const
 {
-    switch (value.type()) {
-    case QVariant::String:
-    {
+    if (value.type() == QVariant::String) {
         role = (role == Qt::EditRole) ? Qt::DisplayRole : role;
         if (role == Qt::DisplayRole) {
             QString text = value.toString();
             if (d->radix != 10 && !d->fillChar.isNull() && text.count() < d->maskCount) {
                 text.prepend(QString(d->maskCount - text.count(), d->fillChar));
             }
-
             return text;
         } else {
             return value;
         }
-        break;
-    }
-    default:
+    } else {
         if (d->decimals  == 0) {
             if (d->maskCount < 8) {
                 return value.toInt();
@@ -788,7 +783,6 @@ QVariant JNumericValue::jfromValue(const QVariant &value, int role) const
         } else {
             return value.toDouble();
         }
-        break;
     }
 }
 
@@ -796,24 +790,19 @@ QVariant JNumericValue::jtoValue(const QVariant &value, int role) const
 {
     Q_UNUSED(role);
     if (d->decimals == 0) {
-        switch (value.type()) {
-        case QVariant::String:
-        {
+        if (value.type() == QVariant::String) {
             QString text = value.toString();
             if (d->maskCount < 8) {
                 return text.toInt(0, d->radix);
             } else {
                 return text.toLongLong(0, d->radix);
             }
-            break;
-        }
-        default:
+        } else {
             if (d->maskCount < 8) {
                 return value.toInt();
             } else {
                 return value.toLongLong();
             }
-            break;
         }
     } else {
         return value.toDouble();
