@@ -6,11 +6,17 @@
 
 // - class JFilterTableViewPrivate -
 
-class JFilterTableViewPrivate
+class JFilterTableViewPrivate : public QObject
 {
+    Q_OBJECT
     J_DECLARE_PUBLIC(JFilterTableView)
 public:
     JFilterTableViewPrivate(JFilterTableView *parent = 0);
+
+public Q_SLOTS:
+    void _emit_filterChanged(int column, int type, bool visible);
+    void _emit_attached();
+    void _emit_detached();
 
 private:
     void init();
@@ -18,7 +24,5 @@ private:
 private:
     JXmlTable *view;
 };
-
-
 
 #endif // JFILTERTABLEVIEW_P_H
