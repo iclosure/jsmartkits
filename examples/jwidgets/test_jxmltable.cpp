@@ -1,7 +1,9 @@
-#include "test_jxmltable.h"
+﻿#include "test_jxmltable.h"
 #include <QtGui>
 #include "jspinbox.h"
 #include "jipaddressedit.h"
+
+//#pragma execution_character_set("utf-8")
 
 // - class TestJXmlTable -
 

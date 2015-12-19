@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QtXml>
 
 #if (QT_VERSION < 0x050000)
 #include <QWidget>

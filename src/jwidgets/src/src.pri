@@ -67,20 +67,6 @@ SOURCES += \
     $$PWD/jfiltertableview.cpp
 
 ################################################
-## tinyxml
-
-tools_tinyxml_headers += \
-    $$PWD/tools/tinyxml/tinyxml.h
-
-HEADERS += \
-    $$tools_tinyxml_headers \
-
-SOURCES += \
-    $$PWD/tools/tinyxml/tinyxml.cpp \
-    $$PWD/tools/tinyxml/tinyxmlerror.cpp \
-    $$PWD/tools/tinyxml/tinyxmlparser.cpp
-
-################################################
 ## resources
 ################################################
 
@@ -95,10 +81,5 @@ RESOURCES += \
 framework_headers_jwidgets.version = Versions
 framework_headers_jwidgets.path = Headers
 framework_headers_jwidgets.files = $$jwidgets_headers
-
-# for tinyxml
-framework_headers_tools_tinyxml.version = Versions
-framework_headers_tools_tinyxml.path = Headers/tools/tinyxml
-framework_headers_tools_tinyxml.files = $$tools_tinyxml_headers
 
 ################################################

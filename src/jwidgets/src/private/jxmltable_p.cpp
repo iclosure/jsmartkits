@@ -22,8 +22,8 @@ bool JXmlTablePrivate::loadConfig(const QString &filePath, const QString &tableN
 {
     data.clear();
 
-    TiXmlElement *emTable = elementTable(filePath, tableName);
-    if (!emTable) {
+    QDomElement emTable = elementTable(filePath, tableName);
+    if (emTable.isNull()) {
         return false;
     }
 
@@ -32,15 +32,57 @@ bool JXmlTablePrivate::loadConfig(const QString &filePath, const QString &tableN
     return loadConfig(emTable);
 }
 
-bool JXmlTablePrivate::loadConfig(const TiXmlElement *emTable)
+bool JXmlTablePrivate::loadConfig(const QByteArray &text)
 {
-    data.clear();
+    data.clear(false);
 
-    if (!emTable) {
+    if (data.tableName.isEmpty()) {
         return false;
     }
 
-    QString tableName = QString::fromUtf8(emTable->Attribute("name"));
+    if (text.isEmpty()) {
+        return false;
+    }
+
+    QString errorMsg;
+    int errorLine;
+    int errorColumn;
+    if (!data.document.setContent(text, &errorMsg, &errorLine, &errorColumn)) {
+        QMessageBox::critical(0, QObject::tr("Parse xmltable data"),
+                              QObject::tr("parse data failure! \n\nerrorMsg: %1\nerrorPosition: (%2, %3))")
+                              .arg(errorMsg).arg(errorLine).arg(errorColumn));
+        return false;
+    }
+
+    if (data.document.isNull()) {
+        return false;
+    }
+
+    QDomElement emRoot = data.document.firstChildElement();
+    if (emRoot.isNull()) {
+        return false;
+    }
+
+    for (QDomElement emTable = emRoot.firstChildElement("table");
+         !emTable.isNull();
+         emTable = emTable.nextSiblingElement("table")) {
+        if (emTable.attribute("name") == data.tableName) {
+            return loadConfig(emTable);
+        }
+    }
+
+    return false;
+}
+
+bool JXmlTablePrivate::loadConfig(const QDomElement &emTable)
+{
+    data.clear();
+
+    if (emTable.isNull()) {
+        return false;
+    }
+
+    QString tableName = emTable.attribute("name");
     if (tableName.isEmpty()) {
         QMessageBox::critical(0, QObject::tr("Parse xmltable"),
                               QObject::tr("name of table cannot be empty!"));
@@ -49,18 +91,14 @@ bool JXmlTablePrivate::loadConfig(const TiXmlElement *emTable)
 
     data.tableName = tableName;
 
-    bool bVal = false;
-    int iVal = 0;
-    std::string sVal;
-
     // orientations
-    if (emTable->QueryStringAttribute("orientations", &sVal) == TIXML_SUCCESS) {
-        QStringList sOrientations =
-                QString::fromStdString(sVal).trimmed().split('|', QString::SkipEmptyParts);
-        QStringListIterator iter(sOrientations);
-        data.orientations = (Qt::Orientation)0;
-        while (iter.hasNext()) {
-            const QString &sOrientation = iter.next();
+    if (emTable.hasAttribute("orientations")) {
+        QStringList sOrientations = emTable.attribute("orientations")
+                .trimmed().split('|', QString::SkipEmptyParts);
+        data.orientations = (Qt::Orientations)0;
+        QStringListIterator citer(sOrientations);
+        while (citer.hasNext()) {
+            const QString &sOrientation = citer.next();
             if (sOrientation == "horizontal") {
                 data.orientations |= Qt::Horizontal;
             } else if (sOrientation == "vertical") {
@@ -69,38 +107,40 @@ bool JXmlTablePrivate::loadConfig(const TiXmlElement *emTable)
         }
     }
     // headerWidth
-    if (emTable->QueryIntAttribute("headerWidth", &iVal) == TIXML_SUCCESS) {
-        data.headerSize.setWidth(iVal);
+    if (emTable.hasAttribute("headerWidth")) {
+        data.headerSize.setWidth(emTable.attribute("headerWidth").toInt());
     }
     // headerHeight
-    if (emTable->QueryIntAttribute("headerHeight", &iVal) == TIXML_SUCCESS) {
-        data.headerSize.setHeight(iVal);
+    if (emTable.hasAttribute("headerHeight")) {
+        data.headerSize.setHeight(emTable.attribute("headerHeight").toInt());
     }
     // styleSheet
-    data.styleSheet = QString::fromUtf8(emTable->Attribute("styleSheet"));
+    if (emTable.hasAttribute("styleSheet")) {
+        data.styleSheet = emTable.attribute("styleSheet");
+    }
     // horiHeaderMovable
-    if (emTable->QueryBoolAttribute("horiHeaderMovable", &bVal) == TIXML_SUCCESS) {
-        data.horiHeaderMovable = bVal;
+    if (emTable.hasAttribute("horiHeaderMovable")) {
+        data.horiHeaderMovable = QVariant(emTable.attribute("horiHeaderMovable")).toBool();
     }
     // verticalHeaderVisible
-    if (emTable->QueryBoolAttribute("verticalHeaderVisible", &bVal) == TIXML_SUCCESS) {
-        data.verticalHeaderVisible = bVal;
+    if (emTable.hasAttribute("verticalHeaderVisible")) {
+        data.verticalHeaderVisible = QVariant(emTable.attribute("verticalHeaderVisible")).toBool();
     }
     // verticalHeaderLabel
-    if (emTable->QueryBoolAttribute("verticalHeaderLabel", &bVal) == TIXML_SUCCESS) {
-        data.verticalHeaderLabel = bVal;
+    if (emTable.hasAttribute("verticalHeaderLabel")) {
+        data.verticalHeaderLabel = QVariant(emTable.attribute("verticalHeaderLabel")).toBool();
     }
     // offsetEnabled
-    if (emTable->QueryBoolAttribute("offsetEnabled", &bVal) == TIXML_SUCCESS) {
-        data.offsetEnabled = bVal;
+    if (emTable.hasAttribute("offsetEnabled")) {
+        data.offsetEnabled = QVariant(emTable.attribute("offsetEnabled")).toBool();
     }
     // readOnly
-    if (emTable->QueryBoolAttribute("readOnly", &bVal) == TIXML_SUCCESS) {
-        data.readOnly = bVal;
+    if (emTable.hasAttribute("readOnly")) {
+        data.readOnly = QVariant(emTable.attribute("readOnly")).toBool();
     }
     // sync
-    if (emTable->QueryBoolAttribute("sync", &bVal) == TIXML_SUCCESS) {
-        data.sync = bVal;
+    if (emTable.hasAttribute("sync")) {
+        data.sync = QVariant(emTable.attribute("sync")).toBool();
     }
     // parse table
     if (!parse(emTable)) {
@@ -108,24 +148,6 @@ bool JXmlTablePrivate::loadConfig(const TiXmlElement *emTable)
     }
 
     return true;
-}
-
-bool JXmlTablePrivate::loadConfig(const QByteArray &data)
-{
-    this->data.clear();
-
-    if (data.isEmpty()) {
-        return false;
-    }
-
-    TiXmlElement emTable(data.constData());
-    if (!emTable.Parse(data.constData(), 0, TIXML_ENCODING_UTF8)) {
-        QMessageBox::critical(0, QObject::tr("Parse xmltable data"),
-                              QObject::tr("parse data failure!"));
-        return false;
-    }
-
-    return loadConfig(&emTable);
 }
 
 bool JXmlTablePrivate::updateHeaders()
@@ -312,228 +334,218 @@ bool JXmlTablePrivate::updateHeaders()
     return true;
 }
 
-TiXmlElement *JXmlTablePrivate::elementTable()
+QDomElement JXmlTablePrivate::elementTable()
 {
     return elementTable(data.filePath, data.tableName);
 }
 
-TiXmlElement *JXmlTablePrivate::elementTable(const QString &filePath, const QString &tableName)
+QDomElement JXmlTablePrivate::elementTable(const QString &filePath, const QString &tableName)
 {
     Q_Q(JXmlTable);
     if (filePath.isEmpty()) {
         QMessageBox::critical(q, QObject::tr("check parameters"),
                               QObject::tr("filePath cannot be empty!"));
-        return 0;
+        return QDomElement();
     }
 
     if (tableName.isEmpty()) {
         QMessageBox::critical(q, QObject::tr("check parameters"),
                               QObject::tr("tableName cannot be empty!"));
-        return 0;
+        return QDomElement();
     }
 
-    if (filePath.startsWith(':')) {
-        QFile file(filePath);
-        if (file.open(QFile::ReadOnly)) {
-            if (!data.document.Parse(file.readAll().constData(), 0, TIXML_ENCODING_UTF8)) {
-                QMessageBox::critical(q, QObject::tr("parse xmltable data"),
-                                      QObject::tr("parse data failure!"));
-                return 0;
-            }
-        } else {
-            QMessageBox::critical(q, QObject::tr("open buffer file"),
-                                  QObject::tr("open failure!"));
-            return 0;
-        }
-    } else {
-        data.document.SetValue(filePath.toStdString());
-        if (!data.document.LoadFile(TIXML_ENCODING_UTF8)) {
-            QMessageBox::critical(q, QObject::tr("load xmltable file"),
-                                  QObject::tr("load failure!"));
-            return 0;
-        }
+    QFile file(filePath);
+    if (!file.open(QFile::ReadOnly)) {
+        QMessageBox::critical(q, QObject::tr("open buffer file"),
+                              QObject::tr("open failure!"));
+        return QDomElement();
     }
 
-    TiXmlElement *emRoot = data.document.RootElement();
-    if (!emRoot) {
+    data.document.setContent(&file);
+    if (data.document.isNull()) {
+        return QDomElement();
+    }
+
+    QDomElement emRoot = data.document.firstChildElement();
+    if (emRoot.isNull()) {
         QMessageBox::critical(q, QObject::tr("Parse xmltable"),
                               QObject::tr("root node is not exists in file %1!").arg(filePath));
-        return 0;
+        return QDomElement();
     }
 
     // version
 #if 0
-    QString ver = QString::fromUtf8(emRoot->Attribute("version"));
+    QString ver = emRoot->attribute("version");
     if (ver != version()) {
         QMessageBox::critical(0, QObject::tr("Parse xmltable"),
                               QObject::tr("the version of '%1' is invalid for %2!")
                               .arg(ver).arg(filePath));
-        return 0;
+        return QDomElement();
     }
 #endif
-    TiXmlElement *emTable = emRoot->FirstChildElement("table");
-    if (!emTable) {
+    QDomElement emTable = emRoot.firstChildElement("table");
+    if (emTable.isNull()) {
         QMessageBox::critical(q, QObject::tr("Parse xmltable"),
                               QObject::tr("table node is not exists int file %1!").arg(filePath));
-        return 0;
+        return QDomElement();
     } else {
-        for (; emTable != 0;
-             emTable = emTable->NextSiblingElement("table")) {
-            QString name = QString::fromUtf8(emTable->Attribute("name"));
+        for (; !emTable.isNull();
+             emTable = emTable.nextSiblingElement("table")) {
+            QString name = emTable.attribute("name");
             if (name == tableName) {
                 break;
             }
         }
 
-        if (!emTable) {
+        if (emTable.isNull()) {
             QMessageBox::critical(q, QObject::tr("Parse xmltable"),
                                   QObject::tr("table node %1 is not found in file %2!")
                                   .arg(tableName).arg(filePath));
-            return 0;
+            return QDomElement();
         }
     }
 
     return emTable;
 }
 
-TiXmlElement *JXmlTablePrivate::elementItem(int row, int column)
+QDomElement JXmlTablePrivate::elementItem(int row, int column)
 {
     return elementItem(elementTable(), row, column);
 }
 
-TiXmlElement *JXmlTablePrivate::elementItem(TiXmlElement *emTable, int row, int column)
+QDomElement JXmlTablePrivate::elementItem(QDomElement &emTable, int row, int column)
 {
-    if (!emTable) {
-        return 0;
+    if (emTable.isNull()) {
+        return QDomElement();
     }
 
     JItemValue *itemValue = itemData(row, column);
     if (!itemValue) {
-        return 0;
+        return QDomElement();
     }
     return elementItem(emTable, itemValue->name());
 }
 
-TiXmlElement *JXmlTablePrivate::elementItem(const QString &name)
+QDomElement JXmlTablePrivate::elementItem(const QString &name)
 {
     return elementItem(elementTable(), name);
 }
 
-TiXmlElement *JXmlTablePrivate::elementItem(TiXmlElement *emTable, const QString &name)
+QDomElement JXmlTablePrivate::elementItem(QDomElement &emTable, const QString &name)
 {
-    if (!emTable) {
-        return 0;
+    if (emTable.isElement()) {
+        return QDomElement();
     }
 
-    for (TiXmlElement *emItem = emTable->FirstChildElement("item");
-         emItem != 0;
-         emItem = emItem->NextSiblingElement("item")) {
-        QString _name = QString::fromUtf8(emItem->Attribute("name"));
+    for (QDomElement emItem = emTable.firstChildElement("item");
+         !emItem.isNull();
+         emItem = emItem.nextSiblingElement("item")) {
+        QString _name = emItem.attribute("name");
         if (_name == name) {
             return emItem;
         }
     }
 
-    return 0;
+    return QDomElement();
 }
 
-TiXmlElement *JXmlTablePrivate::elementRow(int row)
+QDomElement JXmlTablePrivate::elementRow(int row)
 {
-    TiXmlElement *emTable = elementTable();
-    if (!emTable) {
-        return 0;
+    QDomElement emTable = elementTable();
+    if (emTable.isNull()) {
+        return QDomElement();
     }
 
-    TiXmlElement *emRow = emTable->FirstChildElement("row");
-    while (!emRow && -- row >= 0) {
-        emRow = emRow->NextSiblingElement("row");
+    QDomElement emRow = emTable.firstChildElement("row");
+    while (!emRow.isNull() && -- row >= 0) {
+        emRow = emRow.nextSiblingElement("row");
     }
 
     return emRow;
 }
 
-TiXmlElement *JXmlTablePrivate::elementRow(TiXmlElement *emTable, int row)
+QDomElement JXmlTablePrivate::elementRow(QDomElement &emTable, int row)
 {
-    if (!emTable) {
-        return 0;
+    if (emTable.isNull()) {
+        return QDomElement();
     }
 
     JItemValue *itemValue = itemData(row, 0);
     if (!itemValue) {
-        return 0;
+        return QDomElement();
     }
 
     return elementRow(emTable, itemValue->name());
 }
 
-TiXmlElement *JXmlTablePrivate::elementRow(TiXmlElement *emTable, const QString &name)
+QDomElement JXmlTablePrivate::elementRow(QDomElement &emTable, const QString &name)
 {
-    if (!emTable) {
-        return 0;
+    if (emTable.isNull()) {
+        return QDomElement();
     }
 
-    for (TiXmlElement *emRow = emTable->FirstChildElement("row");
-         emRow != 0;
-         emRow = emRow->NextSiblingElement("row")) {
-        QString _name = QString::fromUtf8(emRow->Attribute("name"));
+    for (QDomElement emRow = emTable.firstChildElement("row");
+         !emRow.isNull();
+         emRow = emRow.nextSiblingElement("row")) {
+        QString _name = emRow.attribute("name");
         if (_name == name) {
             return emRow;
         }
     }
 
-    return 0;
+    return QDomElement();
 }
 
-TiXmlElement *JXmlTablePrivate::elementColumn(int column)
+QDomElement JXmlTablePrivate::elementColumn(int column)
 {
     JItemValue *itemValue = itemData(0, column);
     if (!itemValue) {
-        return 0;
+        return QDomElement();
     }
 
     return elementColumn(elementTable(), itemValue->name());
 }
 
-TiXmlElement *JXmlTablePrivate::elementColumn(TiXmlElement *emTable, int column)
+QDomElement JXmlTablePrivate::elementColumn(QDomElement &emTable, int column)
 {
-    if (!emTable) {
-        return 0;
+    if (emTable.isNull()) {
+        return QDomElement();
     }
 
     JItemValue *itemValue = itemData(0, column);
     if (!itemValue) {
-        return 0;
+        return QDomElement();
     }
 
     return elementColumn(emTable, column);
 }
 
-TiXmlElement *JXmlTablePrivate::elementColumn(TiXmlElement *emTable, const QString &name)
+QDomElement JXmlTablePrivate::elementColumn(QDomElement &emTable, const QString &name)
 {
-    if (!emTable) {
-        return 0;
+    if (emTable.isNull()) {
+        return QDomElement();
     }
 
-    TiXmlElement *emRow = emTable->FirstChildElement("row");
-    if (!emRow) {
-        return 0;
+    QDomElement emRow = emTable.firstChildElement("row");
+    if (emRow.isNull()) {
+        return QDomElement();
     }
 
-    for (TiXmlElement *emColumn = emRow->FirstChildElement("column");
-         emColumn != 0;
-         emColumn = emColumn->NextSiblingElement("column")) {
-        QString _name = QString::fromUtf8(emColumn->Attribute("column"));
+    for (QDomElement emColumn = emRow.firstChildElement("column");
+         !emColumn.isNull();
+         emColumn = emColumn.nextSiblingElement("column")) {
+        QString _name = emColumn.attribute("column");
         if (_name == name) {
             return emColumn;
         }
     }
 
-    return 0;
+    return QDomElement();
 }
 
 void JXmlTablePrivate::saveHeaderSize(int logicalIndex, int newSize, Qt::Orientation orientation)
 {
-    TiXmlElement *emItem = 0;
+    QDomElement emItem;
 
     switch (orientation) {
     case Qt::Horizontal:
@@ -554,9 +566,13 @@ void JXmlTablePrivate::saveHeaderSize(int logicalIndex, int newSize, Qt::Orienta
         return;
     }
 
-    if (emItem) {
-        emItem->SetAttribute("headerSize", newSize);
-        data.document.SaveFile();
+    if (!emItem.isNull()) {
+        emItem.setAttribute("headerSize", newSize);
+        QFile out(data.filePath);
+        if (!out.open(QFile::WriteOnly | QFile::Text)) {
+            return;
+        }
+        data.document.save(QTextStream(&out), 4);
     }
 }
 
@@ -566,8 +582,8 @@ void JXmlTablePrivate::saveSection(int logicalIndex, int oldVisualIndex, int new
     Q_UNUSED(oldVisualIndex);
     Q_UNUSED(newVisualIndex);
 
-    TiXmlElement *emTable = elementTable();
-    if (!emTable) {
+    QDomElement emTable = elementTable();
+    if (emTable.isNull()) {
         return;
     }
 
@@ -587,33 +603,35 @@ void JXmlTablePrivate::saveSection(int logicalIndex, int oldVisualIndex, int new
     }
 
     int index = 0;
-    for (TiXmlElement *emItem = emTable->FirstChildElement("item");
-         emItem != 0;
-         emItem = emItem->NextSiblingElement("item")) {
-        emItem->SetAttribute("offset", headerView->visualIndex(index++));
+    for (QDomElement emItem = emTable.firstChildElement("item");
+         !emItem.isNull();
+         emItem = emItem.nextSiblingElement("item")) {
+        emItem.setAttribute("offset", headerView->visualIndex(index++));
     }
 
-    data.document.SaveFile();
+    QFile out(data.filePath);
+    if (!out.open(QFile::WriteOnly | QFile::Text)) {
+        return;
+    }
+    data.document.save(QTextStream(&out), 4);
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emTable)
+bool JXmlTablePrivate::parse(const QDomElement &emTable)
 {
-    if (!emTable) {
+    if (emTable.isNull()) {
         return false;
     }
-
-    std::string sVal;
 
     switch (data.orientations) {
     case Qt::Horizontal:
     case Qt::Vertical:
-        for (const TiXmlElement *emItem = emTable->FirstChildElement("item");
-             emItem != 0;
-             emItem = emItem->NextSiblingElement("item")) {
-            if (emItem->QueryStringAttribute("type", &sVal) != TIXML_SUCCESS) {
+        for (QDomElement emItem = emTable.firstChildElement("item");
+             !emItem.isNull();
+             emItem = emItem.nextSiblingElement("item")) {
+            if (!emItem.hasAttribute("type")) {
                 continue;
             }
-            JItemValue *itemValue = createItem(emItem, sVal);
+            JItemValue *itemValue = createItem(emItem, emItem.attribute("type").toStdString());
             if (itemValue) {
                 appendItem(itemValue, 0);
             }
@@ -622,10 +640,9 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emTable)
     case JCrossOrientation:
     {
         // rows - columns
-        int iVal = 0;
-        for (const TiXmlElement *emRow = emTable->FirstChildElement("row");
-             emRow != 0;
-             emRow = emRow->NextSiblingElement("row")) {
+        for (QDomElement emRow = emTable.firstChildElement("row");
+             !emRow.isNull();
+             emRow = emRow.nextSiblingElement("row")) {
             JValueBase *rowValue = new JValueBase(this);
             if (!parse(emRow, *rowValue)) {
                 delete rowValue;
@@ -637,10 +654,11 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emTable)
                     rowValue->setIndex(0);
                 }
             } else {
-                JValueBase *oldValue = data.rowKey(rowValue->index(), iVal);
+                int maxIndex = 0;
+                JValueBase *oldValue = data.rowKey(rowValue->index(), maxIndex);
                 if (!oldValue) {    // not exists
                     if (rowValue->index() == -1) {
-                        rowValue->setIndex(iVal + 1);
+                        rowValue->setIndex(maxIndex + 1);
                     }
                 } else {
                     data.items.remove(oldValue);
@@ -653,13 +671,13 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emTable)
             }
             //
             data.items[rowValue] = QMap<int, JValueBase *>();
-            for (const TiXmlElement *emColumn = emRow->FirstChildElement("column");
-                 emColumn != 0;
-                 emColumn = emColumn->NextSiblingElement("column")) {
-                if (emColumn->QueryStringAttribute("type", &sVal) != TIXML_SUCCESS) {
+            for (QDomElement emColumn = emRow.firstChildElement("column");
+                 !emColumn.isNull();
+                 emColumn = emColumn.nextSiblingElement("column")) {
+                if (!emColumn.hasAttribute("type")) {
                     continue;
                 }
-                JItemValue *columnValue = createItem(emColumn, sVal);
+                JItemValue *columnValue = createItem(emColumn, emColumn.attribute("type").toStdString());
                 if (columnValue) {
                     appendItem(columnValue, rowValue);
                 }
@@ -674,58 +692,54 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emTable)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JValueBase &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JValueBase &value)
 {
-    if (!emItem) {
+    if (emItem.isNull()) {
         return false;
     }
 
-    int iVal = 0;
-    std::string sVal;
-
     // index
-    if (emItem->QueryIntAttribute("index", &iVal) == TIXML_SUCCESS) {
-        value.setIndex(qBound(0, iVal, 100000));
+    if (emItem.hasAttribute("index")) {
+        value.setIndex(qBound(0, emItem.attribute("index").toInt(), 100000));
     }
     // offset
-    if (emItem->QueryIntAttribute("offset", &iVal) == TIXML_SUCCESS) {
-        value.setOffset(qMax(0, iVal));
+    if (emItem.hasAttribute("offset")) {
+        value.setOffset(qMax(0, emItem.attribute("offset").toInt()));
     }
     // headerSize
-    if (emItem->QueryIntAttribute("headerSize", &iVal) == TIXML_SUCCESS) {
-        value.setHeaderSize(qBound(25, iVal, 2000));
+    if (emItem.hasAttribute("headerSize")) {
+        value.setHeaderSize(qBound(25, emItem.attribute("headerSize").toInt(), 2000));
     }
     // name
-    value.setName(QString::fromUtf8(emItem->Attribute("name")));
+    if (emItem.hasAttribute("name")) {
+        value.setName(emItem.attribute("name"));
+    }
     // filterType
-    if (emItem->QueryStringAttribute("filterType", &sVal) == TIXML_SUCCESS) {
-        value.setFilterType(jvaluetype_type_of_string(sVal));
+    if (emItem.hasAttribute("filterType")) {
+        value.setFilterType(jvaluetype_type_of_string(emItem.attribute("filterType").toStdString()));
     }
 
     return true;
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JItemValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JItemValue &value)
 {
     if (!parse(emItem, static_cast<JValueBase &>(value))) {
         return false;
     }
 
-    bool bVal = false;
-    std::string sVal;
-
     // editable
-    if (emItem->QueryBoolAttribute("editable", &bVal) == TIXML_SUCCESS) {
-        value.setEditable(bVal);
+    if (emItem.hasAttribute("editable")) {
+        value.setEditable(QVariant(emItem.attribute("editable")).toBool());
     }
     // alignment
-    if (emItem->QueryStringAttribute("alignment", &sVal) == TIXML_SUCCESS) {
-        QStringList sAlignments =
-                QString::fromStdString(sVal).trimmed().split('|', QString::SkipEmptyParts);
+    if (emItem.hasAttribute("alignment")) {
+        QStringList sAlignments = emItem.attribute("alignment")
+                .trimmed().split('|', QString::SkipEmptyParts);
         Qt::Alignment alignment = (Qt::Alignment)0;
-        QStringListIterator iter(sAlignments);
-        while (iter.hasNext()) {
-            const QString &sAlignment = iter.next();
+        QStringListIterator citer(sAlignments);
+        while (citer.hasNext()) {
+            const QString &sAlignment = citer.next();
             if (sAlignment == "left" || sAlignment == "leading") {
                 alignment |= Qt::AlignLeft;
             } else if (sAlignment == "top") {
@@ -743,49 +757,59 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JItemValue &value)
         value.setAlignment(alignment);
     }
     // styleSheet
-    value.setStyleSheet(QString::fromUtf8(emItem->Attribute("styleSheet")));
+    if (emItem.hasAttribute("styleSheet")) {
+        value.setStyleSheet(emItem.attribute("styleSheet"));
+    }
     // icon
-    value.setIcon(QString::fromUtf8(emItem->Attribute("icon")));
+    if (emItem.hasAttribute("icon")) {
+        value.setIcon(emItem.attribute("icon"));
+    }
     // tooltip
-    value.setTooltip(QString::fromUtf8(emItem->Attribute("tooltip")));
+    if (emItem.hasAttribute("tooltip")) {
+        value.setTooltip(emItem.attribute("tooltip"));
+    }
     // placeHoldText
-    value.setPlaceHoldText(QString::fromUtf8(emItem->Attribute("placeHoldText")));
+    if (emItem.hasAttribute("placeHoldText")) {
+        value.setPlaceHoldText(emItem.attribute("placeHoldText"));
+    }
     // whatsThis
-    value.setWhatsThis(QString::fromUtf8(emItem->Attribute("whatsThis")));
+    if (emItem.hasAttribute("whatsThis")) {
+        value.setWhatsThis(emItem.attribute("whatsThis"));
+    }
 
     return true;
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JBoolValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JBoolValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
     }
 
-    bool bVal = false;
-    std::string sVal;
-
     // original
-    if (emItem->QueryStringAttribute("default", &sVal) == TIXML_SUCCESS) {
-        if (sVal == "unchecked") {
+    if (emItem.hasAttribute("default")) {
+        QString text = emItem.attribute("default");
+        if (text == "unchecked") {
             value.setOriginal(Qt::Unchecked);
-        } else if (sVal == "partially") {
+        } else if (text == "partially") {
             value.setOriginal(Qt::PartiallyChecked);
-        } else if (sVal == "checked") {
+        } else if (text == "checked") {
             value.setOriginal(Qt::Checked);
         }
     }
     // checkable
-    if (emItem->QueryBoolAttribute("checkable", &bVal) == TIXML_SUCCESS) {
-        value.setCheckable(bVal);
+    if (emItem.hasAttribute("checkable")) {
+        value.setCheckable(QVariant(emItem.attribute("checkable")).toBool());
     }
     // text
-    value.setText(QString::fromUtf8(emItem->Attribute("text")));
+    if (emItem.hasAttribute("text")) {
+        value.setText(emItem.attribute("text"));
+    }
 
     return true;
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JNumericValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JNumericValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -793,69 +817,73 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JNumericValue &value)
 
     Q_Q(JXmlTable);
 
-    int iVal = 0;
-    double dVal = 0.;
-    std::string sVal;
-
     // prefix
-    value.setPrefix(QString::fromUtf8(emItem->Attribute("prefix")));
+    if (emItem.hasAttribute("prefix")) {
+        value.setPrefix(emItem.attribute("prefix"));
+    }
     // suffix
-    value.setSuffix(QString::fromUtf8(emItem->Attribute("suffix")));
+    if (emItem.hasAttribute("suffix")) {
+        value.setSuffix(emItem.attribute("suffix"));
+    }
     // original
     if (value.suffix().isEmpty()) {     // is an ascii
-        if (emItem->QueryStringAttribute("default", &sVal) == TIXML_SUCCESS) {
-            if (sVal.empty()) {
+        if (emItem.hasAttribute("default")) {
+            QString text = emItem.attribute("default");
+            if (text.isEmpty()) {
                 value.setOriginal('\0');
             } else {
-                value.setOriginal(sVal.at(0));
+                value.setOriginal(text.at(0).toLatin1());
             }
         }
     } else {
-        if (emItem->QueryDoubleAttribute("default", &dVal) == TIXML_SUCCESS) {
-            value.setOriginal(dVal);
+        if (emItem.hasAttribute("default")) {
+            value.setOriginal(emItem.attribute("default"));
         }
     }
     // radix
-    if (emItem->QueryIntAttribute("radix", &iVal) == TIXML_SUCCESS) {
-        if (iVal < 2 || iVal > 36) {
+    if (emItem.hasAttribute("radix")) {
+        int radix = emItem.attribute("radix").toInt();
+        if (radix < 2 || radix > 36) {
             QMessageBox::critical(q, QObject::tr("Parse xmltable"),
                                   QObject::tr("parse radix failure (out of range [2, 36] '%1' in '%2/item/radix'")
-                                  .arg(QString::fromUtf8(emItem->Attribute("radix")))
+                                  .arg(emItem.attribute("radix"))
                                   .arg(nodePath(emItem)));
-            iVal = qBound(2, iVal, 36);
+            radix = qBound(2, radix, 36);
         }
-        value.setRadix(iVal);
+        value.setRadix(radix);
     }
     // maskCount
-    if (emItem->QueryIntAttribute("maskCount", &iVal) == TIXML_SUCCESS) {
-        if (iVal < 1 || iVal > 8) {
+    if (emItem.hasAttribute("maskCount")) {
+        int maskCount = emItem.attribute("maskCount").toInt();
+        if (maskCount < 1 || maskCount > 8) {
             QMessageBox::critical(q, QObject::tr("Parse xmltable"),
                                   QObject::tr("parse maskCount failure (out of range [1, 8] '%1' in '%2/item/radix'")
-                                  .arg(QString::fromUtf8(emItem->Attribute("maskCount")))
+                                  .arg(emItem.attribute("maskCount"))
                                   .arg(nodePath(emItem)));
-            iVal = qBound(1, iVal, 8);
+            maskCount = qBound(1, maskCount, 8);
         }
-        value.setMaskCount(iVal);
+        value.setMaskCount(maskCount);
     } else if (value.radix() != 10) {
         value.setMaskCount(8);
     }
     // fillChar
-    if (emItem->QueryStringAttribute("fillChar", &sVal) == TIXML_SUCCESS) {
-        if (sVal.empty()) {
+    if (emItem.hasAttribute("fillChar")) {
+        QString text = emItem.attribute("fillChar");
+        if (text.isEmpty()) {
             value.setFillChar(QChar());
         } else {
-            value.setFillChar(QString::fromUtf8(emItem->Attribute("fillChar")).at(0));
+            value.setFillChar(emItem.attribute("fillChar").at(0));
         }
     } else if (value.radix() != 10) {
         value.setFillChar(QChar('0'));
     }
     // decimals
-    if (emItem->QueryIntAttribute("decimals", &iVal) == TIXML_SUCCESS) {
-        value.setDecimals(iVal);
+    if (emItem.hasAttribute("decimals")) {
+        value.setDecimals(emItem.attribute("decimals").toInt());
     }
     // step
-    if (emItem->QueryDoubleAttribute("step", &dVal) == TIXML_SUCCESS) {
-        value.setStep(dVal);
+    if (emItem.hasAttribute("step")) {
+        value.setStep(emItem.attribute("step").toDouble());
     } else {
         value.setStep(qPow(0.1, value.decimals()));
     }
@@ -863,8 +891,8 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JNumericValue &value)
         value.setStep(1.);
     }
     // scale
-    if (emItem->QueryDoubleAttribute("scale", &dVal) == TIXML_SUCCESS) {
-        value.setScale(dVal);
+    if (emItem.hasAttribute("scale")) {
+        value.setScale(emItem.attribute("scale").toDouble());
     } else {
         value.setScale(value.step());
     }
@@ -872,8 +900,8 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JNumericValue &value)
         value.setScale(1.);
     }
     // range
-    if (emItem->QueryStringAttribute("range", &sVal) == TIXML_SUCCESS) {
-        QString range = QString::fromUtf8(emItem->Attribute("range"));
+    if (emItem.hasAttribute("range")) {
+        QString range = emItem.attribute("range");
         if (!value.range()->parse(range)) {
             QMessageBox::critical(q, QObject::tr("Parse xmltable"),
                                   QObject::tr("parse range failure ('%1' in '%2/item/range')")
@@ -892,14 +920,14 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JNumericValue &value)
             value.setOriginal(original);
         }
         // without
-        for (const TiXmlElement *emWithout = emItem->FirstChildElement("without");
-             emWithout != 0;
-             emWithout = emWithout->NextSiblingElement("without")) {
+        for (QDomElement emWithout = emItem.firstChildElement("without");
+             !emWithout.isNull();
+             emWithout = emWithout.nextSiblingElement("without")) {
             JNumericRange *rangeValue = new JNumericRange(&value);
-            if (!rangeValue->parse(emWithout->GetText())) {
+            if (!rangeValue->parse(emWithout.text())) {
                 QMessageBox::critical(q, QObject::tr("Parse xmltable"),
                                       QObject::tr("parse without section '%1' failiure in '%2/item/range'")
-                                      .arg(emWithout->GetText()).arg(nodePath(emItem)));
+                                      .arg(emWithout.text()).arg(nodePath(emItem)));
                 delete rangeValue;
                 return false;
             }
@@ -915,8 +943,8 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JNumericValue &value)
         }
     }
     // size
-    if (emItem->QueryIntAttribute("size", &iVal) == TIXML_SUCCESS) {
-        value.setSize(qBound(0, iVal, 8));
+    if (emItem.hasAttribute("size")) {
+        value.setSize(qBound(0, emItem.attribute("size").toInt(), 8));
     } else {
         quint64 delta = quint64(qMax(qFabs(value.range()->minimum()),
                                      qFabs(value.range()->maximum()))
@@ -937,75 +965,74 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JNumericValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JStringValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JStringValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
     }
 
-    bool bVal = false;
-    int iVal = 0;
-
     // original
-    value.setOriginal(QString::fromUtf8(emItem->Attribute("default")));
+    if (emItem.hasAttribute("default")) {
+        value.setOriginal(emItem.attribute("default"));
+    }
     // upper
-    if (emItem->QueryBoolAttribute("upper", &bVal) == TIXML_SUCCESS) {
-        value.setUpper(bVal);
+    if (emItem.hasAttribute("upper")) {
+        value.setUpper(QVariant(emItem.attribute("upper")).toBool());
     }
     // multiline
-    if (emItem->QueryBoolAttribute("multiline", &bVal) == TIXML_SUCCESS) {
-        value.setMultiline(bVal);
+    if (emItem.hasAttribute("multiline")) {
+        value.setMultiline(QVariant(emItem.attribute("multiline")).toBool());
     }
     // containCSS
-    if (emItem->QueryBoolAttribute("containCSS", &bVal) == TIXML_SUCCESS) {
-        value.setContainCSS(bVal);
+    if (emItem.hasAttribute("containCSS")) {
+        value.setContainCSS(QVariant(emItem.attribute("containCSS")).toBool());
     }
     // maxLength
-    if (emItem->QueryIntAttribute("maxLength", &iVal) == TIXML_SUCCESS) {
-        value.setMaxLength(iVal);
+    if (emItem.hasAttribute("maxLength")) {
+        value.setMaxLength(QVariant(emItem.attribute("maxLength")).toBool());
     }
     // pattern
-    value.setPattern(QString::fromUtf8(emItem->Attribute("pattern")));
+    if (emItem.hasAttribute("pattern")) {
+        value.setPattern(emItem.attribute("pattern"));
+    }
 
     return true;
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JEnumValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JEnumValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
     }
 
-    bool bVal = false;
-    int iVal = 0;
-    std::string sVal;
-
     // original
-    value.setOriginal(QString::fromUtf8(emItem->Attribute("default")));
+    if (emItem.hasAttribute("default")) {
+        value.setOriginal(emItem.attribute("default"));
+    }
     // indexOffset
-    if (emItem->QueryIntAttribute("indexOffset", &iVal) == TIXML_SUCCESS) {
-        value.setIndexOffset(iVal);
+    if (emItem.hasAttribute("indexOffset")) {
+        value.setIndexOffset(emItem.attribute("indexOffset").toInt());
     }
     // autoCompletion
-    if (emItem->QueryBoolAttribute("autoCompletion", &bVal) == TIXML_SUCCESS) {
-        value.setAutoCompletion(bVal);
+    if (emItem.hasAttribute("autoCompletion")) {
+        value.setAutoCompletion(QVariant(emItem.attribute("autoCompletion")).toBool());
     }
     // duplicatesEnabled
-    if (emItem->QueryBoolAttribute("duplicatesEnabled", &bVal) == TIXML_SUCCESS) {
-        value.setDuplicatesEnabled(bVal);
+    if (emItem.hasAttribute("duplicatesEnabled")) {
+        value.setDuplicatesEnabled(QVariant(emItem.attribute("duplicatesEnabled")).toBool());
     }
     // multiable
-    if (emItem->QueryBoolAttribute("multiable", &bVal) == TIXML_SUCCESS) {
-        value.setMultiable(bVal);
+    if (emItem.hasAttribute("multiable")) {
+        value.setMultiable(QVariant(emItem.attribute("multiable")).toBool());
     }
     // options
-    for (const TiXmlElement *emOption = emItem->FirstChildElement("option");
-         emOption != 0;
-         emOption = emOption->NextSiblingElement("option")) {
+    for (QDomElement emOption = emItem.firstChildElement("option");
+         !emOption.isNull();
+         emOption = emOption.nextSiblingElement("option")) {
         JEnumOption *enumOption = new JEnumOption(&value);
-        enumOption->setText(QString::fromUtf8(emOption->GetText()));
-        if (emOption->QueryStringAttribute("encode", &sVal) == TIXML_SUCCESS) {
-            QString encode = QString::fromUtf8(emOption->Attribute("encode"));
+        enumOption->setText(emOption.text());
+        if (emOption.hasAttribute("encode")) {
+            QString encode = emOption.attribute("encode");
             int base = 10;
             if (encode.startsWith("0x")) {
                 base = 16;
@@ -1025,8 +1052,8 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JEnumValue &value)
         value.options().append(enumOption);
     }
     // size
-    if (emItem->QueryIntAttribute("size", &iVal) == TIXML_SUCCESS) {
-        value.setSize(qMin(iVal, 4));
+    if (emItem.hasAttribute("size")) {
+        value.setSize(qMin(4, emItem.attribute("size").toInt()));
     } else {
         value.setSize(4);   // default size: 4 bytes
     }
@@ -1034,19 +1061,21 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JEnumValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JIPv4Value &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JIPv4Value &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
     }
 
     // original
-    value.setOriginal(QString::fromUtf8(emItem->Attribute("default")));
+    if (emItem.hasAttribute("default")) {
+        value.setOriginal(emItem.attribute("default"));
+    }
 
     return true;
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JDelegateValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JDelegateValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -1055,44 +1084,45 @@ bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JDelegateValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JPictureDelegateValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JPictureDelegateValue &value)
 {
     if (!parse(emItem, static_cast<JDelegateValue &>(value))) {
         return false;
     }
 
     // original
-    value.setOriginal(QString::fromUtf8(emItem->Attribute("default")));
+    if (emItem.hasAttribute("default")) {
+        value.setOriginal(emItem.attribute("default"));
+    }
 
     return true;
 }
 
-bool JXmlTablePrivate::parse(const TiXmlElement *emItem, JProgressDelegateValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JProgressDelegateValue &value)
 {
     if (!parse(emItem, static_cast<JDelegateValue &>(value))) {
         return false;
     }
 
-    bool bVal = false;
-    double dVal = 0.;
-
     // original
-    if (emItem->QueryDoubleAttribute("default", &dVal) == TIXML_SUCCESS) {
-        value.setOriginal(dVal);
+    if (emItem.hasAttribute("default")) {
+        value.setOriginal(emItem.attribute("default").toDouble());
     }
     // minimum
-    if (emItem->QueryDoubleAttribute("minimum", &dVal) == TIXML_SUCCESS) {
-        value.setMinimum(dVal);
+    if (emItem.hasAttribute("minimum")) {
+        value.setMinimum(emItem.attribute("minimum").toDouble());
     }
     // maximum
-    if (emItem->QueryDoubleAttribute("maximum", &dVal) == TIXML_SUCCESS) {
-        value.setMaximum(dVal);
+    if (emItem.hasAttribute("maximum")) {
+        value.setMaximum(emItem.attribute("maximum").toDouble());
     }
     // text
-    value.setText(QString::fromUtf8(emItem->Attribute("text")));
+    if (emItem.hasAttribute("text")) {
+        value.setText(emItem.attribute("text"));
+    }
     // textVisible
-    if (emItem->QueryBoolAttribute("textVisible", &bVal) == TIXML_SUCCESS) {
-        value.setTextVisible(bVal);
+    if (emItem.hasAttribute("textVisible")) {
+        value.setTextVisible(QVariant(emItem.attribute("textVisible")).toBool());
     }
 
     return true;
@@ -1753,9 +1783,9 @@ void JXmlTablePrivate::setItemProperty(int row, int column, const char *name, co
     }
 }
 
-JItemValue *JXmlTablePrivate::createItem(const TiXmlElement *emItem, const std::string &type)
+JItemValue *JXmlTablePrivate::createItem(const QDomElement &emItem, const std::string &type)
 {
-    if (!emItem) {
+    if (emItem.isNull()) {
         return 0;
     }
 
@@ -1772,12 +1802,12 @@ JItemValue *JXmlTablePrivate::createItem(const TiXmlElement *emItem, const std::
         return parse<JIPv4Value>(emItem);
     case DelegateValue:
     {
-        std::string sVal;
-        if (emItem->QueryStringAttribute("delegateType", &sVal) != TIXML_SUCCESS) {
+        if (!emItem.hasAttribute("delegateType")) {
             return 0;
         }
 
-        switch (jdelegatetype_type_of_string(sVal)) {
+        switch (jdelegatetype_type_of_string(
+                    emItem.attribute("delegateType").toStdString())) {
         case PictureDelegate:
             return parse<JPictureDelegateValue>(emItem);
         case ProgressDelegate:
@@ -1884,15 +1914,16 @@ void JXmlTablePrivate::disconnectSignals(Qt::Orientations orientations)
     }
 }
 
-QString JXmlTablePrivate::nodePath(const TiXmlNode *node)
+QString JXmlTablePrivate::nodePath(const QDomNode &node)
 {
-    if (!node) {
+    if (node.isNull()) {
         return QString::null;
     }
 
     return QString("%1(%2, %3)")
-            .arg(node->Value())
-            .arg(node->Row()).arg(node->Column());
+            .arg(node.nodeName())
+            .arg(node.lineNumber())
+            .arg(node.columnNumber());
 }
 
 // - class JXmlItemDelegate -

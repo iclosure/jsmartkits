@@ -7,7 +7,7 @@
 // - class JXmlTable -
 
 class JXmlTablePrivate;
-class TiXmlElement;
+class QDomElement;
 
 class JWIDGETS_EXPORT JXmlTable : public JTableView
 {
@@ -18,9 +18,9 @@ public:
     virtual ~JXmlTable();
 
     bool loadConfig(const QString &filePath, const QString &tableName);
-    bool loadConfig(const QByteArray &data);
-    bool loadConfig(const char *data, int size);
-    bool loadConfig(const TiXmlElement *emTable);
+    bool loadConfig(const char *text, int size);
+    bool loadConfig(const QByteArray &text);
+    bool loadConfig(const QDomElement *emTable);
 
     QString version() const;
 

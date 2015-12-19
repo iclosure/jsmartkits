@@ -40,28 +40,33 @@ bool JXmlTable::loadConfig(const QString &filePath, const QString &tableName)
     return d->updateHeaders();
 }
 
-bool JXmlTable::loadConfig(const QByteArray &data)
+bool JXmlTable::loadConfig(const char *text, int size)
+{
+    return loadConfig(QByteArray(text, size));
+}
+
+bool JXmlTable::loadConfig(const QByteArray &text)
 {
     Q_D(JXmlTable);
 
     clear();
 
-    if (!d->loadConfig(data)) {
+    if (!d->loadConfig(text)) {
         return false;
     }
 
     return d->updateHeaders();
 }
 
-bool JXmlTable::loadConfig(const char *data, int size)
+bool JXmlTable::loadConfig(const QDomElement *emTable)
 {
-    return loadConfig(QByteArray(data, size));
-}
+    Q_ASSERT(emTable != 0);
+    if (!emTable || emTable->isNull()) {
+        return false;
+    }
 
-bool JXmlTable::loadConfig(const TiXmlElement *emTable)
-{
     Q_D(JXmlTable);
-    return d->loadConfig(emTable);
+    return d->loadConfig(*emTable);
 }
 
 QString JXmlTable::version() const

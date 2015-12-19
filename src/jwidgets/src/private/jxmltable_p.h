@@ -3,9 +3,9 @@
 
 #include "../jwidgets_global.h"
 #include "../jxmltable.h"
-#include "../tools/tinyxml/tinyxml.h"
 #include "jxmltable_data.h"
 #include <QStyledItemDelegate>
+#include <QDomDocument>
 
 // - class JXmlTableData -
 
@@ -33,9 +33,11 @@ public:
         clear();
     }
 
-    void clear()
+    void clear(bool all = true)
     {
-        tableName.clear();
+        if (all) {
+            tableName.clear();
+        }
         styleSheet.clear();
         orientations = Qt::Horizontal;
         //
@@ -68,7 +70,7 @@ public:
         return 0;
     }
 
-    TiXmlDocument document;
+    QDomDocument document;
     QString filePath;
     QString tableName;
     Qt::Orientations orientations;
@@ -96,38 +98,38 @@ public:
 
     void setConfig(const QString &filePath);
     bool loadConfig(const QString &filePath, const QString &tableName);
-    bool loadConfig(const TiXmlElement *emTable);
-    bool loadConfig(const QByteArray &data);
+    bool loadConfig(const QByteArray &text);
+    bool loadConfig(const QDomElement &emTable);
     bool updateHeaders();
 
-    TiXmlElement *elementTable();
-    TiXmlElement *elementTable(const QString &filePath, const QString &tableName);
-    TiXmlElement *elementItem(int row, int column);
-    TiXmlElement *elementItem(TiXmlElement *emTable, int row, int column);
-    TiXmlElement *elementItem(const QString &name);
-    TiXmlElement *elementItem(TiXmlElement *emTable, const QString &name);
-    TiXmlElement *elementRow(int row);
-    TiXmlElement *elementRow(TiXmlElement *emTable, int row);
-    TiXmlElement *elementRow(TiXmlElement *emTable, const QString &name);
-    TiXmlElement *elementColumn(int column);
-    TiXmlElement *elementColumn(TiXmlElement *emTable, int column);
-    TiXmlElement *elementColumn(TiXmlElement *emTable, const QString &name);
+    QDomElement elementTable();
+    QDomElement elementTable(const QString &filePath, const QString &tableName);
+    QDomElement elementItem(int row, int column);
+    QDomElement elementItem(QDomElement &emTable, int row, int column);
+    QDomElement elementItem(const QString &name);
+    QDomElement elementItem(QDomElement &emTable, const QString &name);
+    QDomElement elementRow(int row);
+    QDomElement elementRow(QDomElement &emTable, int row);
+    QDomElement elementRow(QDomElement &emTable, const QString &name);
+    QDomElement elementColumn(int column);
+    QDomElement elementColumn(QDomElement &emTable, int column);
+    QDomElement elementColumn(QDomElement &emTable, const QString &name);
 
     void saveHeaderSize(int logicalIndex, int newSize, Qt::Orientation orientation);
     void saveSection(int logicalIndex, int oldVisualIndex, int newVisualIndex);
 
-    bool parse(const TiXmlElement *emTable);
-    bool parse(const TiXmlElement *emItem, JValueBase &value);
-    bool parse(const TiXmlElement *emItem, JItemValue &value);
-    bool parse(const TiXmlElement *emItem, JBoolValue &value);
-    bool parse(const TiXmlElement *emItem, JNumericValue &value);
-    bool parse(const TiXmlElement *emItem, JStringValue &value);
-    bool parse(const TiXmlElement *emItem, JEnumValue &value);
-    bool parse(const TiXmlElement *emItem, JIPv4Value &value);
-    bool parse(const TiXmlElement *emItem, JDelegateValue &value);
-    bool parse(const TiXmlElement *emItem, JPictureDelegateValue &value);
-    bool parse(const TiXmlElement *emItem, JProgressDelegateValue &value);
-    template<typename T> inline T *parse(const TiXmlElement *emItem);
+    bool parse(const QDomElement &emTable);
+    bool parse(const QDomElement &emItem, JValueBase &value);
+    bool parse(const QDomElement &emItem, JItemValue &value);
+    bool parse(const QDomElement &emItem, JBoolValue &value);
+    bool parse(const QDomElement &emItem, JNumericValue &value);
+    bool parse(const QDomElement &emItem, JStringValue &value);
+    bool parse(const QDomElement &emItem, JEnumValue &value);
+    bool parse(const QDomElement &emItem, JIPv4Value &value);
+    bool parse(const QDomElement &emItem, JDelegateValue &value);
+    bool parse(const QDomElement &emItem, JPictureDelegateValue &value);
+    bool parse(const QDomElement &emItem, JProgressDelegateValue &value);
+    template<typename T> inline T *parse(const QDomElement &emItem);
 
     QByteArray pack(int row = -1, int column = -1) const;
     bool unpack(const QByteArray &data, int row = -1, int column = -1);
@@ -163,13 +165,13 @@ private:
     QVariant itemProperty(int row, int column, const char *name) const;
     void setItemProperty(int row, int column, const char *name, const QVariant &value);
 
-    JItemValue *createItem(const TiXmlElement *emItem, const std::string &type);
+    JItemValue *createItem(const QDomElement &emItem, const std::string &type);
     void appendItem(JItemValue *value, JValueBase *rowValue);
 
     void connectSignals(Qt::Orientations orientations);
     void disconnectSignals(Qt::Orientations orientations);
 
-    static QString nodePath(const TiXmlNode *node);
+    static QString nodePath(const QDomNode &node);
 
 private:
     JXmlTableData data;
@@ -177,7 +179,7 @@ private:
 };
 
 template<typename T> Q_INLINE_TEMPLATE
-T *JXmlTablePrivate::parse(const TiXmlElement *emItem)
+T *JXmlTablePrivate::parse(const QDomElement &emItem)
 {
     T *value = new T(this);
     if (parse(emItem, *value)) {

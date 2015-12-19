@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui
+QT += core gui xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -102,11 +102,6 @@ win32 {
     framework_headers_jwidgets.commands = $$copyCommand
     first.depends += framework_headers_jwidgets
 
-    # for tools::tinyxml
-    framework_headers_tools_tinyxml.commands = $$copyCommand
-    first.depends += framework_headers_tools_tinyxml
-
     QMAKE_EXTRA_TARGETS += first \
-        framework_headers_jwidgets \
-        framework_headers_tools_tinyxml
+        framework_headers_jwidgets
 }
