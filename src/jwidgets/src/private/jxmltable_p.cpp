@@ -413,7 +413,7 @@ QDomElement JXmlTablePrivate::elementItem(int row, int column)
     return elementItem(elementTable(), row, column);
 }
 
-QDomElement JXmlTablePrivate::elementItem(QDomElement &emTable, int row, int column)
+QDomElement JXmlTablePrivate::elementItem(QDomElement emTable, int row, int column)
 {
     if (emTable.isNull()) {
         return QDomElement();
@@ -431,7 +431,7 @@ QDomElement JXmlTablePrivate::elementItem(const QString &name)
     return elementItem(elementTable(), name);
 }
 
-QDomElement JXmlTablePrivate::elementItem(QDomElement &emTable, const QString &name)
+QDomElement JXmlTablePrivate::elementItem(QDomElement emTable, const QString &name)
 {
     if (emTable.isElement()) {
         return QDomElement();
@@ -464,7 +464,7 @@ QDomElement JXmlTablePrivate::elementRow(int row)
     return emRow;
 }
 
-QDomElement JXmlTablePrivate::elementRow(QDomElement &emTable, int row)
+QDomElement JXmlTablePrivate::elementRow(QDomElement emTable, int row)
 {
     if (emTable.isNull()) {
         return QDomElement();
@@ -478,7 +478,7 @@ QDomElement JXmlTablePrivate::elementRow(QDomElement &emTable, int row)
     return elementRow(emTable, itemValue->name());
 }
 
-QDomElement JXmlTablePrivate::elementRow(QDomElement &emTable, const QString &name)
+QDomElement JXmlTablePrivate::elementRow(QDomElement emTable, const QString &name)
 {
     if (emTable.isNull()) {
         return QDomElement();
@@ -506,7 +506,7 @@ QDomElement JXmlTablePrivate::elementColumn(int column)
     return elementColumn(elementTable(), itemValue->name());
 }
 
-QDomElement JXmlTablePrivate::elementColumn(QDomElement &emTable, int column)
+QDomElement JXmlTablePrivate::elementColumn(QDomElement emTable, int column)
 {
     if (emTable.isNull()) {
         return QDomElement();
@@ -520,7 +520,7 @@ QDomElement JXmlTablePrivate::elementColumn(QDomElement &emTable, int column)
     return elementColumn(emTable, column);
 }
 
-QDomElement JXmlTablePrivate::elementColumn(QDomElement &emTable, const QString &name)
+QDomElement JXmlTablePrivate::elementColumn(QDomElement emTable, const QString &name)
 {
     if (emTable.isNull()) {
         return QDomElement();
@@ -572,7 +572,8 @@ void JXmlTablePrivate::saveHeaderSize(int logicalIndex, int newSize, Qt::Orienta
         if (!out.open(QFile::WriteOnly | QFile::Text)) {
             return;
         }
-        data.document.save(QTextStream(&out), 4);
+        QTextStream textStream(&out);
+        data.document.save(textStream, 4);
     }
 }
 
@@ -613,10 +614,11 @@ void JXmlTablePrivate::saveSection(int logicalIndex, int oldVisualIndex, int new
     if (!out.open(QFile::WriteOnly | QFile::Text)) {
         return;
     }
-    data.document.save(QTextStream(&out), 4);
+    QTextStream textStream(&out);
+    data.document.save(textStream, 4);
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emTable)
+bool JXmlTablePrivate::parse(const QDomElement emTable)
 {
     if (emTable.isNull()) {
         return false;
@@ -692,7 +694,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emTable)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emItem, JValueBase &value)
+bool JXmlTablePrivate::parse(const QDomElement emItem, JValueBase &value)
 {
     if (emItem.isNull()) {
         return false;
@@ -722,7 +724,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JValueBase &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emItem, JItemValue &value)
+bool JXmlTablePrivate::parse(const QDomElement emItem, JItemValue &value)
 {
     if (!parse(emItem, static_cast<JValueBase &>(value))) {
         return false;
@@ -780,7 +782,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JItemValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emItem, JBoolValue &value)
+bool JXmlTablePrivate::parse(const QDomElement emItem, JBoolValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -809,7 +811,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JBoolValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emItem, JNumericValue &value)
+bool JXmlTablePrivate::parse(const QDomElement emItem, JNumericValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -965,7 +967,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JNumericValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emItem, JStringValue &value)
+bool JXmlTablePrivate::parse(const QDomElement emItem, JStringValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -999,7 +1001,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JStringValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emItem, JEnumValue &value)
+bool JXmlTablePrivate::parse(const QDomElement emItem, JEnumValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -1061,7 +1063,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JEnumValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emItem, JIPv4Value &value)
+bool JXmlTablePrivate::parse(const QDomElement emItem, JIPv4Value &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -1075,7 +1077,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JIPv4Value &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emItem, JDelegateValue &value)
+bool JXmlTablePrivate::parse(const QDomElement emItem, JDelegateValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -1084,7 +1086,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JDelegateValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emItem, JPictureDelegateValue &value)
+bool JXmlTablePrivate::parse(const QDomElement emItem, JPictureDelegateValue &value)
 {
     if (!parse(emItem, static_cast<JDelegateValue &>(value))) {
         return false;
@@ -1098,7 +1100,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JPictureDelegateValue &v
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement &emItem, JProgressDelegateValue &value)
+bool JXmlTablePrivate::parse(const QDomElement emItem, JProgressDelegateValue &value)
 {
     if (!parse(emItem, static_cast<JDelegateValue &>(value))) {
         return false;
