@@ -1,4 +1,4 @@
-#include "precomp.h"
+﻿#include "precomp.h"
 #include "jxmltable_p.h"
 #include "../jxmltable.h"
 #include "jxmltable_widget.h"
@@ -206,7 +206,11 @@ bool JXmlTablePrivate::updateHeaders()
                 }
             }
             q->setHorizontalHeaderLabels(horiLabels.toList());
+#if QT_VERSION >= 0x050000
+            q->horizontalHeader()->setSectionsMovable(data.horiHeaderMovable);
+#else
             q->horizontalHeader()->setMovable(data.horiHeaderMovable);
+#endif
             //
             connectSignals(Qt::Horizontal);
             break;
@@ -240,7 +244,11 @@ bool JXmlTablePrivate::updateHeaders()
             if (data.headerSize.width() > 0) {
                 q->verticalHeader()->setFixedWidth(data.headerSize.width());
             }
+#if QT_VERSION >= 0x050000
+            q->horizontalHeader()->setSectionsMovable(data.horiHeaderMovable);
+#else
             q->horizontalHeader()->setMovable(data.horiHeaderMovable);
+#endif
             //
             connectSignals(Qt::Vertical);
             break;
@@ -319,7 +327,11 @@ bool JXmlTablePrivate::updateHeaders()
             if (data.verticalHeaderLabel) {
                 q->setVerticalHeaderLabels(vertLabels.toList());
             }
+#if QT_VERSION >= 0x050000
+            q->horizontalHeader()->setSectionsMovable(data.horiHeaderMovable);
+#else
             q->horizontalHeader()->setMovable(data.horiHeaderMovable);
+#endif
             //
             connectSignals(Qt::Horizontal | Qt::Vertical);
             break;
@@ -618,7 +630,7 @@ void JXmlTablePrivate::saveSection(int logicalIndex, int oldVisualIndex, int new
     data.document.save(textStream, 4);
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emTable)
+bool JXmlTablePrivate::parse(const QDomElement &emTable)
 {
     if (emTable.isNull()) {
         return false;
@@ -694,7 +706,7 @@ bool JXmlTablePrivate::parse(const QDomElement emTable)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emItem, JValueBase &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JValueBase &value)
 {
     if (emItem.isNull()) {
         return false;
@@ -724,7 +736,7 @@ bool JXmlTablePrivate::parse(const QDomElement emItem, JValueBase &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emItem, JItemValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JItemValue &value)
 {
     if (!parse(emItem, static_cast<JValueBase &>(value))) {
         return false;
@@ -782,7 +794,7 @@ bool JXmlTablePrivate::parse(const QDomElement emItem, JItemValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emItem, JBoolValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JBoolValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -811,7 +823,7 @@ bool JXmlTablePrivate::parse(const QDomElement emItem, JBoolValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emItem, JNumericValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JNumericValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -967,7 +979,7 @@ bool JXmlTablePrivate::parse(const QDomElement emItem, JNumericValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emItem, JStringValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JStringValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -1001,7 +1013,7 @@ bool JXmlTablePrivate::parse(const QDomElement emItem, JStringValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emItem, JEnumValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JEnumValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -1063,7 +1075,7 @@ bool JXmlTablePrivate::parse(const QDomElement emItem, JEnumValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emItem, JIPv4Value &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JIPv4Value &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -1077,7 +1089,7 @@ bool JXmlTablePrivate::parse(const QDomElement emItem, JIPv4Value &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emItem, JDelegateValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JDelegateValue &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
         return false;
@@ -1086,7 +1098,7 @@ bool JXmlTablePrivate::parse(const QDomElement emItem, JDelegateValue &value)
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emItem, JPictureDelegateValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JPictureDelegateValue &value)
 {
     if (!parse(emItem, static_cast<JDelegateValue &>(value))) {
         return false;
@@ -1100,7 +1112,7 @@ bool JXmlTablePrivate::parse(const QDomElement emItem, JPictureDelegateValue &va
     return true;
 }
 
-bool JXmlTablePrivate::parse(const QDomElement emItem, JProgressDelegateValue &value)
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JProgressDelegateValue &value)
 {
     if (!parse(emItem, static_cast<JDelegateValue &>(value))) {
         return false;

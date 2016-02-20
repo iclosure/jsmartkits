@@ -1,4 +1,4 @@
-#ifndef JXMLTABLE_P_H
+﻿#ifndef JXMLTABLE_P_H
 #define JXMLTABLE_P_H
 
 #include "../jwidgets_global.h"
@@ -118,18 +118,18 @@ public:
     void saveHeaderSize(int logicalIndex, int newSize, Qt::Orientation orientation);
     void saveSection(int logicalIndex, int oldVisualIndex, int newVisualIndex);
 
-    bool parse(const QDomElement emTable);
-    bool parse(const QDomElement emItem, JValueBase &value);
-    bool parse(const QDomElement emItem, JItemValue &value);
-    bool parse(const QDomElement emItem, JBoolValue &value);
-    bool parse(const QDomElement emItem, JNumericValue &value);
-    bool parse(const QDomElement emItem, JStringValue &value);
-    bool parse(const QDomElement emItem, JEnumValue &value);
-    bool parse(const QDomElement emItem, JIPv4Value &value);
-    bool parse(const QDomElement emItem, JDelegateValue &value);
-    bool parse(const QDomElement emItem, JPictureDelegateValue &value);
-    bool parse(const QDomElement emItem, JProgressDelegateValue &value);
-    template<typename T> inline T *parse(const QDomElement emItem);
+    bool parse(const QDomElement &emTable);
+    bool parse(const QDomElement &emItem, JValueBase &value);
+    bool parse(const QDomElement &emItem, JItemValue &value);
+    bool parse(const QDomElement &emItem, JBoolValue &value);
+    bool parse(const QDomElement &emItem, JNumericValue &value);
+    bool parse(const QDomElement &emItem, JStringValue &value);
+    bool parse(const QDomElement &emItem, JEnumValue &value);
+    bool parse(const QDomElement &emItem, JIPv4Value &value);
+    bool parse(const QDomElement &emItem, JDelegateValue &value);
+    bool parse(const QDomElement &emItem, JPictureDelegateValue &value);
+    bool parse(const QDomElement &emItem, JProgressDelegateValue &value);
+    template<typename T> inline T *parse(const QDomElement &emItem);
 
     QByteArray pack(int row = -1, int column = -1) const;
     bool unpack(const QByteArray &data, int row = -1, int column = -1);
@@ -179,7 +179,7 @@ private:
 };
 
 template<typename T> Q_INLINE_TEMPLATE
-T *JXmlTablePrivate::parse(const QDomElement emItem)
+T *JXmlTablePrivate::parse(const QDomElement &emItem)
 {
     T *value = new T(this);
     if (parse(emItem, *value)) {

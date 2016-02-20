@@ -1,15 +1,30 @@
-#ifndef PRECOMP_H
+﻿#ifndef PRECOMP_H
 #define PRECOMP_H
 
+#ifdef QT_CORE_LIB
 #include <QtCore>
+#endif
+
+#ifdef QT_GUI_LIB
 #include <QtGui>
+#endif
+
+#ifdef QT_XML_LIB
 #include <QtXml>
+#endif
 
 #if (QT_VERSION < 0x050000)
-#include <QWidget>
+//
 #else
+
+#ifdef QT_WIDGETS_LIB
 #include <QtWidgets>
+#endif
+
+#ifdef QT_OPENGL_LIB
 #include <QtOpenGL>
+#endif
+
 #endif
 
 #if 0

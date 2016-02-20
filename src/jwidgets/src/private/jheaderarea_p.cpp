@@ -1,4 +1,4 @@
-#include "precomp.h"
+﻿#include "precomp.h"
 #include "jheaderarea_p.h"
 #include <QAbstractItemView>
 #include "../jheaderarea.h"
@@ -256,18 +256,26 @@ void JHeaderAreaPrivate::setFilterVisible(bool visible)
 
 void JHeaderAreaPrivate::updateArea()
 {
-    int height = filterArea->height();
-    int offset = 0;
-    if (horiHeader) {
-        offset += horiHeader->geometry().left() - horiHeader->offset();
+    if (!horiHeader) {
+        return;
     }
+
+    int height = filterArea->height();
+    int left_offset = horiHeader->geometry().left();
+    int offset = left_offset - horiHeader->offset();
 
     QMapIterator<int, QWidget *> iter(filterItems);
     while (iter.hasNext()) {
         iter.next();
         int index = iter.key();
-        iter.value()->setGeometry(offset + horiHeader->sectionPosition(index), 0,
-                                  horiHeader->sectionSize(index), height);
+        QWidget *item = iter.value();
+        int x = offset += horiHeader->sectionPosition(index);
+        if (x < left_offset) {
+            item->setVisible(false);
+        } else {
+            item->setVisible(true);
+            item->setGeometry(x, 0, horiHeader->sectionSize(index), height);
+        }
     }
 }
 
@@ -467,34 +475,41 @@ void JHeaderAreaPrivate::updateFilterItem()
 
 void JHeaderAreaPrivate::updateFilterItem(int column)
 {
-    if (filterItems.contains(column)) {
-        QWidget *widget = filterItems[column];
-        if (widget && widget->inherits("QComboBox")) {
-            QComboBox *comboBox = qobject_cast<QComboBox *>(widget);
-            if (comboBox) {
-                comboBox->clear();
-                comboBox->addItem(tr("#All#"));
-                int rowCount = sourceModel->rowCount();
-                if (view && view->inherits("JXmlTable")) {
-                    QVariant items = qobject_cast<JXmlTable *>(view)->itemProperty(-1, column, "items");
-                    if (items.isValid() && items.canConvert(QVariant::StringList)) {
-                        comboBox->addItems(items.toStringList());
-                    }
-                } else {
-                    for (int i = 0; i < rowCount; ++i) {
-                        QStandardItem *item = sourceModel->item(i, column);
-                        if (item) {
-                            QString text = item->text();
-                            if (text.isEmpty()) {
-                                continue;
-                            }
+    if (!filterItems.contains(column)) {
+        return;
+    }
 
-                            if (comboBox->findText(text) == -1) {
-                                comboBox->addItem(text);
-                            }
-                        }
-                    }
-                }
+    QWidget *widget = filterItems[column];
+    if (!(widget && widget->inherits("QComboBox"))) {
+        return;
+    }
+
+    QComboBox *comboBox = qobject_cast<QComboBox *>(widget);
+    if (!comboBox) {
+        return;
+    }
+
+    comboBox->clear();
+    comboBox->addItem(tr("#All#"));
+    if (view && view->inherits("JXmlTable")) {
+        QVariant items = qobject_cast<JXmlTable *>(view)->itemProperty(-1, column, "items");
+        if (items.isValid() && items.canConvert(QVariant::StringList)) {
+            comboBox->addItems(items.toStringList());
+            return;
+        }
+    }
+
+    //
+    int rowCount = sourceModel->rowCount();
+    for (int i = 0; i < rowCount; ++i) {
+        QStandardItem *item = sourceModel->item(i, column);
+        if (item) {
+            QString text = item->text();
+            if (text.isEmpty()) {
+                continue;
+            }
+            if (comboBox->findText(text) == -1) {
+                comboBox->addItem(text);
             }
         }
     }

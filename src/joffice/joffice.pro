@@ -4,13 +4,13 @@
 #
 #-------------------------------------------------
 
-QT += core gui xml
+QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-JSMARTKITS_ROOT = $$PWD/../..
+JSMARTKITS_ROOT = $$PWD/../../
 
-jtarget_url = com.smartsoft.jsmartkits.jwidgets
+jtarget_url = com.smartsoft.jsmartkits.joffice
 
 TEMPLATE = lib
 win32 {
@@ -29,10 +29,24 @@ CONFIG += dll warn_on lib_bundle
 #CONFIG += no_keywords silent
 #DEFINES += QT_NO_DEBUG_OUTPUT
 
+# - output - tmp -
+macx: {
+    J_PLAT_PREFIX = macx
+} else: unix {
+    J_PLAT_PREFIX = unix
+}
+
+JOFFICE_TEMP_PREFIX = $${JSMARTKITS_ROOT}/temp/joffice/$${J_PLAT_PREFIX}
+macx:unix: {
+    MOC_DIR = $${JOFFICE_TEMP_PREFIX}
+    OBJECTS_DIR = $${JOFFICE_TEMP_PREFIX}
+    RCC_DIR = $${JOFFICE_TEMP_PREFIX}
+}
+
 ##
 
 contains(CONFIG, dll) {
-    DEFINES += JWIDGETS_DLL JWIDGETS_MAKEDLL
+    DEFINES += JOFFICE_DLL JOFFICE_MAKEDLL
 }
 
 win32 {
@@ -52,7 +66,7 @@ macx: CONFIG(qt_framework, qt_framework|qt_no_framework) {
     QMAKE_LFLAGS_SONAME = -Wl,-install_name,$$DESTDIR/
     CONFIG += lib_bundle
     QMAKE_BUNDLE_DATA += \
-        framework_headers_jwidgets
+        framework_headers_joffice
 } else {
     copyCommand = @echo ---- module $${jtarget_url} ----
 win32 {
@@ -84,9 +98,9 @@ win32 {
 
     first.depends = $(first)
     # for jwidgets
-    framework_headers_jwidgets.commands = $$copyCommand
-    first.depends += framework_headers_jwidgets
+    framework_headers_joffice.commands = $$copyCommand
+    first.depends += framework_headers_joffice
 
     QMAKE_EXTRA_TARGETS += first \
-        framework_headers_jwidgets
+        framework_headers_joffice
 }

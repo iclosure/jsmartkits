@@ -8,4 +8,6 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS += \
-    jwidgets
+    jwidgets \
+    joffice
+

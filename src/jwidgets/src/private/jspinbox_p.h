@@ -1,7 +1,7 @@
-#ifndef JSPINBOX_P_H
+﻿#ifndef JSPINBOX_P_H
 #define JSPINBOX_P_H
 
-#include "jwidgets_global.h"
+#include "../jwidgets_global.h"
 #include "../jspinbox.h"
 
 //#define JSPINBOX_QSBDEBUG

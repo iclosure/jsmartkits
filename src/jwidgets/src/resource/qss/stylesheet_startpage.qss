@@ -1,0 +1,29 @@
+﻿
+/* StartPageMgr */
+
+StartPageMgr {
+    background: #2393d5;
+}
+
+StartPageMgr QProgressBar {
+    border: 1px solid #c0c0c0;
+    background: #e0e0e0;
+    border-radius: 2px;
+    text-align: center;
+    height: 20px;
+    color: darkblue;
+    outline: none;
+    font-family: "Microsoft Yahei";
+    font-size: 25px;
+}
+
+StartPageMgr QProgressBar::chunk {
+    border: 1px solid #a0a0a0;
+    background: rgba(80,80,80,100);
+    width: 5px;
+}
+
+StartPageMgr QLabel#labelMsg {
+    color: white;
+    font-family: "Microsoft Yahei";
+}

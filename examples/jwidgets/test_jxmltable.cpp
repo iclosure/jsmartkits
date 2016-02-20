@@ -1,5 +1,8 @@
 ﻿#include "test_jxmltable.h"
 #include <QtGui>
+#if QT_VERSION >= 0x050000
+#include <QtWidgets>
+#endif
 #include "jspinbox.h"
 #include "jipaddressedit.h"
 
@@ -8,9 +11,8 @@
 // - class TestJXmlTable -
 
 TestJXmlTable::TestJXmlTable(QWidget *parent)
-    : QDialog(parent, Qt::WindowMinMaxButtonsHint)
+    : QDialog(parent, Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint)
 {
-    resize(800, 480);
 
     QHBoxLayout *horiLayoutMain = new QHBoxLayout(this);
 #if 1

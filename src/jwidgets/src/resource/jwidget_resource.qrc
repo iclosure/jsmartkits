@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/com.smartsoft.jsmartkits.jwidgets/qss">
+        <file alias="stylesheet_default.qss">qss/stylesheet_default.qss</file>
+        <file alias="stylesheet_mainwidget.qss">qss/stylesheet_mainwidget.qss</file>
+        <file alias="stylesheet_startpage.qss">qss/stylesheet_startpage.qss</file>
+    </qresource>
+</RCC>

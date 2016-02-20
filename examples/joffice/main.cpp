@@ -2,7 +2,8 @@
 #include <QTextCodec>
 #include <QDebug>
 
-#include "test_jxmltable.h"
+#include "test_jword.h"
+#include "test_jexcel.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,9 +14,6 @@ int main(int argc, char *argv[])
 #endif
 
     QApplication app(argc, argv);
-
-    TestJXmlTable testJXmlTable;
-    testJXmlTable.showMaximized();
 
     return app.exec();
 }

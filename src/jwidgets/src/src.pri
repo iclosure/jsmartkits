@@ -4,14 +4,9 @@
 #
 #-------------------------------------------------
 
-################################################################
-# creating a precompiled header file (only supported on some platforms (Windows - all MSVC project types,
-# Mac OS X - Xcode, Makefile, Unix - gcc 3.3 and up)
-################################################################
+JSMARTKITS_ROOT = $$PWD/../../..
 
-CONFIG += precompile_header
-PRECOMPILED_HEADER = $$PWD/precomp.h
-INCLUDEPATH += $$PWD
+include($$JSMARTKITS_ROOT/src/common/build.pri)
 
 ################################################################
 # source fiels
@@ -32,7 +27,12 @@ jwidgets_headers += \
     $$PWD/jtableview.h \
     $$PWD/jtreeview.h \
     $$PWD/jxmltable.h \
-    $$PWD/jfiltertableview.h
+    $$PWD/jfiltertableview.h \
+    $$PWD/jstylesheet.h \
+    $$PWD/jdialog.h \
+    $$PWD/jstatusbar.h \
+    $$PWD/jskinbutton.h \
+    $$PWD/jlogmanager.h
 
 HEADERS += \
     $$jwidgets_headers \
@@ -43,7 +43,8 @@ HEADERS += \
     $$PWD/private/jxmltable_data.h \
     $$PWD/private/jxmltable_widget.h \
     $$PWD/private/jxmltable_p.h \
-    $$PWD/private/jfiltertableview_p.h
+    $$PWD/private/jfiltertableview_p.h \
+    $$PWD/private/jdialog_p.h
 
 SOURCES += \
     $$PWD/jwidgets_global.cpp \
@@ -64,14 +65,20 @@ SOURCES += \
     $$PWD/private/jxmltable_p.cpp \
     $$PWD/jxmltable.cpp \
     $$PWD/private/jfiltertableview_p.cpp \
-    $$PWD/jfiltertableview.cpp
+    $$PWD/jfiltertableview.cpp \
+    $$PWD/jstylesheet.cpp \
+    $$PWD/jdialog.cpp \
+    $$PWD/jstatusbar.cpp \
+    $$PWD/jskinbutton.cpp \
+    $$PWD/jlogmanager.cpp \
+    $$PWD/private/jdialog_p.cpp
 
 ################################################
 ## resources
 ################################################
 
 RESOURCES += \
-#    resources/jwidgets.qrc
+    $$PWD/resource/jwidget_resource.qrc
 
 ################################################
 ## framework

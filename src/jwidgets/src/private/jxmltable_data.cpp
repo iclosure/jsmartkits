@@ -1,4 +1,4 @@
-#include "precomp.h"
+﻿#include "precomp.h"
 #include "jxmltable_data.h"
 #include "jxmltable_widget.h"
 
@@ -417,7 +417,7 @@ QVariant JBoolValue::unpack(const QByteArray &data) const
     }
 
     quint16 _size = 0;
-    qMemCopy(&_size, data, 2);
+    memcpy(&_size, data, 2);
     if (_size != 1) {
         return QVariant::Invalid;
     }
@@ -750,13 +750,13 @@ QVariant JNumericValue::unpack(const QByteArray &data) const
     }
 
     quint16 _size = 0;
-    qMemCopy(&_size, data, 2);
+    memcpy(&_size, data, 2);
     if (_size != data.size() - 2 || _size != size()) {
         return QVariant::Invalid;
     }
 
     quint32 _v = 0;
-    qMemCopy(&_v, &data.constData()[2], _size);
+    memcpy(&_v, &data.constData()[2], _size);
     return _v * d->scale;
 }
 
@@ -1029,7 +1029,7 @@ QVariant JStringValue::unpack(const QByteArray &data) const
     }
 
     quint16 _size = 0;
-    qMemCopy(&_size, data, 2);
+    memcpy(&_size, data, 2);
     if (_size != data.size() - 2) {
         return QVariant::Invalid;
     }
@@ -1333,13 +1333,13 @@ QVariant JEnumValue::unpack(const QByteArray &data) const
     }
 
     quint16 _size = 0;
-    qMemCopy(&_size, data, 2);
+    memcpy(&_size, data, 2);
     if (_size != data.size() - 2 || _size != size()) {
         return QVariant::Invalid;
     }
 
     quint32 _encode;
-    qMemCopy(&_encode, &data.constData()[2], _size);
+    memcpy(&_encode, &data.constData()[2], _size);
     return index(_encode);
 }
 
@@ -1546,7 +1546,7 @@ QVariant JIPv4Value::unpack(const QByteArray &data) const
     }
 
     quint16 _size = 0;
-    qMemCopy(&_size, data, 2);
+    memcpy(&_size, data, 2);
     if (_size != data.size()) {
         return QVariant::Invalid;
     }

@@ -1,4 +1,4 @@
-#include "precomp.h"
+﻿#include "precomp.h"
 #include "jtableview.h"
 #include "private/jtableview_p.h"
 
@@ -42,7 +42,11 @@ JTableView::JTableView(QWidget *parent)
     d->init();
 
     // default properties
+#if QT_VERSION >= 0x050000
+    horizontalHeader()->setSectionsMovable(true);
+#else
     horizontalHeader()->setMovable(true);
+#endif
     verticalHeader()->setMinimumWidth(35);
     verticalHeader()->setDefaultSectionSize(22);
     verticalHeader()->setDefaultAlignment(Qt::AlignRight | Qt::AlignVCenter);

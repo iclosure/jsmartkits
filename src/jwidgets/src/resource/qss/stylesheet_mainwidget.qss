@@ -1,0 +1,12 @@
+﻿
+/* StatusBarMgr */
+
+StatusBarMgr {
+    background: #0075c3;
+}
+
+StatusBarMgr QLabel#labelTime {
+    color: white;
+    font-family: "Microsoft Yahei";
+    font-size: 25px;
+}

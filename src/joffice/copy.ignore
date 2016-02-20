@@ -1,0 +1,4 @@
+# precompile files
+precomp.h
+private
+*_p.h

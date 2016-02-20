@@ -39,9 +39,9 @@ macx:unix: {
 win32: {
     DEFINES += JWIDGETS_DLL
     CONFIG(debug, debug|release) {
-        LIBS += -L$${JSMARTKITS_ROOT}/bin/jwidgets -l$${jwidgets_url}d
+        LIBS += -L$${JSMARTKITS_ROOT}/bin/$$jwidgets_url -l$${jwidgets_url}d
     } else {
-        LIBS += -L$${JSMARTKITS_ROOT}/bin/jwidgets -l$${jwidgets_url}
+        LIBS += -L$${JSMARTKITS_ROOT}/bin/$$jwidgets_url -l$${jwidgets_url}
     }
     INCLUDEPATH += \
         $${JSMARTKITS_ROOT}/src/jwidgets/src

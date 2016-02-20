@@ -1,7 +1,7 @@
-#ifndef JFILTERTABLEVIEW_P_H
+﻿#ifndef JFILTERTABLEVIEW_P_H
 #define JFILTERTABLEVIEW_P_H
 
-#include "jwidgets_global.h"
+#include "../jwidgets_global.h"
 #include "../jfiltertableview.h"
 
 // - class JFilterTableViewPrivate -

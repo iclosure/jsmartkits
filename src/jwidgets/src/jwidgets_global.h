@@ -1,4 +1,4 @@
-#ifndef JWIDGETS_GLOBAL_H
+﻿#ifndef JWIDGETS_GLOBAL_H
 #define JWIDGETS_GLOBAL_H
 
 #include <qglobal.h>
@@ -23,7 +23,7 @@
 #else
 #define JWIDGETS_EXPORT  Q_DECL_IMPORT
 
-#ifdef _DEGBU
+#if defined(_DEBUG) || defined(DEBUG)
 #pragma comment(lib, "com.smartsoft.jsmartkits.jwidgetsd.lib")
 #else
 #pragma comment(lib, "com.smartsoft.jsmartkits.jwidgets.lib")
@@ -50,12 +50,45 @@ QT_BEGIN_NAMESPACE
 #define JWIDGETS_USE_NAMESPACE using namespace JWIDGETS_NAMESPACE;
 
 // - private pointer
+#ifndef J_DECLARE_PRIVATE
 #define J_DECLARE_PRIVATE(name) \
     name ## Private *d_ptr; \
     Q_DECLARE_PRIVATE(name)
+#endif
+
+#ifndef J_DECLARE_PUBLIC
 #define J_DECLARE_PUBLIC(name) \
     name *q_ptr; \
     Q_DECLARE_PUBLIC(name)
+#endif
+
+#ifndef J_DECLARE_SINGLE_INSTANCE
+#define J_DECLARE_SINGLE_INSTANCE(Class) \
+public: \
+    static Class *instance(); \
+    static void releaseInstance(); \
+private: \
+    static Class *_instance;
+#endif
+
+#ifndef J_IMPLEMENT_SINGLE_INSTANCE
+#define J_IMPLEMENT_SINGLE_INSTANCE(Class) \
+Class *Class::_instance = 0; \
+\
+Class *Class::instance() { \
+    if (Class::_instance == 0) { \
+        Class::_instance = new Class; \
+    } \
+    return Class::_instance; \
+} \
+\
+void Class::releaseInstance() { \
+    if (Class::_instance != 0) { \
+        delete Class::_instance; \
+        Class::_instance = 0; \
+    } \
+}
+#endif
 
 namespace JWIDGETS_NAMESPACE {
     static const double jDoubleEpsion = 1E-6;

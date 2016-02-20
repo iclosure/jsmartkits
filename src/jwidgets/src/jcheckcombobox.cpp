@@ -1,4 +1,4 @@
-#include "precomp.h"
+﻿#include "precomp.h"
 #include "jcheckcombobox.h"
 
 // - class JCheckComboBoxPrivate -
@@ -64,7 +64,7 @@ void JCheckComboBoxPrivate::init()
     listWidget->setObjectName("listWidget");
     listWidget->setFrameShape(QFrame::NoFrame);
 #if defined(Q_WS_WIN) || defined(Q_OS_WIN)
-    listWidget->setStyle(new QWindowsXPStyle);
+    listWidget->setStyle(QStyleFactory::create("windowsxp"));
 #endif
     listWidget->setViewMode(QListWidget::ListMode);
     listWidget->setSelectionMode(QAbstractItemView::SingleSelection);
