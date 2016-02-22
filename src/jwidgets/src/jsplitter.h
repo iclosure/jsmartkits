@@ -1,4 +1,4 @@
-#ifndef JSPLITTER_H
+﻿#ifndef JSPLITTER_H
 #define JSPLITTER_H
 
 #include "jwidgets_global.h"
@@ -55,7 +55,9 @@ class JWIDGETS_EXPORT JSplitter : public QSplitter
     Q_OBJECT
 public:
     explicit JSplitter(QWidget *parent = 0);
-    explicit JSplitter(const QList<double> &scales);
+    explicit JSplitter(Qt::Orientation orientation, QWidget *parent = 0);
+    JSplitter(const QList<double> &scales, QWidget *parent = 0);
+    JSplitter(const QList<double> &scales, Qt::Orientation orientation, QWidget *parent = 0);
     virtual ~JSplitter();
 
     QList<double> scales() const;

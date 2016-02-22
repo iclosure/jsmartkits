@@ -1,4 +1,4 @@
-#include "precomp.h"
+﻿#include "precomp.h"
 #include "jsplitter.h"
 
 // - JSplitterHandleData -
@@ -242,7 +242,8 @@ void JSplitterPrivate::init()
     Q_Q(JSplitter);
     q->setHandleWidth(6);
     q->setChildrenCollapsible(false);
-    QObject::connect(q, SIGNAL(splitterMoved(int,int)), q, SLOT(_emit_splitterMoved(int,int)));
+    QObject::connect(q, SIGNAL(splitterMoved(int,int)),
+                     q, SLOT(_emit_splitterMoved(int,int)));
 }
 
 // - class JSplitter -
@@ -253,6 +254,35 @@ JSplitter::JSplitter(QWidget *parent)
 {
     Q_D(JSplitter);
     d->init();
+}
+
+JSplitter::JSplitter(Qt::Orientation orientation, QWidget *parent)
+    : QSplitter(orientation, parent)
+    , d_ptr(new JSplitterPrivate(this))
+{
+    Q_D(JSplitter);
+    d->init();
+}
+
+JSplitter::JSplitter(const QList<double> &scales, QWidget *parent)
+    : QSplitter(parent)
+    , d_ptr(new JSplitterPrivate(this))
+{
+    Q_D(JSplitter);
+    d->init();
+
+    setScales(scales);
+}
+
+JSplitter::JSplitter(const QList<double> &scales,
+                     Qt::Orientation orientation, QWidget *parent)
+    : QSplitter(orientation, parent)
+    , d_ptr(new JSplitterPrivate(this))
+{
+    Q_D(JSplitter);
+    d->init();
+
+    setScales(scales);
 }
 
 JSplitter::~JSplitter()

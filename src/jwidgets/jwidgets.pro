@@ -61,7 +61,7 @@ win32 {
     destdir = $$replace(destdir, /, \\)
     ## copy files
     excludefile = $$PWD/copy.ignore
-    !exists("$$excludefile"): excludefiles = $$JSMARTKITS_ROOT/src/common/copy.ignore
+    !exists("$$excludefile"): excludefile = $$JSMARTKITS_ROOT/src/common/copy.ignore
     !exists("$$excludefile"): error("$$excludefile" is not exists!)
     excludefile = $$replace(excludefile, /, \\)
     srcdir = $$PWD/src
@@ -73,7 +73,7 @@ win32 {
     destdir = $$DESTDIR/include
     ## copy files
     excludefile = $$PWD/copy.ignore
-    !exists("$$excludefile"): excludefiles = $$JSMARTKITS_ROOT/src/common/copy.ignore
+    !exists("$$excludefile"): excludefile = $$JSMARTKITS_ROOT/src/common/copy.ignore
     !exists("$$excludefile"): error("$$excludefile" is not exists!)
     srcdir = $$PWD/src
     !exists("$$destdir"): copyCommand += && mkdir "$$destdir"
