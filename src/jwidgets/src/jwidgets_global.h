@@ -125,4 +125,19 @@ namespace JWIDGETS_NAMESPACE {
     { return ((a - b < -jFDoubleEpsion) || (a - b >= -jFDoubleEpsion && a - b <= jFDoubleEpsion)) ? true : false; }
 }
 
+// - class JWidgetsCore -
+
+class JWIDGETS_EXPORT JWidgetsCore
+{
+public:
+    static JWidgetsCore *instance();
+    static void releaseInstance();
+
+    void init();
+
+private:
+    explicit JWidgetsCore();
+    ~JWidgetsCore();
+};
+
 #endif // JWIDGETS_GLOBAL_H

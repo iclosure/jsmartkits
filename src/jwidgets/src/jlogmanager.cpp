@@ -14,10 +14,12 @@ class JLogManagerPrivate
     }
 
 private:
-    static QString _fileName;
+    static QString fileName;
+    static JLogManager::LogType logType;
 };
 
-QString JLogManagerPrivate::_fileName = "";
+QString JLogManagerPrivate::fileName = "";
+JLogManager::LogType JLogManagerPrivate::logType = JLogManager::LogFile;
 
 // - class JLogManager -
 
@@ -48,7 +50,8 @@ void JLogManager::installMessageHandler()
     if (!QDir(path).exists()) {
         QDir().mkdir(path);
     }
-    JLogManagerPrivate::_fileName = path + QString("/%1.log").arg(QDateTime::currentDateTime()
+
+    JLogManagerPrivate::fileName = path + QString("/%1.log").arg(QDateTime::currentDateTime()
                                                                   .toString("yyyy-MM-dd hh-mm-ss"));
     qInstallMessageHandler(messageOutput);
 }
@@ -59,16 +62,42 @@ void JLogManager::messageOutput(QtMsgType type, const QMessageLogContext &contex
     static QMutex mutex;
     mutex.lock();
 
-    QFile file(JLogManagerPrivate::_fileName);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Append)) {
-        mutex.unlock();
-        return;
-    }
+    switch (JLogManagerPrivate::logType) {
+    case LogFile:
+    {
+        QFile file(JLogManagerPrivate::fileName);
+        if (!file.open(QIODevice::WriteOnly
+                       | QIODevice::Append
+                       | QIODevice::Text)) {
+            mutex.unlock();
+            return;
+        }
 
-    QTextStream stream(&file);
-    stream << qFormatLogMessage(type, context, msg);
-    file.flush();
-    file.close();
+        QTextStream stream(&file);
+        stream << qFormatLogMessage(type, context, msg);
+        file.flush();
+        file.close();
+        break;
+    }
+#if defined(DEBUG) || defined(_DEBUG)
+    case LogConsole:
+    {
+        QString formatMsg = qFormatLogMessage(type, context, msg);
+        switch (type) {
+        case QtDebugMsg: qDebug() << formatMsg; break;
+        case QtWarningMsg: qWarning() << formatMsg; break;
+        case QtCriticalMsg: qCritical() << formatMsg; break;
+        case QtFatalMsg: qFatal(formatMsg.toLocal8Bit()); break;
+        case QtInfoMsg: qInfo() << formatMsg; break;
+        default:
+            break;
+        }
+        break;
+    }
+#endif
+    default:
+        break;
+    }
 
     mutex.unlock();
 }
@@ -76,4 +105,14 @@ void JLogManager::messageOutput(QtMsgType type, const QMessageLogContext &contex
 void JLogManager::setMessagePattern(const QString &pattern)
 {
     qSetMessagePattern(pattern);
+}
+
+JLogManager::LogType JLogManager::logType()
+{
+    return JLogManagerPrivate::logType;
+}
+
+void JLogManager::setLogType(LogType logType)
+{
+    JLogManagerPrivate::logType = logType;
 }

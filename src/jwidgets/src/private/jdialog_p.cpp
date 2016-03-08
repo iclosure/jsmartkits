@@ -509,22 +509,23 @@ void JDialogPrivate::updateGeometry(int x, int y, int w, int h)
 }
 
 void JDialogPrivate::makeRegions()
-{/*
-    regions[RegionTopLeft]      = QRect(shadowMargins.left(), shadowMargins.top(), borderWidth * 2, borderWidth);
+{
+    regions[RegionTopLeft]      = QRect(shadowMargins.left(), shadowMargins.top(), borderWidth * 2, borderWidth * 2);
     regions[RegionTop]          = QRect(shadowMargins.left() + borderWidth * 2, shadowMargins.top(),
-                                        parentWidget->width() - shadowMargins.left() - shadowMargins.right(), borderWidth);
-    regions[RegionTopRight]     = QRect(parentWidget->width() - shadowMargins.right() - borderWidth, shadowMargins.top(), borderWidth * 2, borderWidth);
-    regions[RegionLeft]         = QRect(shadowMargins.left(), shadowMargins.top() + borderWidth, borderWidth,
-                                        parentWidget->height() - borderWidth * 2 - shadowMargins.top() - shadowMargins.bottom());
+                                        parentWidget->width() - shadowMargins.left() - shadowMargins.right() - borderWidth * 4, borderWidth);
+    regions[RegionTopRight]     = QRect(parentWidget->width() - shadowMargins.right() - borderWidth * 2, shadowMargins.top(),
+                                        borderWidth * 2, borderWidth * 2);
+    regions[RegionLeft]         = QRect(shadowMargins.left(), shadowMargins.top() + borderWidth * 2, borderWidth,
+                                        parentWidget->height() - shadowMargins.top() - shadowMargins.bottom() - borderWidth * 3);
     regions[RegionTitle]        = QRect(shadowMargins.left() + borderWidth * 2, shadowMargins.top() + borderWidth,
-                                        parentWidget->width() - shadowMargins.left(), shadowMargins.right(), );
-    regions[RegionRight]        = QRect(parentWidget->width() - shadowMargins.right() - borderWidth, shadowMargins.top() + borderWidth, borderWidth,
-                                        parentWidget->height() - borderWidth * 2 - shadowMargins.top() - shadowMargins.bottom());
+                                        parentWidget->width() - shadowMargins.left() - shadowMargins.right() - borderWidth * 4, titleHeight);
+    regions[RegionRight]        = QRect(parentWidget->width() - shadowMargins.right() - borderWidth, shadowMargins.top() + borderWidth * 2,
+                                        borderWidth, parentWidget->height() - shadowMargins.top() - shadowMargins.bottom() - borderWidth * 3);
     regions[RegionBottomLeft]   = QRect(shadowMargins.left(), parentWidget->height() - shadowMargins.bottom() - borderWidth, borderWidth, borderWidth);
     regions[RegionBottom]       = QRect(shadowMargins.left() + borderWidth, parentWidget->height() - shadowMargins.bottom() - borderWidth,
-                                        parentWidget->width() - borderWidth * 2 - shadowMargins.left() - shadowMargins.right(), borderWidth);
+                                        parentWidget->width()- shadowMargins.left() - shadowMargins.right() - borderWidth * 2 , borderWidth);
     regions[RegionBottomRight]  = QRect(parentWidget->width() - shadowMargins.right() - borderWidth, parentWidget->height() - shadowMargins.bottom() - borderWidth,
-                                        borderWidth, borderWidth);*/
+                                        borderWidth, borderWidth);
 }
 
 JDialogPrivate::RegionType JDialogPrivate::regionHit(const QPoint &pos)

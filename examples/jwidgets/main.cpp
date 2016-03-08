@@ -3,6 +3,8 @@
 #include <QDebug>
 
 #include "test_jxmltable.h"
+#include "test_stylesheet.h"
+#include "jwidgets_inc.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,8 +16,20 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+    JWidgetsCore::instance()->init();
+
+    // stylesheet
+    qApp->setStyleSheet(JStyleSheet::instance()->styleSheet("default"));
+
+#if 0
+    // test jxmltable
     TestJXmlTable testJXmlTable;
     testJXmlTable.showMaximized();
+#elif 1
+    // test stylesheet
+    TestStyleSheet testStyleSheet;
+    testStyleSheet.showMaximized();
+#endif
 
     return app.exec();
 }

@@ -63,11 +63,16 @@ win32: {
 ##
 
 HEADERS += \
-    test_jxmltable.h
+    test_jxmltable.h \
+    test_stylesheet.h
 
 SOURCES += \
     main.cpp \
-    test_jxmltable.cpp
+    test_jxmltable.cpp \
+    test_stylesheet.cpp
 
 RESOURCES += \
     resource/jwidgets.qrc
+
+FORMS += \
+    test_stylesheet.ui
