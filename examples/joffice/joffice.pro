@@ -54,7 +54,7 @@ win32: {
 
 } else: unix {
     LIBS += \
-            -L$${JSMARTKITS_ROOT}/bin/joffice -l$${joffice_url}
+        -L$${JSMARTKITS_ROOT}/bin/$${joffice_url} -l$${joffice_url}
 
     INCLUDEPATH += \
         $${JSMARTKITS_ROOT}/src/joffice/src

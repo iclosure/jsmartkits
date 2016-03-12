@@ -69,6 +69,12 @@ QString JStyleSheet::styleSheet(const QString &name)
             return QString::null;
         }
         return file.readAll();
+    } else if (name == QLatin1String("login")) {
+        QFile file(QLatin1String(":/com.smartsoft.jsmartkits.jwidgets/qss/stylesheet_default-login.qss"));
+        if (!file.open(QFile::ReadOnly)) {
+            return QString::null;
+        }
+        return file.readAll();
     }
 
     return QString::null;

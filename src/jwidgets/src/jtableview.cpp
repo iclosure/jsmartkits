@@ -18,15 +18,26 @@ JTableViewSelectionRange::JTableViewSelectionRange(int top, int left, int bottom
 
 JTableViewSelectionRange::JTableViewSelectionRange(const JTableViewSelectionRange &other)
 {
-    top = other.top;
-    left = other.left;
-    bottom = other.bottom;
-    right = other.right;
+    *this = other;
 }
 
 JTableViewSelectionRange::~JTableViewSelectionRange()
 {
 
+}
+
+JTableViewSelectionRange &JTableViewSelectionRange::operator =(const JTableViewSelectionRange &other)
+{
+    if (this == &other) {
+        return *this;
+    }
+
+    top = other.top;
+    left = other.left;
+    bottom = other.bottom;
+    right = other.right;
+
+    return *this;
 }
 
 // - class JTableView -
@@ -47,9 +58,7 @@ JTableView::JTableView(QWidget *parent)
 #else
     horizontalHeader()->setMovable(true);
 #endif
-    verticalHeader()->setMinimumWidth(35);
-    verticalHeader()->setDefaultSectionSize(22);
-    verticalHeader()->setDefaultAlignment(Qt::AlignRight | Qt::AlignVCenter);
+    //verticalHeader()->setDefaultAlignment(Qt::AlignRight | Qt::AlignVCenter);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
     setAlternatingRowColors(true);

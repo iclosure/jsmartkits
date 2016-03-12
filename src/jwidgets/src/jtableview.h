@@ -1,4 +1,4 @@
-#ifndef JTABLEVIEW_H
+﻿#ifndef JTABLEVIEW_H
 #define JTABLEVIEW_H
 
 #include "jwidgets_global.h"
@@ -21,6 +21,8 @@ public:
     inline int rightColumn() const { return right; }
     inline int rowCount() const { return bottom - top + 1; }
     inline int columnCount() const { return right - left + 1; }
+
+    JTableViewSelectionRange &operator =(const JTableViewSelectionRange &other);
 
 private:
     int top, left, bottom, right;

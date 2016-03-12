@@ -28,7 +28,8 @@ J_IMPLEMENT_SINGLE_INSTANCE(JLogManager)
 JLogManager::JLogManager()
     : d_ptr(new JLogManagerPrivate(this))
 {
-    QString pattern("%{type} | %{time} : %{message} *** \"%{file}\" (line:%{line} - function:%{function} ***");
+    QString pattern("%{type} | %{time} : %{message} *** \"%{file}"
+                    "\" (line:%{line} - function:%{function} ***");
 #ifdef _MSC_VER
     pattern.append("\r\n");
 #else

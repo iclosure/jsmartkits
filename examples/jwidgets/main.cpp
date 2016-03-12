@@ -20,12 +20,13 @@ int main(int argc, char *argv[])
 
     // stylesheet
     qApp->setStyleSheet(JStyleSheet::instance()->styleSheet("default"));
+    //qApp->setStyleSheet(JStyleSheet::instance()->styleSheet("login"));
 
-#if 0
+#if 1
     // test jxmltable
     TestJXmlTable testJXmlTable;
     testJXmlTable.showMaximized();
-#elif 1
+#elif 0
     // test stylesheet
     TestStyleSheet testStyleSheet;
     testStyleSheet.showMaximized();

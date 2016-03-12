@@ -1,12 +1,30 @@
 ﻿
-/* StatusBarMgr */
 
+/* StatusBarMgr */
+  
 StatusBarMgr {
     background: #0075c3;
 }
 
 StatusBarMgr QLabel#labelTime {
-    color: white;
-    font-family: "Microsoft Yahei";
-    font-size: 25px;
+    color: #e0e0e0;
 }
+ 
+StatusBarMgr QLabel#labelInfo {
+    color: white; 
+    margin-left: 6px;
+    margin-right: 6px;
+}  
+
+/** QTabWidget **/
+/*
+QTabWidget#tabWidgetTable::pane {
+    border-top: 2px solid #777;
+    position: east;
+    top: -0.5em;
+}
+
+QTabWidget#tabWidgetTable::tab-bar {
+    alignment: left bottom;
+}
+*/

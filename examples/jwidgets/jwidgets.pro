@@ -53,7 +53,7 @@ win32: {
 
 } else: unix {
     LIBS += \
-            -L$${JSMARTKITS_ROOT}/bin/jwidgets -l$${jwidgets_url}
+        -L$${JSMARTKITS_ROOT}/bin/$${jwidgets_url} -l$${jwidgets_url}
 
     INCLUDEPATH += \
         $${JSMARTKITS_ROOT}/src/jwidgets/src

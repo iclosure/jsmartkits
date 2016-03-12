@@ -304,7 +304,7 @@ QCheckBox {
 }
 
 /** QScrollBar **/
-/*
+
 QScrollBar:vertical {
     background: transparent;
     width: 6px;
@@ -374,4 +374,3 @@ QScrollBar::add-page:horizontal,
 QScrollBar::sub-page:horizontal {
     background: none;
 }
-*/
