@@ -28,6 +28,7 @@ J_IMPLEMENT_SINGLE_INSTANCE(JLogManager)
 JLogManager::JLogManager()
     : d_ptr(new JLogManagerPrivate(this))
 {
+#if !defined(Q_OS_MAC)
     QString pattern("%{type} | %{time} : %{message} *** \"%{file}"
                     "\" (line:%{line} - function:%{function} ***");
 #ifdef _MSC_VER
@@ -36,6 +37,7 @@ JLogManager::JLogManager()
     pattern.append("\n");
 #endif
     qSetMessagePattern(pattern);
+#endif
 }
 
 JLogManager::~JLogManager()
@@ -54,8 +56,12 @@ void JLogManager::installMessageHandler()
 
     JLogManagerPrivate::fileName = path + QString("/%1.log").arg(QDateTime::currentDateTime()
                                                                   .toString("yyyy-MM-dd hh-mm-ss"));
+#if !defined(Q_OS_MAC)
     qInstallMessageHandler(messageOutput);
+#endif
 }
+
+#if !defined(Q_OS_MAC)
 
 void JLogManager::messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -103,9 +109,15 @@ void JLogManager::messageOutput(QtMsgType type, const QMessageLogContext &contex
     mutex.unlock();
 }
 
+#endif
+
 void JLogManager::setMessagePattern(const QString &pattern)
 {
+#if !defined(Q_OS_MAC)
     qSetMessagePattern(pattern);
+#else
+    Q_UNUSED(pattern);
+#endif
 }
 
 JLogManager::LogType JLogManager::logType()

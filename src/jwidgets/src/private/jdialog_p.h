@@ -112,11 +112,11 @@ public:
 
 private:
     QDialog *parentWidget;
-    QString skinName;
     int titleHeight;
+    QString skinName;
     QMargins defShadowMargins;
-    int defBorderWidth;
     QMargins shadowMargins;
+    int defBorderWidth;
     int borderWidth;
     bool mousePressed;
     RegionType rgnPressed;

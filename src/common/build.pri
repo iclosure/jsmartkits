@@ -41,6 +41,7 @@ exists($$JSMARTKITS_ROOT) {
 
 ## extra
 
-win32:exists($${JSMARTKITS_ROOT}/../jdataanalyse) {
-    DESTDIR = $${JSMARTKITS_ROOT}/../jdataanalyse/lib/$$jtarget_url
+exists($${JSMARTKITS_ROOT}/../jdataanalyse) {
+    macx:DESTDIR = $${JSMARTKITS_ROOT}/../jdataanalyse/lib
+    else:DESTDIR = $${JSMARTKITS_ROOT}/../jdataanalyse/lib/$$jtarget_url
 }

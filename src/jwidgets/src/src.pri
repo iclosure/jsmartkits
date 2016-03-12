@@ -6,7 +6,7 @@
 
 JSMARTKITS_ROOT = $$PWD/../../..
 
-include($$JSMARTKITS_ROOT/src/common/build.pri)
+include($${JSMARTKITS_ROOT}/src/common/build.pri)
 
 ################################################################
 # source fiels

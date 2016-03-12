@@ -22,7 +22,7 @@ win32 {
 macx {
     DESTDIR = $${JSMARTKITS_ROOT}/bin
 } else {
-    DESTDIR = $${JSMARTKITS_ROOT}/bin/$$jtarget_url
+    DESTDIR = $${JSMARTKITS_ROOT}/bin/$${jtarget_url}
 }
 
 CONFIG += dll warn_on lib_bundle
@@ -55,41 +55,41 @@ macx: CONFIG(qt_framework, qt_framework|qt_no_framework) {
         framework_headers_jwidgets
 } else {
     copyCommand = @echo ---- module $${jtarget_url} ----
-win32 {
-    ## create folder
-    destdir = $$DESTDIR/include
-    destdir = $$replace(destdir, /, \\)
-    ## copy files
-    excludefile = $$PWD/copy.ignore
-    !exists("$$excludefile"): excludefile = $$JSMARTKITS_ROOT/src/common/copy.ignore
-    !exists("$$excludefile"): error("$$excludefile" is not exists!)
-    excludefile = $$replace(excludefile, /, \\)
-    srcdir = $$PWD/src
-    srcdir = $$replace(srcdir, /, \\)
-    #exists("$$destdir"): copyCommand += && rd /s /q "$$destdir"
-    copyCommand += && xcopy "$$srcdir\\*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
-
-    ## test for jdataanalyse
-    win32:exists($${JSMARTKITS_ROOT}/../jdataanalyse) {
-        srcdir = $${JSMARTKITS_ROOT}/bin/$${jtarget_url}/$${jtarget_url}d.dll
-        srcdir = $$replace(srcdir, /, \\)
-        destdir = $${DESTDIR}/../../bin/
+    win32 {
+        ## create folder
+        destdir = $$DESTDIR/include
         destdir = $$replace(destdir, /, \\)
-        copyCommand += && copy "$$srcdir" "$$destdir"
+        ## copy files
+        excludefile = $$PWD/copy.ignore
+        !exists("$$excludefile"): excludefile = $$JSMARTKITS_ROOT/src/common/copy.ignore
+        !exists("$$excludefile"): error("$$excludefile" is not exists!)
+        excludefile = $$replace(excludefile, /, \\)
+        srcdir = $$PWD/src
+        srcdir = $$replace(srcdir, /, \\)
+        #exists("$$destdir"): copyCommand += && rd /s /q "$$destdir"
+        copyCommand += && xcopy "$$srcdir\\*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
+
+        ## test for jdataanalyse
+        win32:exists($${JSMARTKITS_ROOT}/../jdataanalyse) {
+            srcdir = $${JSMARTKITS_ROOT}/bin/$${jtarget_url}/$${jtarget_url}d.dll
+            srcdir = $$replace(srcdir, /, \\)
+            destdir = $${DESTDIR}/../../bin/
+            destdir = $$replace(destdir, /, \\)
+            copyCommand += && copy "$$srcdir" "$$destdir"
+        }
+    } else {
+        ## create folder
+        destdir = $$DESTDIR/include
+        ## copy files
+        excludefile = $$PWD/copy.ignore
+        !exists("$$excludefile"): excludefile = $$JSMARTKITS_ROOT/src/common/copy.ignore
+        !exists("$$excludefile"): error("$$excludefile" is not exists!)
+        srcdir = $$PWD/src
+        !exists("$$destdir"): copyCommand += && mkdir "$$destdir"
+        copyCommand += && cp "$$srcdir/*.h" "$$destdir"
+        #copyCommand += && xcopy "$$srcdir/*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
+        copyCommand += && rm -f -r "$$destdir/precomp.h"
     }
-} else {
-    ## create folder
-    destdir = $$DESTDIR/include
-    ## copy files
-    excludefile = $$PWD/copy.ignore
-    !exists("$$excludefile"): excludefile = $$JSMARTKITS_ROOT/src/common/copy.ignore
-    !exists("$$excludefile"): error("$$excludefile" is not exists!)
-    srcdir = $$PWD/src
-    !exists("$$destdir"): copyCommand += && mkdir "$$destdir"
-    copyCommand += && cp "$$srcdir/*.h" "$$destdir"
-    #copyCommand += && xcopy "$$srcdir/*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
-    copyCommand += && rm -f -r "$$destdir/precomp.h"
-}
 
     first.depends = $(first)
     # for jwidgets
