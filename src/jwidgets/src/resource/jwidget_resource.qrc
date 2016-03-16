@@ -5,4 +5,32 @@
         <file alias="stylesheet_startpage.qss">qss/stylesheet_startpage.qss</file>
         <file alias="stylesheet_default-login.qss">qss/stylesheet_default-login.qss</file>
     </qresource>
+    <qresource prefix="/com.smartsoft.jsmartkits.jwidgets/image"/>
+    <qresource prefix="/com.smartsoft.jsmartkits.jwidgets/image/default/controls/arrow">
+        <file alias="arrow_down.png">image/default/controls/arrow/arrow_down.png</file>
+    </qresource>
+    <qresource prefix="/com.smartsoft.jsmartkits.jwidgets/image/default/controls/checkbox">
+        <file alias="chkbox-chkd-disabled.png">image/default/controls/checkbox/chkbox-chkd-disabled.png</file>
+        <file alias="chkbox-chkd-hover.png">image/default/controls/checkbox/chkbox-chkd-hover.png</file>
+        <file alias="chkbox-chkd-normal.png">image/default/controls/checkbox/chkbox-chkd-normal.png</file>
+        <file alias="chkbox-chkd-pressed.png">image/default/controls/checkbox/chkbox-chkd-pressed.png</file>
+        <file alias="chkbox-part-disabled.png">image/default/controls/checkbox/chkbox-part-disabled.png</file>
+        <file alias="chkbox-part-hover.png">image/default/controls/checkbox/chkbox-part-hover.png</file>
+        <file alias="chkbox-part-normal.png">image/default/controls/checkbox/chkbox-part-normal.png</file>
+        <file alias="chkbox-part-pressed.png">image/default/controls/checkbox/chkbox-part-pressed.png</file>
+        <file alias="chkbox-uchkd-disabled.png">image/default/controls/checkbox/chkbox-uchkd-disabled.png</file>
+        <file alias="chkbox-uchkd-hover.png">image/default/controls/checkbox/chkbox-uchkd-hover.png</file>
+        <file alias="chkbox-uchkd-normal.png">image/default/controls/checkbox/chkbox-uchkd-normal.png</file>
+        <file alias="chkbox-uchkd-pressed.png">image/default/controls/checkbox/chkbox-uchkd-pressed.png</file>
+    </qresource>
+    <qresource prefix="/com.smartsoft.jsmartkits.jwidgets/image/default/controls/radiobutton">
+        <file alias="radiobtn-chkd-disabled.png">image/default/controls/radiobutton/radiobtn-chkd-disabled.png</file>
+        <file alias="radiobtn-chkd-hover.png">image/default/controls/radiobutton/radiobtn-chkd-hover.png</file>
+        <file alias="radiobtn-chkd-normal.png">image/default/controls/radiobutton/radiobtn-chkd-normal.png</file>
+        <file alias="radiobtn-chkd-pressed.png">image/default/controls/radiobutton/radiobtn-chkd-pressed.png</file>
+        <file alias="radiobtn-uchkd-disabled.png">image/default/controls/radiobutton/radiobtn-uchkd-disabled.png</file>
+        <file alias="radiobtn-uchkd-hover.png">image/default/controls/radiobutton/radiobtn-uchkd-hover.png</file>
+        <file alias="radiobtn-uchkd-normal.png">image/default/controls/radiobutton/radiobtn-uchkd-normal.png</file>
+        <file alias="radiobtn-uchkd-pressed.png">image/default/controls/radiobutton/radiobtn-uchkd-pressed.png</file>
+    </qresource>
 </RCC>

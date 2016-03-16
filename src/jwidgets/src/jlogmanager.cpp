@@ -66,8 +66,8 @@ void JLogManager::installMessageHandler()
 void JLogManager::messageOutput(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     //
-    static QMutex mutex;
-    mutex.lock();
+    //static QMutex mutex;
+    //mutex.lock();
 
     switch (JLogManagerPrivate::logType) {
     case LogFile:
@@ -76,7 +76,7 @@ void JLogManager::messageOutput(QtMsgType type, const QMessageLogContext &contex
         if (!file.open(QIODevice::WriteOnly
                        | QIODevice::Append
                        | QIODevice::Text)) {
-            mutex.unlock();
+            //mutex.unlock();
             return;
         }
 
@@ -106,7 +106,7 @@ void JLogManager::messageOutput(QtMsgType type, const QMessageLogContext &contex
         break;
     }
 
-    mutex.unlock();
+    //mutex.unlock();
 }
 
 #endif

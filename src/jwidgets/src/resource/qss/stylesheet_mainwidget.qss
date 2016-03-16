@@ -1,5 +1,4 @@
 ﻿
-
 /* StatusBarMgr */
   
 StatusBarMgr {
@@ -16,15 +15,59 @@ StatusBarMgr QLabel#labelInfo {
     margin-right: 6px;
 }  
 
-/** QTabWidget **/
+/** JCurveWidget **/
 /*
-QTabWidget#tabWidgetTable::pane {
-    border-top: 2px solid #777;
-    position: east;
-    top: -0.5em;
+JCurveWidget {
+    border-radius: 3px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 rgba(25, 25, 25, 220), stop: 1 rgba(25, 25, 25, 120));
 }
 
-QTabWidget#tabWidgetTable::tab-bar {
-    alignment: left bottom;
+QwtPlotCanvas {
+    border-radius: 3px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 rgba(32, 32, 32, 200), stop: 1 rgba(32, 32, 32, 100));
 }
+
+QwtTextLabel {
+    color: #5fd43b;
+    font-family: "Microsoft Yahei";
+}
+
+QwtScaleWidget {
+    color: #5fd43b;
+    font-family: "Microsoft Yahei";
+    font-size: 24px;
+}
+
+QwtLegendLabel{
+    color: #5fd43b;
+    font-family: "Microsoft Yahei";
+} 
 */
+JCurveWidget {
+    border-radius: 2px;
+    background: #444;
+}
+
+QwtPlotCanvas {
+    border-radius: 2px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 rgba(32, 32, 32, 200), stop: 1 rgba(32, 32, 32, 100));
+}
+
+QwtPlotZoomer {
+    border-radius: 2px;
+}
+
+QwtTextLabel {
+    color: white;
+}
+
+QwtScaleWidget {
+    color: #bbb;
+}
+
+QwtLegendLabel {
+    color: white;
+}
