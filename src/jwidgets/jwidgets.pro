@@ -61,21 +61,24 @@ macx: CONFIG(qt_framework, qt_framework|qt_no_framework) {
         destdir = $$replace(destdir, /, \\)
         ## copy files
         excludefile = $$PWD/copy.ignore
-        !exists("$$excludefile"): excludefile = $$JSMARTKITS_ROOT/src/common/copy.ignore
-        !exists("$$excludefile"): error("$$excludefile" is not exists!)
+        !exists("$${excludefile}"): excludefile = $$JSMARTKITS_ROOT/src/common/copy.ignore
+        !exists("$${excludefile}"): error("$${excludefile}" is not exists!)
         excludefile = $$replace(excludefile, /, \\)
         srcdir = $$PWD/src
         srcdir = $$replace(srcdir, /, \\)
-        #exists("$$destdir"): copyCommand += && rd /s /q "$$destdir"
-        copyCommand += && xcopy "$$srcdir\\*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
+        #exists("$${destdir}"): copyCommand += && rd /s /q "$${destdir}"
+        copyCommand += && xcopy "$${srcdir}\\*.h" "$${destdir}" /i /s /y /exclude:"$$excludefile"
 
         ## test for jdataanalyse
-        win32:exists($${JSMARTKITS_ROOT}/../jdataanalyse) {
-            srcdir = $${JSMARTKITS_ROOT}/bin/$${jtarget_url}/$${jtarget_url}d.dll
+        exists("$${JSMARTKITS_ROOT}/../jdataanalyse") {
+            srcdir = $${JSMARTKITS_ROOT}/../jdataanalyse/lib/$${jtarget_url}/$${jtarget_url}d.dll
             srcdir = $$replace(srcdir, /, \\)
             destdir = $${DESTDIR}/../../bin/
             destdir = $$replace(destdir, /, \\)
-            copyCommand += && copy "$$srcdir" "$$destdir"
+            !exists("$${destdir}") {
+                copyCommand += && mkdir "$${destdir}"
+            }
+            copyCommand += && copy "$${srcdir}" "$${destdir}"
         }
     } else {
         ## create folder

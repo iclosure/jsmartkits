@@ -68,7 +68,19 @@ macx: CONFIG(qt_framework, qt_framework|qt_no_framework) {
         srcdir = $$replace(srcdir, /, \\)
         #exists("$$destdir"): copyCommand += && rd /s /q "$$destdir"
         copyCommand += && xcopy "$$srcdir\\*.h" "$$destdir" /i /s /y /exclude:"$$excludefile"
-    } else {
+
+        ## test for jdataanalyse
+        exists("$${JSMARTKITS_ROOT}/../jdataanalyse") {
+            srcdir = $${JSMARTKITS_ROOT}/../jdataanalyse/lib/$${jtarget_url}/$${jtarget_url}d.dll
+            srcdir = $$replace(srcdir, /, \\)
+            destdir = $${DESTDIR}/../../bin/
+            destdir = $$replace(destdir, /, \\)
+            !exists("$${destdir}") {
+                copyCommand += && mkdir "$${destdir}"
+            }
+            copyCommand += && copy "$${srcdir}" "$${destdir}"
+        }
+   } else {
         ## create folder
         destdir = $$DESTDIR/include
         ## copy files
