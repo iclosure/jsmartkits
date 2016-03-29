@@ -71,3 +71,10 @@ QwtScaleWidget {
 QwtLegendLabel {
     color: white;
 }
+
+/* StatusBarMgr ModelMgrWidget */
+
+ModelMgrWidget QLabel#labelName:hover {
+    color: #fffe2f;
+}
+ 

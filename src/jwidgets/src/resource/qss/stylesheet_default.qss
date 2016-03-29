@@ -441,20 +441,21 @@ QTableView::item:selected:!focus {
 QTreeView {
     border: 0;
     border-radius: 2px;
-    background: #95a5a6;
-    color: white;
+    background: #34495f; 
+    color: #dbdbdb;
     alternate-background-color: rgb(233, 237, 245);
     selection-background-color: darkgray;
-    gridline-color: rgba(64, 64, 64, 100);
+    gridline-color: #555;
     outline: none;
 }
 
 QTreeView::item {
     background: #34495e;
-    border: 1px solid rgba(64, 64, 64, 100);
+    border-left: 1px solid #555;
+    border-bottom: 1px solid #555;
     padding-left: 2px;
     padding-left: 2px;
-    height: 25px;
+    height: 1.3em;
     outline: none;
 }
 
