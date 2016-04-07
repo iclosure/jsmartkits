@@ -44,7 +44,8 @@ HEADERS += \
     $$PWD/private/jxmltable_widget.h \
     $$PWD/private/jxmltable_p.h \
     $$PWD/private/jfiltertableview_p.h \
-    $$PWD/private/jdialog_p.h
+    $$PWD/private/jdialog_p.h \
+    $$PWD/jtreewidget.h
 
 SOURCES += \
     $$PWD/jwidgets_global.cpp \
@@ -71,7 +72,8 @@ SOURCES += \
     $$PWD/jstatusbar.cpp \
     $$PWD/jskinbutton.cpp \
     $$PWD/jlogmanager.cpp \
-    $$PWD/private/jdialog_p.cpp
+    $$PWD/private/jdialog_p.cpp \
+    $$PWD/jtreewidget.cpp
 
 ################################################
 ## resources

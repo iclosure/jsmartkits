@@ -127,6 +127,8 @@ namespace JWIDGETS_NAMESPACE {
 
 // - class JWidgetsCore -
 
+class JWidgetsCorePrivate;
+
 class JWIDGETS_EXPORT JWidgetsCore
 {
 public:
@@ -135,9 +137,14 @@ public:
 
     void init();
 
+    bool loadSystemLang(const QString &systemName = QString());
+
 private:
     explicit JWidgetsCore();
     ~JWidgetsCore();
+
+private:
+    JWidgetsCorePrivate *d;
 };
 
 #endif // JWIDGETS_GLOBAL_H

@@ -12,6 +12,7 @@
 #include "jstatusbar.h"
 #include "jtableview.h"
 #include "jtreecombobox.h"
+#include "jtreewidget.h"
 #include "jtreeview.h"
 #include "jxmltable.h"
 #include "jstylesheet.h"

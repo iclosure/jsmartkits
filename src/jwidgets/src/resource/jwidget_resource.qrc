@@ -33,4 +33,7 @@
         <file alias="radiobtn-uchkd-normal.png">image/default/controls/radiobutton/radiobtn-uchkd-normal.png</file>
         <file alias="radiobtn-uchkd-pressed.png">image/default/controls/radiobutton/radiobtn-uchkd-pressed.png</file>
     </qresource>
+    <qresource prefix="/com.smartsoft.jsmartkits.jwidgets/lang">
+        <file alias="qt_zh_CN.qm">lang/qt_zh_CN.qm</file>
+    </qresource>
 </RCC>

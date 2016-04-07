@@ -1003,7 +1003,7 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JStringValue &value)
     }
     // maxLength
     if (emItem.hasAttribute("maxLength")) {
-        value.setMaxLength(QVariant(emItem.attribute("maxLength")).toBool());
+        value.setMaxLength(QVariant(emItem.attribute("maxLength")).toInt());
     }
     // pattern
     if (emItem.hasAttribute("pattern")) {
@@ -1365,7 +1365,7 @@ void JXmlTablePrivate::init()
     // styleSheet
     if (data.styleSheet.isEmpty()) {
         q->setStyleSheet("JBoolBox,QAbstractSpinBox,QLineEdit,QProgressBar,"
-                         "QPlainTextEdit,QCombBox,QSpinBox{border:none;border-radius:0;background:white;}"
+                         "QPlainTextEdit,QCombBox,QSpinBox{border:none;border-radius:0;background:#444;}"
                          "QLabel{padding-left:1px;background:transparent;}");
     } else {
         q->setStyleSheet(data.styleSheet);

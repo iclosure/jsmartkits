@@ -1,4 +1,4 @@
-#include "precomp.h"
+﻿#include "precomp.h"
 #include "jtableview_p.h"
 #include "../jtableview.h"
 #include "jheaderarea_p.h"
@@ -214,6 +214,8 @@ void JTableViewPrivate::init()
     // signals of model
     connect(sourceModel, SIGNAL(dataChanged(QModelIndex,QModelIndex)),
             SLOT(_emit_dataChanged(QModelIndex,QModelIndex)));
+    connect(sourceModel, SIGNAL(itemChanged(QStandardItem*)),
+            q, SIGNAL(itemChanged(QStandardItem*)));
     // signals of selection
     //!
     // signals of sorting

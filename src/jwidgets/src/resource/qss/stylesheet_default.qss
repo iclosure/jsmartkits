@@ -167,7 +167,7 @@ QLineEdit {
 }
 
 QLineEdit:read-only {
-    background: #3c3c3c;
+    background: #3d3d3d;
 }
 
 QLineEdit:hover {
@@ -292,6 +292,10 @@ QCheckBox::indicator:checked:disabled {
 
 /** QRadioButton **/
 
+QRadioButton {
+    color: #dbdbdb;
+}
+
 QRadioButton::indicator {
     width: 15px;
     height: 15px;
@@ -333,8 +337,12 @@ QScrollBar:vertical {
     background: #99a;
     width: 20px;
     margin: 0;
-    border: 1px solid #eee;
+    border: 1px solid #888;
     border-radius: 7px;
+}
+
+QScrollBar:vertical:hover {
+    border: 1px solid #ccc;
 }
 
 QScrollBar::handle:vertical {
@@ -369,8 +377,11 @@ QScrollBar:horizontal {
     background: #99a;
     height: 20px;
     margin: 0;
-    border: 1px solid #eee;
+    border: 1px solid #888;
     border-radius: 7px;
+}
+
+QScrollBar:horizontal {
 }
 
 QScrollBar::handle:horizontal {
@@ -473,7 +484,7 @@ QTreeView::item:selected:!focus {
     background: #2d3f55;
     color: #95a5a6;
 }
- 
+
 /** QHeaderView **/
 
 QHeaderView {
@@ -508,7 +519,16 @@ QHeaderView::section:hover {
 
 QHeaderView::section:checked {
     background: #2a3a48;
-    color: #95a5a6;
+}
+
+QHeaderView::section:vertical:checked {
+    background: #2a3a48;
+    color: #ffaa77;
+}
+
+QHeaderView::section:vertical:checked {
+    background: #2c2c38;
+    font-style: italic;
 }
 
 /** QTabWidget **/
@@ -524,6 +544,8 @@ QTabWidget::pane {
 QTabWidget::tab-bar {
     alignment: center;
 }
+
+/** QTabBar **/
 
 QTabBar::tab {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
@@ -554,7 +576,82 @@ QTabBar::tab:selected {
     color: #eee;
 }
 
-QMessageBox {
+/** QMenu **/
+
+QMenu {
+    background: #888;
+    margin: 2px;
+    color: #dbdbdb;
+}
+
+QMenu::item {
+    background: #555;
+    border: 1px solid transparent;
+    padding: 2px 25px 2px 20px;
+}
+
+QMenu::item:selected {
+    border-color: lightblue;
+    background: #6464a0;
+    color: white;
+}
+
+QMenu::icon:checked {
+    background: gray;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    left: 1px;
+}
+
+QMenu::separator {
+    height: 2px;
+    background: lightblue;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+QMenu::indicator {
+    width: 13px;
+    height: 13px;
+}
+
+QMenu::indicator:non-exclusive:unchecked {
+    image: url(:/com.smartsoft.jsmartkits.jwidgets/image/default/controls/checkbox/chkbox-uchkd-normal.png);
+}
+
+QMenu::indicator:non-exclusive:unchecked:selected {
+    image: url(:/com.smartsoft.jsmartkits.jwidgets/image/default/controls/checkbox/chkbox-uchkd-pressed.png);
+}
+
+QMenu::indicator:non-exclusive:checked {
+    image: url(:/com.smartsoft.jsmartkits.jwidgets/image/default/controls/checkbox/chkbox-chkd-normal.png);
+}
+
+QMenu::indicator:non-exclusive:checked:selected {
+    image: url(:/com.smartsoft.jsmartkits.jwidgets/image/default/controls/checkbox/chkbox-chkd-pressed.png);
+}
+
+QMenu::indicator::exclusive:unchecked {
+    image: url(:/com.smartsoft.jsmartkits.jwidgets/image/default/controls/radiobutton/radiobtn-uchkd-normal.png);
+}
+
+QMenu::indicator:exclusive:unchecked:selected {
+    image: url(:/com.smartsoft.jsmartkits.jwidgets/image/default/controls/radiobutton/radiobtn-uchkd-pressed.png);
+}
+
+QMenu::indicator::exclusive:checked {
+    image: url(:/com.smartsoft.jsmartkits.jwidgets/image/default/controls/radiobutton/radiobtn-chkd-normal.png);
+}
+
+QMenu::indicator:exclusive:checked:selected {
+    image: url(:/com.smartsoft.jsmartkits.jwidgets/image/default/controls/radiobutton/radiobtn-chkd-pressed.png);
+}
+
+/** QMessageBox **/
+
+QMessageBox, QDialog {
     background: #444;
     color: #dbdbdb;
 }

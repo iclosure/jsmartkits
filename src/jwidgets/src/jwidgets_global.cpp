@@ -7,6 +7,7 @@ class JWidgetsCorePrivate
 {
 public:
     static JWidgetsCore *_instance;
+    QList<QTranslator *> translators;
 };
 
 JWidgetsCore *JWidgetsCorePrivate::_instance = 0;
@@ -35,12 +36,38 @@ void JWidgetsCore::init()
     Q_INIT_RESOURCE(jwidget_resource);
 }
 
-JWidgetsCore::JWidgetsCore()
+bool JWidgetsCore::loadSystemLang(const QString &systemName)
 {
-    //Q_INIT_RESOURCE(jwidget_resource);
+    QString name = systemName.isEmpty() ? QLocale::system().name() : systemName;
+
+    //
+    d->translators.append(new QTranslator());
+    bool result = d->translators.last()->load(
+                ":/com.smartsoft.jsmartkits.jwidgets/lang/qt_" + name + ".qm");
+    if (result) {
+        return qApp->installTranslator(d->translators.last());
+    }
+
+    return false;
+}
+
+JWidgetsCore::JWidgetsCore() :
+    d(new JWidgetsCorePrivate())
+{
+    init();
 }
 
 JWidgetsCore::~JWidgetsCore()
 {
+    Q_ASSERT(qApp);
+
+    // remove translators
+    Q_FOREACH (QTranslator *translator, d->translators) {
+        qApp->removeTranslator(translator);
+        delete translator;
+    }
+
     Q_CLEANUP_RESOURCE(jwidget_resource);
+
+    delete d;
 }

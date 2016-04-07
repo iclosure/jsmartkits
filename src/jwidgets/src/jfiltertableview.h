@@ -1,4 +1,4 @@
-#ifndef JFILTERTABLEVIEW_H
+﻿#ifndef JFILTERTABLEVIEW_H
 #define JFILTERTABLEVIEW_H
 
 #include "jwidgets_global.h"
@@ -16,7 +16,7 @@ public:
     explicit JFilterTableView(QWidget *parent);
     virtual ~JFilterTableView();
 
-    JXmlTable *view() const;
+    JXmlTable *view();
 
 Q_SIGNALS:
 

@@ -1,4 +1,4 @@
-#include "precomp.h"
+﻿#include "precomp.h"
 #include "jfiltertableview.h"
 #include "private/jfiltertableview_p.h"
 
@@ -17,8 +17,8 @@ JFilterTableView::~JFilterTableView()
     delete d_ptr;
 }
 
-JXmlTable *JFilterTableView::view() const
+JXmlTable *JFilterTableView::view()
 {
-    Q_D(const JFilterTableView);
+    Q_D(JFilterTableView);
     return d->view;
 }
