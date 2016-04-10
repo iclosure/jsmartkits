@@ -147,4 +147,13 @@ private:
     JWidgetsCorePrivate *d;
 };
 
+// - class JAutoCursor -
+
+class JWIDGETS_EXPORT JAutoCursor
+{
+public:
+    explicit JAutoCursor(Qt::CursorShape shape);
+    ~JAutoCursor();
+};
+
 #endif // JWIDGETS_GLOBAL_H

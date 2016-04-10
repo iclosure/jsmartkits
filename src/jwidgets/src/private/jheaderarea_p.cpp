@@ -687,19 +687,19 @@ bool JHeaderAreaPrivate::attach(QAbstractItemView *view)
         horiHeader = tableView->horizontalHeader();
         vertheader = tableView->verticalHeader();
         // signal - slot
-        connect(tableView->data(), SIGNAL(_signal_insertRow(int)),
+        connect(tableView->privateData(), SIGNAL(_signal_insertRow(int)),
                 SLOT(_emit_insertRow(int)), Qt::QueuedConnection);
-        connect(tableView->data(), SIGNAL(_signal_insertColumn(int)),
+        connect(tableView->privateData(), SIGNAL(_signal_insertColumn(int)),
                 SLOT(_emit_insertColumn(int)), Qt::QueuedConnection);
-        connect(tableView->data(), SIGNAL(_signal_removeRow(int)),
+        connect(tableView->privateData(), SIGNAL(_signal_removeRow(int)),
                 SLOT(_emit_removeRow(int)), Qt::QueuedConnection);
-        connect(tableView->data(), SIGNAL(_signal_removeColumn(int)),
+        connect(tableView->privateData(), SIGNAL(_signal_removeColumn(int)),
                 SLOT(_emit_removeColumn(int)), Qt::QueuedConnection);
-        connect(tableView->data(), SIGNAL(_signal_clear()),
+        connect(tableView->privateData(), SIGNAL(_signal_clear()),
                 SLOT(_emit_clear())/*, Qt::QueuedConnection*/);
-        connect(tableView->data(), SIGNAL(_signal_clearContents()),
+        connect(tableView->privateData(), SIGNAL(_signal_clearContents()),
                 SLOT(_emit_clearContents()), Qt::QueuedConnection);
-        connect(tableView->data(), SIGNAL(_signal_updateFilterArea()),
+        connect(tableView->privateData(), SIGNAL(_signal_updateFilterArea()),
                 SLOT(updateArea()), Qt::QueuedConnection);
     } else if (view->inherits("JTreeView")) {
         JTreeView *treeView = qobject_cast<JTreeView *>(view);
@@ -763,19 +763,19 @@ void JHeaderAreaPrivate::detach()
         JTableView *tableView = qobject_cast<JTableView *>(view);
         if (tableView) {
             // disconnect all signal-slot
-            disconnect(tableView->data(), SIGNAL(_signal_insertRow(int)),
+            disconnect(tableView->privateData(), SIGNAL(_signal_insertRow(int)),
                        this, SLOT(_emit_insertRow(int)));
-            disconnect(tableView->data(), SIGNAL(_signal_insertColumn(int)),
+            disconnect(tableView->privateData(), SIGNAL(_signal_insertColumn(int)),
                        this, SLOT(_emit_insertColumn(int)));
-            disconnect(tableView->data(), SIGNAL(_signal_removeRow(int)),
+            disconnect(tableView->privateData(), SIGNAL(_signal_removeRow(int)),
                        this, SLOT(_emit_removeRow(int)));
-            disconnect(tableView->data(), SIGNAL(_signal_removeColumn(int)),
+            disconnect(tableView->privateData(), SIGNAL(_signal_removeColumn(int)),
                        this, SLOT(_emit_removeColumn(int)));
-            disconnect(tableView->data(), SIGNAL(_signal_clear()),
+            disconnect(tableView->privateData(), SIGNAL(_signal_clear()),
                        this, SLOT(_emit_clear()));
-            disconnect(tableView->data(), SIGNAL(_signal_clearContents()),
+            disconnect(tableView->privateData(), SIGNAL(_signal_clearContents()),
                        this, SLOT(_emit_clearContents()));
-            disconnect(tableView->data(), SIGNAL(_signal_udpateFilterArea()),
+            disconnect(tableView->privateData(), SIGNAL(_signal_udpateFilterArea()),
                        this, SLOT(updateArea()));
         }
     } else if (view->inherits("JTreeView")) {

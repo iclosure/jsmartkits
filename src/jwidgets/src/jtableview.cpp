@@ -337,7 +337,7 @@ void JTableView::setModel(QAbstractItemModel *model)
     QTableView::setModel(model);
 }
 
-JTableViewPrivate *JTableView::data()
+JTableViewPrivate *JTableView::privateData()
 {
     Q_D(JTableView);
     return d;

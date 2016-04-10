@@ -120,10 +120,9 @@ private:
     void setModel(QAbstractItemModel *model);
 
 public:
-    JTableViewPrivate *data();
+    JTableViewPrivate *privateData();
 
 private:
-    Q_DISABLE_COPY(JTableView)
     J_DECLARE_PRIVATE(JTableView)
 };
 

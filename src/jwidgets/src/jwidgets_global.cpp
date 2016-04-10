@@ -71,3 +71,16 @@ JWidgetsCore::~JWidgetsCore()
 
     delete d;
 }
+
+// - class JAutoCursor -
+
+
+JAutoCursor::JAutoCursor(Qt::CursorShape shape)
+{
+    QApplication::setOverrideCursor(shape);
+}
+
+JAutoCursor::~JAutoCursor()
+{
+    QApplication::restoreOverrideCursor();
+}

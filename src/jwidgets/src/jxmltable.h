@@ -40,9 +40,9 @@ public:
     Qt::Orientations orientations() const;
 
     QByteArray pack(int row = -1, int column = -1) const;
-    bool unpack(const QByteArray &data, int row = -1, int column = -1);
+    bool unpack(const QByteArray &privateData, int row = -1, int column = -1);
 
-    QVariant unpackFromItem(const QByteArray &data, int row, int column) const;
+    QVariant unpackFromItem(const QByteArray &privateData, int row, int column) const;
     QByteArray packFromItem(const QVariant &value, int row, int column) const;
 
     bool setHighlight(const QColor &color, int row = -1, int column = -1);
