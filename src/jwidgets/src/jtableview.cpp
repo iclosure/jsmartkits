@@ -55,7 +55,7 @@ JTableView::JTableView(QWidget *parent)
     // default properties
 #if QT_VERSION >= 0x050000
     horizontalHeader()->setSectionsMovable(true);
-    verticalHeader()->setDefaultSectionSize(60);
+    //verticalHeader()->setDefaultSectionSize(60);
 #else
     horizontalHeader()->setMovable(true);
 #endif
@@ -279,10 +279,22 @@ void JTableView::insertRow(int row)
     d->insertRows(row);
 }
 
+void JTableView::insertRow(int row, int count)
+{
+    Q_D(JTableView);
+    d->insertRows(row, count);
+}
+
 void JTableView::insertColumn(int column)
 {
     Q_D(JTableView);
     d->insertColumns(column);
+}
+
+void JTableView::insertColumn(int column, int count)
+{
+    Q_D(JTableView);
+    d->insertColumns(column, count);
 }
 
 void JTableView::removeRow(int row)
@@ -291,10 +303,22 @@ void JTableView::removeRow(int row)
     d->removeRows(row);
 }
 
+void JTableView::removeRow(int row, int count)
+{
+    Q_D(JTableView);
+    d->removeRows(row, count);
+}
+
 void JTableView::removeColumn(int column)
 {
     Q_D(JTableView);
     d->removeColumns(column);
+}
+
+void JTableView::removeColumn(int column, int count)
+{
+    Q_D(JTableView);
+    d->removeColumns(column, count);
 }
 
 void JTableView::clear()

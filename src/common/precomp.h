@@ -38,7 +38,7 @@
 #if defined(Q_OS_WIN) || defined(Q_WS_WIN)
 
 #if _MSC_VER >= 1600
-#pragma execution_character_set("utf-8")
+//#pragma execution_character_set("utf-8")
 #endif
 
 #endif

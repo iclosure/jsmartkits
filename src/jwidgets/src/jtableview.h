@@ -106,9 +106,13 @@ public Q_SLOTS:
     void scrollToRow(int row, QAbstractItemView::ScrollHint hint = EnsureVisible);
     void scrollToColumn(int column, QAbstractItemView::ScrollHint hint = EnsureVisible);
     void insertRow(int row);
+    void insertRow(int row, int count);
     void insertColumn(int column);
+    void insertColumn(int column, int count);
     void removeRow(int row);
+    void removeRow(int row, int count);
     void removeColumn(int column);
+    void removeColumn(int column, int count);
     void clear();
     void clearContents();
 

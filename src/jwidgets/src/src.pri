@@ -26,6 +26,7 @@ jwidgets_headers += \
     $$PWD/jheaderarea.h \
     $$PWD/jtableview.h \
     $$PWD/jtreeview.h \
+    $$PWD/jtreewidget.h \
     $$PWD/jxmltable.h \
     $$PWD/jfiltertableview.h \
     $$PWD/jstylesheet.h \
@@ -44,8 +45,7 @@ HEADERS += \
     $$PWD/private/jxmltable_widget.h \
     $$PWD/private/jxmltable_p.h \
     $$PWD/private/jfiltertableview_p.h \
-    $$PWD/private/jdialog_p.h \
-    $$PWD/jtreewidget.h
+    $$PWD/private/jdialog_p.h
 
 SOURCES += \
     $$PWD/jwidgets_global.cpp \

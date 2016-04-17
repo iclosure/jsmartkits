@@ -2,7 +2,7 @@
 /** QPushButton **/
 
 QPushButton { 
-    border-radius: 5px; 
+    border-radius: 3px; 
     background: #6e64a0;
     color: #dbdbdb;
     padding-left: 0.6em;
@@ -27,6 +27,13 @@ QPushButton:disabled {
 
 /* CentralWidget */
 
+QMessageBox QPushButton,
+QDialogButtonBox QPushButton {
+    min-width: 3.5em; 
+}
+
+/* CentralWidget */
+
 QMainWindow {
     background: #333;
     color: #dbdbdb;
@@ -43,7 +50,7 @@ QLabel {
 QGroupBox {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
         stop: 0#444, stop: 1#555);
-    border: 2px solid #556;
+    border: 1px solid #556;
     border-radius: 0.2em;
     margin-top: 0.8em;
     padding-top: 0.4em;
@@ -53,7 +60,7 @@ QGroupBox {
 QGroupBox::title {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
         stop: 0#555, stop: 1#666);
-    border-radius: 5px;
+    border-radius: 3px;
     border: 1px solid #777;
     subcontrol-origin: margin;
     subcontrol-position: top center;
@@ -104,12 +111,9 @@ QComboBox,QSpinBox,QDoubleSpinBox,
 QTimeEdit,QDateEdit,QDateTimeEdit {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
         stop: 0#444, stop: 1#3b3b3b);
-    border-radius: 5px;
-    border: 2px solid #555;
+    border-radius: 3px;
+    border: 1px solid #555;
     color: #ddd;
-    padding-left: 0.2em;
-    padding-top: 0.15em;
-    padding-bottom: 0.15em;
     outline: none;
 } 
 
@@ -164,7 +168,6 @@ QLineEdit {
     border-radius: 2px;
     border: 1px solid #555;
     color: #ddd;
-    padding: 5px;
     outline: none;
 }
 
@@ -178,7 +181,7 @@ QLineEdit:hover {
 } 
 
 QLineEdit:focus:!read-only {
-    border: 1px solid #205375;
+    border: 1px solid #707070;
     border-radius: 2px;
     background: #505050;
     color: #dbdbdb;
@@ -189,7 +192,7 @@ QLineEdit:focus:!read-only {
 /** QListView **/
 
 QListView {
-    border-radius: 2px;
+    border-radius: 3px;
     border: 1px solid #777;
     background: #95a5a6;
     color: white;
@@ -338,10 +341,10 @@ QRadioButton::indicator:checked:disabled {
 
 QScrollBar:vertical {
     background: #99a;
-    width: 20px;
+    width: 10px;
     margin: 0;
     border: 1px solid #888;
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 QScrollBar:vertical:hover {
@@ -350,9 +353,9 @@ QScrollBar:vertical:hover {
 
 QScrollBar::handle:vertical {
     background: #557;
-    min-height: 7px;
+    min-height: 8px;
     margin: 0;
-    border-radius: 7px;
+    border-radius: 3px;
 }
 
 QScrollBar::add-line:vertical {
@@ -378,10 +381,10 @@ QScrollBar::sub-page:vertical {
 
 QScrollBar:horizontal {
     background: #99a;
-    height: 20px;
+    height: 10px;
     margin: 0;
     border: 1px solid #888;
-    border-radius: 7px;
+    border-radius: 4px;
 }
 
 QScrollBar:horizontal {
@@ -389,9 +392,9 @@ QScrollBar:horizontal {
 
 QScrollBar::handle:horizontal {
     background: #557;
-    min-width: 7px;
+    min-width: 8px;
     margin: 0;
-    border-radius: 7px;
+    border-radius: 3px;
 }
 
 QScrollBar::add-line:horizontal {
@@ -501,7 +504,6 @@ QHeaderView {
 
 QHeaderView::section {
     background: #2a3a48;
-    padding: 8px;
     outline: none;
 }
 
@@ -541,10 +543,16 @@ QHeaderView::section:vertical:checked {
     font-style: italic;
 }
 
-/** QTabWidget **/
+QTreeView QHeaderView::section:horizontal {
+    border-top: 0; 
+    border-left: 1px solid #555;
+    border-right: 0;
+}
+
+/** QTabWidget**/
 
 QTabWidget::pane {
-    border: 2px solid rgba(119, 119, 119, 150);
+    border: 1px solid rgba(119, 119, 119, 150);
     border-top-left-radius: 0.3em;
     border-top-right-radius: 0.3em;
     position: absolute;

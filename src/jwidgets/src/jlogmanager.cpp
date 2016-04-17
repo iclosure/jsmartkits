@@ -95,7 +95,9 @@ void JLogManager::messageOutput(QtMsgType type, const QMessageLogContext &contex
         case QtWarningMsg: qWarning() << formatMsg; break;
         case QtCriticalMsg: qCritical() << formatMsg; break;
         case QtFatalMsg: qFatal(formatMsg.toLocal8Bit()); break;
+#if QT_VERSION >= 0x050600
         case QtInfoMsg: qInfo() << formatMsg; break;
+#endif
         default:
             break;
         }

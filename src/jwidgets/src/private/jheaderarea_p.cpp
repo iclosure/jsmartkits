@@ -607,14 +607,16 @@ void JHeaderAreaPrivate::init()
     // default properties
     q->setTitleAlignment(Qt::AlignCenter);
     q->setTitleHeight(25);
-    q->setTitleStyle("border:0;"
-                     "border-top-left-radius:3px;"
+    q->setTitleStyle("border-top-left-radius:3px;"
                      "border-top-right-radius:3px;"
-                     "border-bottom-left-radius:1px;"
-                     "border-bottom-right-radius:1px;"
+                     "border-top:1px solid #666;"
+                     "border-left:1px solid #666;"
+                     "border-right:1px solid #666;"
                      "margin-left:0;margin-right:0;"
-                     "background:qlineargradient(x1:0,y1:0,x2:0,y2:1,stop:0#fffffe,stop:1#a0a0a0);"
-                     "color:darkblue;");
+                     "background:qlineargradient(x1:0,y1:0,x2:0,y2:1,"
+                     "stop:0#44595e,"
+                     "stop:1#44595e);"
+                     "color:#dbdbdb;");
     q->setTitleVisible(true);
     q->setFilterHeight(25);
     q->setFilterVisible(false);

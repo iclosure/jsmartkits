@@ -45,7 +45,8 @@ bool JWidgetsCore::loadSystemLang(const QString &systemName)
     bool result = d->translators.last()->load(
                 ":/com.smartsoft.jsmartkits.jwidgets/lang/qt_" + name + ".qm");
     if (result) {
-        return qApp->installTranslator(d->translators.last());
+        qApp->installTranslator(d->translators.last());
+        return true;
     }
 
     return false;

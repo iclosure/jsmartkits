@@ -44,6 +44,7 @@ QStringList JStyleSheet::keys() const
 {
     QStringList l;
     l << QLatin1String("default");
+    l << QLatin1String("default-normal");
     l << QLatin1String("mainWidget");
     l << QLatin1String("startPage");
     return l;
@@ -53,6 +54,12 @@ QString JStyleSheet::styleSheet(const QString &name)
 {
     if (name == QLatin1String("default")) {
         QFile file(QLatin1String(":/com.smartsoft.jsmartkits.jwidgets/qss/stylesheet_default.qss"));
+        if (!file.open(QFile::ReadOnly)) {
+            return QString::null;
+        }
+        return file.readAll();
+    } else if (name == QLatin1String("default-normal")) {
+        QFile file(QLatin1String(":/com.smartsoft.jsmartkits.jwidgets/qss/stylesheet_default_normal.qss"));
         if (!file.open(QFile::ReadOnly)) {
             return QString::null;
         }

@@ -417,7 +417,7 @@ private:
         QObjectUserData *userData;
         bool bSelf; //
 
-        JTreeWidgetData() : bSelf(true), userData(0) {}
+        JTreeWidgetData() : userData(0), bSelf(true) {}
     } q_userData;
 };
 
@@ -456,7 +456,7 @@ template<typename T>
 inline void JTreeWidget::jSetUserData(JTreeWidgetUserData<T> *userData, bool bSelf)
 {
     if (q_userData.userData != 0) {
-        if (q_userData.userData == data) {
+        if (q_userData.userData == userData) {
             return;
         }
 

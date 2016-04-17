@@ -830,7 +830,7 @@ void JTreeWidget::paintEvent(QPaintEvent *event)
 void JTreeWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if (event->buttons() & Qt::LeftButton) {
-        int dragDistance = (event->pos() = q_startDragPoint).manhattanLength();
+        int dragDistance = (event->pos() - q_startDragPoint).manhattanLength();
         if (dragDistance > QApplication::startDragDistance()) {
             performDrag();
         }
