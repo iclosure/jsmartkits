@@ -20,13 +20,7 @@ StatusBarMgr QLabel#labelInfo {
 JCurveWidget {
     border-radius: 3px;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 rgba(25, 25, 25, 220), stop: 1 rgba(25, 25, 25, 120));
-}
-
-QwtPlotCanvas {
-    border-radius: 3px;
-    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 rgba(32, 32, 32, 200), stop: 1 rgba(32, 32, 32, 100));
+        stop: 0 rgba(25, 25, 25, 255), stop: 1 rgba(25, 25, 25, 255));
 }
 
 QwtTextLabel {
@@ -53,7 +47,7 @@ JCurveWidget {
 QwtPlotCanvas {
     border-radius: 2px;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-        stop: 0 rgba(32, 32, 32, 200), stop: 1 rgba(32, 32, 32, 100));
+        stop: 0 rgba(32, 32, 32, 255), stop: 1 rgba(32, 32, 32, 255));
 }
 
 QwtPlotZoomer {
@@ -76,4 +70,11 @@ QwtLegendLabel {
 
 ModelMgrWidget QLabel#labelName:hover {
     color: #fffe2f;
+}
+
+/* JCavansOptionWidget */
+
+JCavansOptionWidget#JCavansOptionWidget {
+    background: blue;
+    border: 1px solid #888;
 }

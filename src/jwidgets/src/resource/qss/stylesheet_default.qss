@@ -15,7 +15,7 @@ QPushButton {
 QPushButton:hover {
     background: #6e44ad;
 }
- 
+
 QPushButton:pressed {
     background: #0d5c91;
 }
