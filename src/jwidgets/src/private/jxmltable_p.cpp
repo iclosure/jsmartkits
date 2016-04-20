@@ -171,6 +171,9 @@ bool JXmlTablePrivate::updateHeaders()
         q->verticalHeader()->setDefaultSectionSize(data.headerSize.height());
     }
 
+    //
+    q->setVerticalHeaderVisible(data.verticalHeaderVisible);
+
     if (!data.items.isEmpty()) {
         switch (data.orientations) {
         case Qt::Horizontal:

@@ -55,7 +55,7 @@ JTableView::JTableView(QWidget *parent)
     // default properties
 #if QT_VERSION >= 0x050000
     horizontalHeader()->setSectionsMovable(true);
-    //verticalHeader()->setDefaultSectionSize(60);
+    verticalHeader()->setMinimumWidth(60);
 #else
     horizontalHeader()->setMovable(true);
 #endif

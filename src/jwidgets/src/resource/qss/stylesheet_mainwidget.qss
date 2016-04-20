@@ -15,14 +15,14 @@ StatusBarMgr QLabel#labelInfo {
     margin-right: 6px;
 }  
 
-/** JCurveWidget **/
-/*
-JCurveWidget {
+/** QwtPlot **/
+
+QwtPlot {
     border-radius: 3px;
     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
         stop: 0 rgba(25, 25, 25, 255), stop: 1 rgba(25, 25, 25, 255));
 }
-
+/*
 QwtTextLabel {
     color: #5fd43b;
     font-family: "Microsoft Yahei";
@@ -39,9 +39,9 @@ QwtLegendLabel{
     font-family: "Microsoft Yahei";
 } 
 */
-JCurveWidget {
+QwtPlot {
     border-radius: 2px;
-    background: #444;
+    background: #334;
 }
 
 QwtPlotCanvas {
