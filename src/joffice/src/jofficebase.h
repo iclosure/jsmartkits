@@ -33,10 +33,19 @@ public:
     QAxObject *sheets();
     QAxObject *sheet(int index);
 
-    bool open(const QString &filePath);
-    bool quit();
+    QAxObject *prependSheet(const QString &sheetName);
+    QAxObject *appendSheet(const QString &sheetName);
+    QAxObject *insertSheet(int index, const QString &sheetName);
+    bool setSheetCount(int count);
+    bool clearSheet();
 
-    static bool generateDocumentFile(QAxBase *axBase, const QString &filePath);
+    bool create();
+    bool open(const QString &filePath);
+    bool saveAs(const QString &filePath);
+    bool close();
+    bool show(bool enabled = true);
+
+    static bool generateDocumentFile(QAxBase *axBase, const QString &filePath = QString());
 
 Q_SIGNALS:
 

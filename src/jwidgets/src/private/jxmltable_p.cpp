@@ -1385,6 +1385,136 @@ void JXmlTablePrivate::setCellHighlight(const QColor &color, int row, int column
     }
 }
 
+int JXmlTablePrivate::headerWidth() const
+{
+    return data.headerSize.width();
+}
+
+int JXmlTablePrivate::headerHeight() const
+{
+    return data.headerSize.height();
+}
+
+QSize JXmlTablePrivate::headerSize() const
+{
+    return data.headerSize;
+}
+
+QString JXmlTablePrivate::styleSheet() const
+{
+    return data.styleSheet;
+}
+
+bool JXmlTablePrivate::horiHeaderMovable() const
+{
+    return data.horiHeaderMovable;
+}
+
+bool JXmlTablePrivate::verticalHeaderVisible() const
+{
+    return data.verticalHeaderVisible;
+}
+
+bool JXmlTablePrivate::verticalHeaderLabel() const
+{
+    return data.verticalHeaderLabel;
+}
+
+bool JXmlTablePrivate::offsetEnabled() const
+{
+    return data.offsetEnabled;
+}
+
+bool JXmlTablePrivate::readOnly() const
+{
+    return data.readOnly;
+}
+
+bool JXmlTablePrivate::sync() const
+{
+    return data.sync;
+}
+
+void JXmlTablePrivate::setHeaderWidth(int value)
+{
+    if (value != data.headerSize.width()) {
+        data.headerSize.setWidth(value);
+        Q_EMIT headerWidthChanged(value);
+    }
+}
+
+void JXmlTablePrivate::setHeaderHeight(int value)
+{
+    if (value != data.headerSize.height()) {
+        data.headerSize.setHeight(value);
+        Q_EMIT headerHeightChanged(value);
+    }
+}
+
+void JXmlTablePrivate::setHeaderSize(const QSize &value)
+{
+    if (value != data.headerSize) {
+        data.headerSize = value;
+        Q_EMIT headerSizeChanged(value);
+    }
+}
+
+void JXmlTablePrivate::setStyleSheet(const QString &value)
+{
+    if (value != data.styleSheet) {
+        data.styleSheet = value;
+        Q_EMIT styleSheetChanged(value);
+    }
+}
+
+void JXmlTablePrivate::setHoriHeaderMovable(bool value)
+{
+    if (value != data.horiHeaderMovable) {
+        data.horiHeaderMovable = value;
+        Q_EMIT horiHeaderMovableChanged(value);
+    }
+}
+
+void JXmlTablePrivate::setVerticalHeaderVisible(bool value)
+{
+    if (value != data.verticalHeaderVisible) {
+        data.verticalHeaderVisible = value;
+        Q_EMIT verticalHeaderVisibleChanged(value);
+    }
+}
+
+void JXmlTablePrivate::setVerticalHeaderLabel(bool value)
+{
+    if (value != data.verticalHeaderLabel) {
+        data.verticalHeaderLabel = value;
+        Q_EMIT verticalHeaderLabelChanged(value);
+    }
+}
+
+void JXmlTablePrivate::setOffsetEnabled(bool value)
+{
+    if (value != data.offsetEnabled) {
+        data.offsetEnabled = value;
+        Q_EMIT offsetEnabledChanged(value);
+    }
+}
+
+void JXmlTablePrivate::setReadOnly(bool value)
+{
+    if (value != data.readOnly) {
+        data.readOnly = value;
+        Q_EMIT readOnlyChanged(value);
+    }
+}
+
+void JXmlTablePrivate::setSync(bool value)
+{
+    if (value != data.sync) {
+        data.sync = value;
+        Q_EMIT syncChanged(value);
+    }
+}
+
 void JXmlTablePrivate::_emit_sectionMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex)
 {
     Q_UNUSED(oldVisualIndex);

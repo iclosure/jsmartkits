@@ -95,6 +95,16 @@ class JXmlTablePrivate : public QObject
 {
     Q_OBJECT
     J_DECLARE_PUBLIC(JXmlTable)
+    Q_PROPERTY(int headerWidth READ headerWidth WRITE setHeaderWidth NOTIFY headerWidthChanged)
+    Q_PROPERTY(int headerHeight READ headerHeight WRITE setHeaderHeight NOTIFY headerHeightChanged)
+    Q_PROPERTY(QSize headerSize READ headerSize WRITE setHeaderSize NOTIFY headerSizeChanged)
+    Q_PROPERTY(QString styleSheet READ styleSheet WRITE setStyleSheet NOTIFY styleSheetChanged)
+    Q_PROPERTY(bool horiHeaderMovable READ horiHeaderMovable WRITE setHoriHeaderMovable NOTIFY horiHeaderMovableChanged)
+    Q_PROPERTY(bool verticalHeaderVisible READ verticalHeaderVisible WRITE setVerticalHeaderVisible NOTIFY verticalHeaderVisibleChanged)
+    Q_PROPERTY(bool verticalHeaderLabel READ verticalHeaderLabel WRITE setVerticalHeaderLabel NOTIFY verticalHeaderLabelChanged)
+    Q_PROPERTY(bool offsetEnabled READ offsetEnabled WRITE setOffsetEnabled NOTIFY offsetEnabledChanged)
+    Q_PROPERTY(bool readOnly READ readOnly WRITE setReadOnly NOTIFY readOnlyChanged)
+    Q_PROPERTY(bool sync READ sync WRITE setSync NOTIFY syncChanged)
 public:
     explicit JXmlTablePrivate(JXmlTable *parent);
 
@@ -145,7 +155,41 @@ public:
     bool setHighlight(const QColor &color, int row = -1, int column = -1);
     void setCellHighlight(const QColor &color, int row, int column);
 
+    int headerWidth() const;
+    int headerHeight() const;
+    QSize headerSize() const;
+    QString styleSheet() const;
+    bool horiHeaderMovable() const;
+    bool verticalHeaderVisible() const;
+    bool verticalHeaderLabel() const;
+    bool offsetEnabled() const;
+    bool readOnly() const;
+    bool sync() const;
+
+Q_SIGNALS:
+    void headerWidthChanged(int);
+    void headerHeightChanged(int);
+    void headerSizeChanged(const QSize &);
+    void styleSheetChanged(const QString &);
+    void horiHeaderMovableChanged(bool);
+    void verticalHeaderVisibleChanged(bool);
+    void verticalHeaderLabelChanged(bool);
+    void offsetEnabledChanged(bool);
+    void readOnlyChanged(bool);
+    void syncChanged(bool);
+
 public Q_SLOTS:
+    void setHeaderWidth(int value);
+    void setHeaderHeight(int value);
+    void setHeaderSize(const QSize &value);
+    void setStyleSheet(const QString &value);
+    void setHoriHeaderMovable(bool value);
+    void setVerticalHeaderVisible(bool value);
+    void setVerticalHeaderLabel(bool value);
+    void setOffsetEnabled(bool value);
+    void setReadOnly(bool value);
+    void setSync(bool value);
+
     void _emit_sectionMoved(int logicalIndex, int oldVisualIndex, int newVisualIndex);
     void _emit_sectionResized(int logicalIndex, int oldSize, int newSize);
 

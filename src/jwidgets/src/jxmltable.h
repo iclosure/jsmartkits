@@ -1,4 +1,4 @@
-#ifndef JXMLTABLE_H
+﻿#ifndef JXMLTABLE_H
 #define JXMLTABLE_H
 
 #include "jwidgets_global.h"
@@ -49,6 +49,8 @@ public:
     void removeHighlight(int row = -1, int column = -1);
 
     bool isReadOnly() const;
+
+    QObject *configObject();
 
 Q_SIGNALS:
     void tableChanged(const QString &);

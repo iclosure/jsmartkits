@@ -1,4 +1,4 @@
-#include "precomp.h"
+﻿#include "precomp.h"
 #include "jxmltable.h"
 #include "private/jxmltable_p.h"
 
@@ -216,6 +216,12 @@ bool JXmlTable::isReadOnly() const
 {
     Q_D(const JXmlTable);
     return d->data.readOnly;
+}
+
+QObject *JXmlTable::configObject()
+{
+    Q_D(JXmlTable);
+    return d;
 }
 
 void JXmlTable::setReadOnly(bool value)

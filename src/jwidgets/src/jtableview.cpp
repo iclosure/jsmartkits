@@ -95,6 +95,18 @@ void JTableView::setColumnCount(int columns)
     d->sourceModel->setColumnCount(columns);
 }
 
+QStandardItem *JTableView::horizontalHeaderItem(int column) const
+{
+    Q_D(const JTableView);
+    return d->sourceModel->horizontalHeaderItem(column);
+}
+
+QStandardItem *JTableView::verticalHeaderItem(int row) const
+{
+    Q_D(const JTableView);
+    return d->sourceModel->verticalHeaderItem(row);
+}
+
 void JTableView::setVerticalHeaderLabels(const QStringList &labels)
 {
     Q_D(JTableView);

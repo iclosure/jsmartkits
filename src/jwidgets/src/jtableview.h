@@ -48,6 +48,9 @@ public:
     int columnCount() const;
     void setColumnCount(int columns);
 
+    QStandardItem *horizontalHeaderItem(int column) const;
+    QStandardItem *verticalHeaderItem(int row) const;
+
     void setVerticalHeaderLabels(const QStringList &labels);
     void setHorizontalHeaderLabels(const QStringList &labels);
     void setVerticalHeaderVisible(bool visible);
