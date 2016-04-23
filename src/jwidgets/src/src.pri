@@ -33,7 +33,8 @@ jwidgets_headers += \
     $$PWD/jdialog.h \
     $$PWD/jstatusbar.h \
     $$PWD/jskinbutton.h \
-    $$PWD/jlogmanager.h
+    $$PWD/jlogmanager.h \
+    $$PWD/jnotify.h
 
 HEADERS += \
     $$jwidgets_headers \
@@ -45,7 +46,8 @@ HEADERS += \
     $$PWD/private/jxmltable_widget.h \
     $$PWD/private/jxmltable_p.h \
     $$PWD/private/jfiltertableview_p.h \
-    $$PWD/private/jdialog_p.h
+    $$PWD/private/jdialog_p.h \
+    $$PWD/private/jnotify_p.h
 
 SOURCES += \
     $$PWD/jwidgets_global.cpp \
@@ -73,7 +75,8 @@ SOURCES += \
     $$PWD/jskinbutton.cpp \
     $$PWD/jlogmanager.cpp \
     $$PWD/private/jdialog_p.cpp \
-    $$PWD/jtreewidget.cpp
+    $$PWD/jtreewidget.cpp \
+    $$PWD/jnotify.cpp
 
 ################################################
 ## resources

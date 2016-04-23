@@ -18,6 +18,7 @@ JValueType jvaluetype_type_of_string(const std::string &string)
         map_string_type::value_type("numeric", NumericValue),
         map_string_type::value_type("string", StringValue),
         map_string_type::value_type("enum", EnumValue),
+        map_string_type::value_type("dateTime", DateTimeValue),
         map_string_type::value_type("IPv4", IPv4Value),
         map_string_type::value_type("delegate", DelegateValue),
     };
@@ -1504,6 +1505,427 @@ void JEnumValue::setMultiable(bool value)
     if (value != d->multiable) {
         d->multiable = value;
         Q_EMIT multiableChanged(value);
+    }
+}
+
+// - class JDateTimeRangePrivate -
+
+class JDateTimeRangePrivate
+{
+    J_DECLARE_PUBLIC(JDateTimeRange)
+public:
+    JDateTimeRangePrivate(JDateTimeRange *parent = 0) :
+        q_ptr(parent),
+        minimum(),
+        maximum(),
+        minimumEdge(true),
+        maximumEdge(true)
+    {
+
+    }
+
+private:
+    QDateTime minimum;
+    QDateTime maximum;
+    bool minimumEdge;
+    bool maximumEdge;
+};
+
+// - class JDateTimeRange -
+
+JDateTimeRange::JDateTimeRange(QObject *parent) :
+    QObject(parent),
+    d_ptr(new JDateTimeRangePrivate(this))
+{
+
+}
+
+JDateTimeRange::JDateTimeRange(const QDateTime &minimum, const QDateTime &maximum,
+                               bool minimumEdge, bool maximumEdge, QObject *parent) :
+    QObject(parent),
+    d_ptr(new JDateTimeRangePrivate(this))
+{
+    Q_D(JDateTimeRange);
+    d->minimum = minimum;
+    d->maximum = maximum;
+    d->minimumEdge = minimumEdge;
+    d->maximumEdge = maximumEdge;
+}
+
+JDateTimeRange::~JDateTimeRange()
+{
+    Q_D(JDateTimeRange);
+    delete d;
+}
+
+bool JDateTimeRange::isValid() const
+{
+    Q_D(const JDateTimeRange);
+    return (d->minimum.isValid() && d->maximum.isValid() && (d->minimum <= d->maximum));
+}
+
+qint64 JDateTimeRange::delta() const
+{
+    Q_D(const JDateTimeRange);
+    return d->maximum.toMSecsSinceEpoch() - d->minimum.toMSecsSinceEpoch();
+}
+
+QString JDateTimeRange::toString() const
+{
+    Q_D(const JDateTimeRange);
+    return QString("%1%2, %3%4")
+            .arg(d->minimumEdge ? '[' : '(')
+            .arg(d->minimum.toString())
+            .arg(d->maximum.toString())
+            .arg(d->maximumEdge ? ']' : ')');
+}
+
+QString JDateTimeRange::toString(const QString &format) const
+{
+    Q_D(const JDateTimeRange);
+    return QString("%1%2, %3%4")
+            .arg(d->minimumEdge ? '[' : '(')
+            .arg(d->minimum.toString(format))
+            .arg(d->maximum.toString(format))
+            .arg(d->maximumEdge ? ']' : ')');
+}
+
+bool JDateTimeRange::parse(const QString &text, const QString &format)
+{
+    if (text.isEmpty()) {
+        return false;
+    }
+
+    static const QString pattern = ".*";
+
+    QString copy = text.trimmed();
+    if (!QRegExp("^[\\[\\(][ ]*" + pattern + "[ ]*,[ ]*"
+                 + pattern + "[ ]*[\\]\\)]$").exactMatch(copy)) {
+        return false;
+    }
+
+    Q_D(JDateTimeRange);
+
+    d->minimumEdge = ('[' == copy.at(0));
+    d->maximumEdge = (']' == copy.at(copy.count() - 1));
+
+    copy.remove(QRegExp("[\\[\\]\\(\\)]"));
+
+    QStringList s = copy.split(',', QString::SkipEmptyParts);
+    if (s.count() != 2) {
+        return false;
+    }
+
+    d->minimum = QDateTime::fromString(s.at(0).trimmed(), format);
+    if (d->minimum.isNull()) {
+        return false;
+    }
+
+    d->maximum = QDateTime::fromString(s.at(1).trimmed(), format);
+    if (d->maximum.isNull()) {
+        return false;
+    }
+
+    if (d->minimum > d->maximum) {
+        return false;
+    }
+
+    return true;
+}
+
+QDateTime JDateTimeRange::minimum() const
+{
+    Q_D(const JDateTimeRange);
+    return d->minimum;
+}
+
+QDateTime JDateTimeRange::maximum() const
+{
+    Q_D(const JDateTimeRange);
+    return d->maximum;
+}
+
+bool JDateTimeRange::minimumEdge() const
+{
+    Q_D(const JDateTimeRange);
+    return d->minimumEdge;
+}
+
+bool JDateTimeRange::maximumEdge() const
+{
+    Q_D(const JDateTimeRange);
+    return d->maximumEdge;
+}
+
+void JDateTimeRange::setMinimum(const QDateTime &value)
+{
+    Q_D(JDateTimeRange);
+    if (value != d->minimum) {
+        d->minimum = value;
+        Q_EMIT minimumChanged(value);
+    }
+}
+
+void JDateTimeRange::setMaximum(const QDateTime &value)
+{
+    Q_D(JDateTimeRange);
+    if (value != d->maximum) {
+        d->maximum = value;
+        Q_EMIT maximumChanged(value);
+    }
+}
+
+void JDateTimeRange::setMinimumEdge(bool value)
+{
+    Q_D(JDateTimeRange);
+    if (value != d->minimumEdge) {
+        d->minimumEdge = value;
+        Q_EMIT minimumEdgeChanged(value);
+    }
+}
+
+void JDateTimeRange::setMaximumEdge(bool value)
+{
+    Q_D(JDateTimeRange);
+    if (value != d->maximumEdge) {
+        d->maximumEdge = value;
+        Q_EMIT maximumEdgeChanged(value);
+    }
+}
+
+// - class JDateTimeValuePrivate -
+
+class JDateTimeValuePrivate
+{
+    J_DECLARE_PUBLIC(JDateTimeValue)
+public:
+    JDateTimeValuePrivate(JDateTimeValue *parent = 0) :
+        q_ptr(parent),
+        format("yyyy-MM-dd hh:mm:ss"),
+        calenderPopup(false),
+        timeSpec(Qt::LocalTime),
+        range(new JDateTimeRange(parent))
+    {
+
+    }
+
+private:
+    QString format;
+    bool calenderPopup;
+    Qt::TimeSpec timeSpec;
+    JDateTimeRange *range;
+    QList<JDateTimeRange *> withouts;
+};
+
+// - class JDateTimeValue -
+
+JDateTimeValue::JDateTimeValue(QObject *parent) :
+    JItemValue(DateTimeValue, QDateTime::currentDateTime(), parent),
+    d_ptr(new JDateTimeValuePrivate(this))
+{
+
+}
+
+JDateTimeValue::~JDateTimeValue()
+{
+    Q_D(JDateTimeValue);
+    delete d;
+}
+
+QString JDateTimeValue::toString(const QVariant &value) const
+{
+    Q_D(const JDateTimeValue);
+    if (value.type() == QVariant::DateTime) {
+        return value.toDateTime().toString(d->format);
+    } else {
+        return value.toString();
+    }
+}
+
+bool JDateTimeValue::includes(QDateTime &value, bool increase)
+{
+    Q_D(JDateTimeValue);
+    if ((d->range->minimumEdge()
+         ? (value >= d->range->minimum())
+         : (value > d->range->maximum()))
+            && (d->range->maximumEdge()
+                ? (value <= d->range->minimum())
+                : (value < d->range->maximum()))) {
+        return true;
+    } else {
+        value = increase
+                ? (d->range->maximum().addSecs(d->range->maximumEdge() ? 0 : -1))
+                : (d->range->minimum().addSecs(d->range->minimumEdge() ? 0 : 1));
+        return false;
+    }
+}
+
+bool JDateTimeValue::without(QDateTime &value, bool increase)
+{
+    Q_D(JDateTimeValue);
+    QListIterator<JDateTimeRange *> citer(d->withouts);
+    while (citer.hasNext()) {
+        const JDateTimeRange *without = citer.next();
+        if ((without->minimumEdge()
+             ? (value >= without->minimum())
+             : (value > without->minimum()))
+                && (without->maximumEdge()
+                    ? (value <= without->maximum())
+                    : (value < without->maximum()))) {
+            value = increase
+                    ? (without->maximum().addSecs(without->maximumEdge() ? 1 : 0))
+                    : (without->minimum().addSecs(without->minimumEdge() ? -1 : 0));
+            return true;
+        }
+    }
+
+    return false;
+}
+
+QByteArray JDateTimeValue::pack(const QVariant &value) const
+{
+    QByteArray _buffer(value.toString().toLatin1());
+    quint16 _size = (quint16)_buffer.size();
+    _buffer.prepend((const char *)&_size, 2);
+    return _buffer;
+}
+
+QVariant JDateTimeValue::unpack(const QByteArray &data) const
+{
+    if (data.size() < 3) {
+        return QVariant::Invalid;
+    }
+
+    quint16 _size = 0;
+    memcpy(&_size, data, 2);
+    if (_size != data.size() - 2) {
+        return QVariant::Invalid;
+    }
+
+    return QString::fromLatin1(&data.constData()[2]);
+}
+
+QVariant JDateTimeValue::jfromValue(const QVariant &value, int role) const
+{
+    Q_UNUSED(role);
+    return value;
+}
+
+QVariant JDateTimeValue::jtoValue(const QVariant &value, int role) const
+{
+    Q_UNUSED(role);
+    return value;
+}
+
+QWidget *JDateTimeValue::createInstance(JItemValue *itemValue, QWidget *parent) const
+{
+    JDateTimeValue *dateTimeValue = static_cast<JDateTimeValue *>(itemValue);
+    if (dateTimeValue && dateTimeValue->editable()) {
+        return new JDateTimeEdit(dateTimeValue, parent);
+    }
+
+    return 0;
+}
+
+QString JDateTimeValue::format() const
+{
+    Q_D(const JDateTimeValue);
+    return d->format;
+}
+
+Qt::TimeSpec JDateTimeValue::timeSpec() const
+{
+    Q_D(const JDateTimeValue);
+    return d->timeSpec;
+}
+
+bool JDateTimeValue::calenderPopup() const
+{
+    Q_D(const JDateTimeValue);
+    return d->calenderPopup;
+}
+
+JDateTimeRange *JDateTimeValue::range()
+{
+    Q_D(const JDateTimeValue);
+    return d->range;
+}
+
+QList<JDateTimeRange *> &JDateTimeValue::withouts()
+{
+    Q_D(JDateTimeValue);
+    return d->withouts;
+}
+
+QObject *JDateTimeValue::withoutAt(int index) const
+{
+    Q_D(const JDateTimeValue);
+    if (d->withouts.isEmpty()) {
+        return 0;
+    }
+
+    if (index < 0 || index >= d->withouts.count()) {
+        return 0;
+    }
+
+    return d->withouts.at(index);
+}
+
+void JDateTimeValue::addWithout(const QDateTime &minimum, const QDateTime &maximum, bool minimumEdge, bool maximumEdge)
+{
+    Q_D(JDateTimeValue);
+    JDateTimeRange *range = new JDateTimeRange(minimum, maximum, minimumEdge, maximumEdge);
+    d->withouts.append(range);
+}
+
+void JDateTimeValue::removeWithoutAt(int index)
+{
+    Q_D(JDateTimeValue);
+    if (d->withouts.isEmpty()) {
+        return;
+    }
+
+    if (index < 0 || index >= d->withouts.count()) {
+        return;
+    }
+
+    d->withouts.takeAt(index)->deleteLater();
+}
+
+void JDateTimeValue::clearWithout()
+{
+    Q_D(JDateTimeValue);
+    QListIterator<JDateTimeRange *> citer(d->withouts);
+    while (citer.hasNext()) {
+        citer.next()->deleteLater();
+    }
+    d->withouts.clear();
+}
+
+void JDateTimeValue::setFormat(const QString &value)
+{
+    Q_D(JDateTimeValue);
+    if (value != d->format) {
+        d->format = value;
+        Q_EMIT formatChanged(value);
+    }
+}
+
+void JDateTimeValue::setTimeSpec(Qt::TimeSpec value)
+{
+    Q_D(JDateTimeValue);
+    if (value != d->timeSpec) {
+        d->timeSpec = value;
+        Q_EMIT timeSpecChanged(value);
+    }
+}
+
+void JDateTimeValue::setCalenderPopup(bool value)
+{
+    Q_D(JDateTimeValue);
+    if (value != d->calenderPopup) {
+        d->calenderPopup = value;
+        Q_EMIT calenderPopupChanged(value);
     }
 }
 

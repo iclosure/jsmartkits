@@ -1,4 +1,4 @@
-#ifndef JXMLTABLE_DATA_H
+﻿#ifndef JXMLTABLE_DATA_H
 #define JXMLTABLE_DATA_H
 
 #include "../jwidgets_global.h"
@@ -14,6 +14,7 @@ enum JValueType
     NumericValue,
     StringValue,
     EnumValue,
+    DateTimeValue,
     IPv4Value,
     IPv6Value,
     DelegateValue,
@@ -472,6 +473,112 @@ public Q_SLOTS:
 private:
     Q_DISABLE_COPY(JEnumValue)
     JEnumValueData *d;
+};
+
+// - class JDateTimeRange -
+
+class JDateTimeRangePrivate;
+
+class JWIDGETS_EXPORT JDateTimeRange : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(QDateTime minimum READ minimum WRITE setMinimum NOTIFY minimumChanged)
+    Q_PROPERTY(QDateTime maximum READ maximum WRITE setMaximum NOTIFY maximumChanged)
+    Q_PROPERTY(bool minimumEdge READ minimumEdge WRITE setMinimumEdge NOTIFY minimumEdgeChanged)
+    Q_PROPERTY(bool maximumEdge READ maximumEdge WRITE setMaximumEdge NOTIFY maximumEdgeChanged)
+public:
+    explicit JDateTimeRange(QObject *parent = 0);
+    JDateTimeRange(const QDateTime &minimum, const QDateTime &maximum,
+                   bool minimumEdge, bool maximumEdge, QObject *parent = 0);
+    virtual ~JDateTimeRange();
+
+    bool isValid() const;
+    qint64 delta() const;
+    QString toString() const;
+    QString toString(const QString &format) const;
+
+    bool parse(const QString &text, const QString &format);
+
+    QDateTime minimum() const;
+    QDateTime maximum() const;
+    bool minimumEdge() const;
+    bool maximumEdge() const;
+
+Q_SIGNALS:
+    void minimumChanged(const QDateTime &);
+    void maximumChanged(const QDateTime &);
+    void minimumEdgeChanged(bool);
+    void maximumEdgeChanged(bool);
+
+public Q_SLOTS:
+    void setMinimum(const QDateTime &value);
+    void setMaximum(const QDateTime &value);
+    void setMinimumEdge(bool value);
+    void setMaximumEdge(bool value);
+
+private:
+    Q_DISABLE_COPY(JDateTimeRange)
+    J_DECLARE_PRIVATE(JDateTimeRange)
+};
+
+Q_INLINE_TEMPLATE
+QDebug operator <<(QDebug dbg, const JDateTimeRange &value)
+{
+    dbg.nospace() << value.toString() << endl;
+    return dbg;
+}
+
+// - class JDateTimeValue -
+
+class JDateTimeValuePrivate;
+
+class JWIDGETS_EXPORT JDateTimeValue : public JItemValue
+{
+    Q_OBJECT
+    Q_PROPERTY(QString format READ format WRITE setFormat NOTIFY formatChanged)
+    Q_PROPERTY(Qt::TimeSpec timeSpec READ timeSpec WRITE setTimeSpec NOTIFY timeSpecChanged)
+    Q_PROPERTY(bool calenderPopup READ calenderPopup WRITE setCalenderPopup NOTIFY calenderPopupChanged)
+public:
+    explicit JDateTimeValue(QObject *parent = 0);
+    virtual ~JDateTimeValue();
+
+    QString toString(const QVariant &value) const;
+    bool includes(QDateTime &value, bool increase = false);
+    bool without(QDateTime &value, bool increase);
+
+    QByteArray pack(const QVariant &value) const;
+    QVariant unpack(const QByteArray &data) const;
+
+    QVariant jfromValue(const QVariant &value, int role = Qt::EditRole) const;
+    QVariant jtoValue(const QVariant &value, int role = Qt::DisplayRole) const;
+
+    QWidget *createInstance(JItemValue *itemValue, QWidget *parent = 0) const;
+
+    QString format() const;
+    Qt::TimeSpec timeSpec() const;
+    bool calenderPopup() const;
+    JDateTimeRange *range();
+    QList<JDateTimeRange *> &withouts();
+
+    Q_INVOKABLE QObject *withoutAt(int index) const;
+    Q_INVOKABLE void addWithout(const QDateTime &minimum, const QDateTime &maximum,
+                                bool minimumEdge, bool maximumEdge);
+    Q_INVOKABLE void removeWithoutAt(int index);
+    Q_INVOKABLE void clearWithout();
+
+Q_SIGNALS:
+    void formatChanged(const QString &);
+    void timeSpecChanged(Qt::TimeSpec);
+    void calenderPopupChanged(bool);
+
+public Q_SLOTS:
+    void setFormat(const QString &value);
+    void setTimeSpec(Qt::TimeSpec value);
+    void setCalenderPopup(bool value);
+
+private:
+    Q_DISABLE_COPY(JDateTimeValue)
+    J_DECLARE_PRIVATE(JDateTimeValue)
 };
 
 // - class JIPv4Value -

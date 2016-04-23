@@ -1078,6 +1078,61 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JEnumValue &value)
     return true;
 }
 
+bool JXmlTablePrivate::parse(const QDomElement &emItem, JDateTimeValue &value)
+{
+    if (!parse(emItem, static_cast<JItemValue &>(value))) {
+        return false;
+    }
+
+    // format
+    if (emItem.hasAttribute("format")) {
+        value.setFormat(emItem.attribute("format"));
+    }
+    // original
+    if (emItem.hasAttribute("default")) {
+        value.setOriginal(QDateTime::fromString(emItem.attribute("default"), value.format()));
+    }
+    // range
+    if (emItem.hasAttribute("range")) {
+        QString range = emItem.attribute("range");
+        //
+        if (!value.range()->parse(range, value.format())) {
+            qCritical() << QString("parse range failure (range: %2)").arg(range);
+            return false;
+        }
+        //
+        QDateTime original = value.original().toDateTime();
+        if (!value.includes(original)) {
+            qCritical() << QString("default value '%1' (range: %2) is invalid!")
+                           .arg(value.toString(value.original()))
+                           .arg(value.range()->toString(value.format()));
+            return false;
+        }
+        value.setOriginal(original);
+        // whitout
+        for (QDomElement emWithout = emItem.firstChildElement("without");
+             !emWithout.isNull();
+             emWithout = emWithout.nextSiblingElement("without")) {
+            JDateTimeRange *rangeValue = new JDateTimeRange(&value);
+            if (!rangeValue->parse(emWithout.text(), value.format())) {
+                qCritical() << QString("parse range '%1' failed")
+                               .arg(emWithout.text());
+                delete rangeValue;
+                return false;
+            }
+            value.withouts().append(rangeValue);
+        }
+
+    }
+    // original (auto-adjust)
+    QDateTime tTemp = value.original().toDateTime();
+    if (!value.includes(tTemp, true)) {
+        value.setOriginal(tTemp);
+    }
+
+    return true;
+}
+
 bool JXmlTablePrivate::parse(const QDomElement &emItem, JIPv4Value &value)
 {
     if (!parse(emItem, static_cast<JItemValue &>(value))) {
@@ -1815,6 +1870,8 @@ JItemValue *JXmlTablePrivate::createItem(const QDomElement &emItem, const std::s
         return parse<JStringValue>(emItem);
     case EnumValue:
         return parse<JEnumValue>(emItem);
+    case DateTimeValue:
+        return parse<JDateTimeValue>(emItem);
     case IPv4Value:
         return parse<JIPv4Value>(emItem);
     case DelegateValue:
@@ -2122,4 +2179,70 @@ bool JXmlItemDelegate::drawDelegateItem(QPainter *painter,
     }
 
     return true;
+}
+
+// - class JXmlTableInvoke -
+
+JXmlTableInvoke::JXmlTableInvoke(JXmlTablePrivate *viewPri, QObject *parent) :
+    QObject(parent),
+    viewPri(viewPri),
+    view(viewPri->q_ptr)
+{
+
+}
+
+bool JXmlTableInvoke::execAdd(bool exec)
+{
+    if (exec) {
+        return execDialog();
+    } else {
+        switch (viewPri->data.orientations) {
+        case Qt::Horizontal:
+        {
+            int rowCount = view->rowCount();
+            view->insertRow(rowCount == -1 ? 0 : rowCount);
+            break;
+        }
+        case Qt::Vertical:
+        {
+            int columnCount = view->columnCount();
+            view->insertColumn(columnCount == -1 ? 0 : columnCount);
+            break;
+        }
+        default:
+            return false;   // not supported
+        }
+    }
+
+    return true;
+}
+
+bool JXmlTableInvoke::execModify(int index)
+{
+    switch (viewPri->data.orientations) {
+    case Qt::Horizontal:
+    case Qt::Vertical:
+    {
+#if 0
+        JXmlTableEditor editor(viewPri.data());
+        editor.init(index);
+        if (editor.exec() != QDialog::Accepted) {
+            return false;
+        }
+#else
+        Q_UNUSED(index);
+#endif
+        break;
+    }
+    default:
+        return false;   // not supported
+    }
+
+    return true;
+}
+
+bool JXmlTableInvoke::execDialog(int index)
+{
+    Q_UNUSED(index);
+    return false;
 }

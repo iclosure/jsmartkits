@@ -9,6 +9,8 @@
 
 // - class JXmlTableData -
 
+class JXmlTableInvoke;
+
 class JXmlTableData
 {
 public:
@@ -24,6 +26,7 @@ public:
         , offsetEnabled(false)
         , readOnly(false)
         , sync(false)
+        , invoke(0)
     {
 
     }
@@ -82,6 +85,7 @@ public:
     bool offsetEnabled;
     bool readOnly;
     bool sync;
+    JXmlTableInvoke *invoke;
     QMap<JValueBase *, QMap<int, JValueBase *> > items;
 };
 
@@ -125,6 +129,7 @@ public:
     bool parse(const QDomElement &emItem, JNumericValue &value);
     bool parse(const QDomElement &emItem, JStringValue &value);
     bool parse(const QDomElement &emItem, JEnumValue &value);
+    bool parse(const QDomElement &emItem, JDateTimeValue &value);
     bool parse(const QDomElement &emItem, JIPv4Value &value);
     bool parse(const QDomElement &emItem, JDelegateValue &value);
     bool parse(const QDomElement &emItem, JPictureDelegateValue &value);
@@ -176,6 +181,7 @@ private:
 private:
     JXmlTableData data;
     friend class JXmlItemDelegate;
+    friend class JXmlTableInvoke;
 };
 
 template<typename T> Q_INLINE_TEMPLATE
@@ -212,6 +218,25 @@ public:
 private:
     JXmlTable *tableView;
     JXmlTablePrivate *tableViewPrivate;
+};
+
+// - class JXmlTableInvoke -
+
+class JXmlTableInvoke : public QObject
+{
+    Q_OBJECT
+public:
+    explicit JXmlTableInvoke(JXmlTablePrivate *viewPri, QObject *parent = 0);
+
+    Q_INVOKABLE bool execAdd(bool exec = false);
+    Q_INVOKABLE bool execModify(int index);
+
+private:
+    bool execDialog(int index = -1);
+
+private:
+    QScopedPointer<JXmlTablePrivate> viewPri;
+    QScopedPointer<JXmlTable> view;
 };
 
 #endif // JXMLTABLE_P_H

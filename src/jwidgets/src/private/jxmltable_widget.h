@@ -1,4 +1,4 @@
-#ifndef JXMLTABLE_WIDGET_H
+﻿#ifndef JXMLTABLE_WIDGET_H
 #define JXMLTABLE_WIDGET_H
 
 #include "../jwidgets_global.h"
@@ -345,6 +345,36 @@ private Q_SLOTS:
 private:
     Q_DISABLE_COPY(JMultiEnumBox)
     JMultiEnumBoxData *d;
+};
+
+// - class JDateTimeEdit -
+
+class JDateTimeEditData;
+
+class JWIDGETS_EXPORT JDateTimeEdit : public QDateTimeEdit
+{
+    Q_OBJECT
+    Q_PROPERTY(QByteArray jdata READ jdata WRITE jsetData)
+    Q_PROPERTY(QVariant jvalue READ jvalue WRITE jsetValue)
+    Q_PROPERTY(QVariant jtext READ jvalue WRITE jsetValue)
+    Q_PROPERTY(QVariant jproperty READ jproperty)
+public:
+    explicit JDateTimeEdit(JDateTimeValue *property, QWidget *parent = 0);
+    virtual ~JDateTimeEdit();
+
+    const JDateTimeValue *property() const;
+    QByteArray jdata() const;
+    QVariant jvalue() const;
+    QVariant jproperty() const;
+
+public Q_SLOTS:
+    bool jsetData(const QByteArray &data);
+    void jsetValue(const QVariant &value);
+    void _qDateTimeChanged(const QDateTime &value);
+
+private:
+    Q_DISABLE_COPY(JDateTimeEdit)
+    JDateTimeEditData *d;
 };
 
 // - class JIPv4Edit -

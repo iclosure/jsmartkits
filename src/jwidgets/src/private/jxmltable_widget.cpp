@@ -1,4 +1,4 @@
-#include "precomp.h"
+﻿#include "precomp.h"
 #include "jxmltable_widget.h"
 #include "../jxmltable.h"
 
@@ -972,6 +972,94 @@ void JMultiEnumBox::jsetValue(const QVariant &value)
 void JMultiEnumBox::_emit_encodeChanged()
 {
 
+}
+
+// - class JDateTimeEditData -
+
+class JDateTimeEditData
+{
+public:
+    JDateTimeValue *property;
+};
+
+// - class JDateTimeEdit -
+
+JDateTimeEdit::JDateTimeEdit(JDateTimeValue *property, QWidget *parent) :
+    QDateTimeEdit(parent),
+    d(new JDateTimeEditData)
+{
+    d->property = property;
+    setReadOnly(!d->property->editable());
+    if (!d->property->styleSheet().isEmpty()) {
+        setStyleSheet(d->property->styleSheet());
+    }
+    setToolTip(d->property->tooltip());
+    setWhatsThis(d->property->whatsThis());
+    setDisplayFormat(d->property->format());
+    setTimeSpec(d->property->timeSpec());
+    setCalendarPopup(d->property->calenderPopup());
+    if (d->property->range()->isValid()) {
+        setDateTimeRange(d->property->range()->minimum(),
+                         d->property->range()->maximum());
+    }
+
+    connect(this, SIGNAL(dateTimeChanged(QDateTime)), SLOT(_qDateTimeChanged(QDateTime)));
+
+    jsetValue(d->property->original());
+}
+
+JDateTimeEdit::~JDateTimeEdit()
+{
+    delete d;
+}
+
+const JDateTimeValue *JDateTimeEdit::property() const
+{
+    return d->property;
+}
+
+QByteArray JDateTimeEdit::jdata() const
+{
+    return d->property->pack(text());
+}
+
+QVariant JDateTimeEdit::jvalue() const
+{
+    return text();
+}
+
+QVariant JDateTimeEdit::jproperty() const
+{
+    return QVariant::fromValue<void *>(d->property);
+}
+
+bool JDateTimeEdit::jsetData(const QByteArray &data)
+{
+    QVariant _value = d->property->unpack(data);
+    if (_value.isNull()) {
+        return false;
+    }
+
+    setDateTime(QDateTime::fromString(_value.toString(), d->property->format()));
+
+    return dateTime().isValid();
+}
+
+void JDateTimeEdit::jsetValue(const QVariant &value)
+{
+    switch (value.type()) {
+    case QVariant::String:
+        setDateTime(QDateTime::fromString(value.toString(), d->property->format()));
+        break;
+    default:
+        setDateTime(value.toDateTime());
+        break;
+    }
+}
+
+void JDateTimeEdit::_qDateTimeChanged(const QDateTime &value)
+{
+    Q_UNUSED(value);
 }
 
 // - class JIPv4EditData -
