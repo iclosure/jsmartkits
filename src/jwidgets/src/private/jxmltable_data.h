@@ -418,6 +418,7 @@ class JWIDGETS_EXPORT JEnumValue : public JItemValue
 {
     Q_OBJECT
     Q_PROPERTY(int indexOffset READ indexOffset WRITE setIndexOffset NOTIFY indexOffsetChanged)
+    Q_PROPERTY(bool readOnly READ readOnly WRITE setReadOnly NOTIFY readOnlyChanged)
     Q_PROPERTY(bool autoCompletion READ autoCompletion WRITE setAutoCompletion NOTIFY autoCompletionChanged)
     Q_PROPERTY(bool duplicatesEnabled READ duplicatesEnabled WRITE setDuplicatesEnabled NOTIFY duplicatesEnabledChanged)
     Q_PROPERTY(bool multiable READ multiable WRITE setMultiable NOTIFY multiableChanged)
@@ -444,6 +445,7 @@ public:
     QWidget *createInstance(JItemValue *itemValue, QWidget *parent) const;
 
     int indexOffset() const;
+    bool readOnly() const;
     bool autoCompletion() const;
     bool duplicatesEnabled() const;
     bool multiable() const;
@@ -460,12 +462,14 @@ public:
 
 Q_SIGNALS:
     void indexOffsetChanged(int);
+    void readOnlyChanged(bool);
     void autoCompletionChanged(bool);
     void duplicatesEnabledChanged(bool);
     void multiableChanged(bool);
 
 public Q_SLOTS:
     void setIndexOffset(int value);
+    void setReadOnly(bool value);
     void setAutoCompletion(bool value);
     void setDuplicatesEnabled(bool value);
     void setMultiable(bool value);

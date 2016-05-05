@@ -10,6 +10,7 @@ QPushButton {
     padding-top: 0.2em;
     padding-bottom: 0.2em;
     outline: none;
+    font-family: "Microsoft Yahei";
 }
 
 QPushButton:hover {
@@ -36,6 +37,7 @@ QMainWindow {
 
 QLabel {
     color: #dbdbdb;
+    font-family: "Microsoft Yahei";
 }
  
 /* QGroupBox */
@@ -48,6 +50,7 @@ QGroupBox {
     margin-top: 0.8em;
     padding-top: 0.4em;
     color: #ddd;
+    font-family: "Microsoft Yahei";
 } 
 
 QGroupBox::title {
@@ -69,6 +72,7 @@ QGroupBox::title {
 
 QCheckBox {
     color: #dbdbdb;
+    font-family: "Microsoft Yahei";
 }
 
 /* QProgressBar */
@@ -79,6 +83,7 @@ QProgressBar {
     border-radius: 2px;
     text-align: center;
     color: darkblue;
+    font-family: "Microsoft Yahei";
 }
 
 QProgressBar::chunk {
@@ -92,6 +97,7 @@ QProgressBar::chunk {
  
 QStatusBar {
     background: #0075c3;
+    font-family: "Microsoft Yahei";
 }
 
 QStatusBar QLabel {
@@ -111,6 +117,7 @@ QTimeEdit,QDateEdit,QDateTimeEdit {
     padding-top: 0.15em;
     padding-bottom: 0.15em;
     outline: none;
+    font-family: "Microsoft Yahei";
 } 
 
 QComboBox:hover,QSpinBox:hover,QDoubleSpinBox:hover,
@@ -142,6 +149,7 @@ QComboBox QListView {
     background: #404045; 
     color: #bbb;
     outline: none;
+    font-family: "Microsoft Yahei";
 }
 
 QComboBox QListView::item {
@@ -166,6 +174,7 @@ QLineEdit {
     color: #ddd;
     padding: 5px;
     outline: none;
+    font-family: "Microsoft Yahei";
 }
 
 QLineEdit:read-only {
@@ -194,6 +203,7 @@ QListView {
     background: #95a5a6;
     color: white;
     outline: none;
+    font-family: "Microsoft Yahei";
 }
 
 QListView::item {
@@ -228,6 +238,7 @@ QListView::item:selected:!active {
 
 QCheckBox {
     outline: none;
+    font-family: "Microsoft Yahei";
 }
 /*
 QCheckBox:checked {
@@ -297,6 +308,7 @@ QCheckBox::indicator:checked:disabled {
 
 QRadioButton {
     color: #dbdbdb;
+    font-family: "Microsoft Yahei";
 }
 
 QRadioButton::indicator {
@@ -427,6 +439,7 @@ QTableView {
     gridline-color: #555;
     border: 1px solid #666;
     outline: none;
+    font-family: "Microsoft Yahei";
 }
 
 QTableView::item { 
@@ -463,6 +476,7 @@ QTreeView {
     gridline-color: #555;
     border: 1px solid #666;
     outline: none;
+    font-family: "Microsoft Yahei";
 }
 
 QTreeView::item {
@@ -497,6 +511,7 @@ QHeaderView {
     border: 0;
     background: #34495e;
     color: white;
+    font-family: "Microsoft Yahei";
 }
 
 QHeaderView::section {
@@ -571,6 +586,7 @@ QTabBar::tab {
     padding-top: 0.1em;
     padding-bottom: 0.1em;
     color: #222;
+    font-family: "Microsoft Yahei";
 }
 
 QTabBar::tab:hover {
@@ -613,6 +629,7 @@ QMenu {
     background: #888;
     margin: 2px;
     color: #dbdbdb;
+    font-family: "Microsoft Yahei";
 }
 
 QMenu::item {
@@ -685,4 +702,5 @@ QMenu::indicator:exclusive:checked:selected {
 QMessageBox, QDialog {
     background: #444;
     color: #dbdbdb;
+    font-family: "Microsoft Yahei";
 }

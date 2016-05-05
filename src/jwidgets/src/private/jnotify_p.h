@@ -13,8 +13,59 @@ typedef std::pair<unsigned int, JObserverCallbackU> jpair_id_cbu;
 typedef std::pair<std::string, JObserverCallbackS> jpair_id_cbs;
 typedef std::list<jpair_id_cbu> jlst_pair_id_cbu;
 typedef std::list<jpair_id_cbs> jlst_pair_id_cbs;
-typedef std::map<JIObserver*, jlst_pair_id_cbu> jmap_obs_lst_id_cbu;
-typedef std::map<JIObserver*, jlst_pair_id_cbs> jmap_obs_lst_id_cbs;
+
+//
+struct obs_info_u {
+    int delta;
+    jlst_pair_id_cbu pids;
+
+    obs_info_u() : delta(0) {}
+    obs_info_u(int delta, const jlst_pair_id_cbu &pids)
+        :  delta(delta), pids(pids) {}
+    obs_info_u(const obs_info_u &other)
+    {
+        *this = other;
+    }
+    obs_info_u &operator =(const obs_info_u &other)
+    {
+        if (this == &other) {
+            return *this;
+        }
+
+        delta = other.delta;
+        pids = other.pids;
+
+        return *this;
+    }
+};
+
+//
+struct obs_info_s {
+    int delta;
+    jlst_pair_id_cbs pids;
+
+    obs_info_s() : delta(0) {}
+    obs_info_s(int delta, const jlst_pair_id_cbs &pids)
+        :  delta(delta), pids(pids) {}
+    obs_info_s(const obs_info_s &other)
+    {
+        *this = other;
+    }
+    obs_info_s &operator =(const obs_info_s &other)
+    {
+        if (this == &other) {
+            return *this;
+        }
+
+        delta = other.delta;
+        pids = other.pids;
+
+        return *this;
+    }
+};
+
+typedef std::map<JIObserver*, obs_info_u> jmap_obs_info_u;
+typedef std::map<JIObserver*, obs_info_s> jmap_obs_info_s;
 
 // - struct JNotifyMsg -
 
@@ -76,12 +127,12 @@ public:
 
     // INotify interface
 public:
-    INotify &begin(JIObserver *observer);
+    INotify &begin(JIObserver *observer, int delta = 0);
     INotify &end();
-    INotify &push(JIObserver *observer, unsigned int id);
-    JNotify &push(JIObserver *observer, unsigned int id, JObserverCallbackU callback);
-    INotify &push(JIObserver *observer, const std::string &id);
-    INotify &push(JIObserver *observer, const std::string &id, JObserverCallbackS callback);
+    INotify &push(JIObserver *observer, unsigned int id, int delta = 0);
+    JNotify &push(JIObserver *observer, unsigned int id, JObserverCallbackU callback, int delta = 0);
+    INotify &push(JIObserver *observer, const std::string &id, int delta = 0);
+    INotify &push(JIObserver *observer, const std::string &id, JObserverCallbackS callback, int delta = 0);
     INotify &push(unsigned int id);
     INotify &push(unsigned int id, JObserverCallbackU callback);
     INotify &push(const std::string &id);

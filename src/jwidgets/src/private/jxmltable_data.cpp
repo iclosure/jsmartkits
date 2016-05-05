@@ -1198,6 +1198,7 @@ class JEnumValueData
 public:
     JEnumValueData()
         : indexOffset(0)
+        , readOnly(true)
         , autoCompletion(true)
         , duplicatesEnabled(true)
         , multiable(false)
@@ -1206,6 +1207,7 @@ public:
     }
 
     int indexOffset;
+    bool readOnly;
     bool autoCompletion;
     bool duplicatesEnabled;
     bool multiable;
@@ -1389,6 +1391,11 @@ int JEnumValue::indexOffset() const
     return d->indexOffset;
 }
 
+bool JEnumValue::readOnly() const
+{
+    return d->readOnly;
+}
+
 bool JEnumValue::autoCompletion() const
 {
     return d->autoCompletion;
@@ -1481,6 +1488,14 @@ void JEnumValue::setIndexOffset(int value)
     if (value != d->indexOffset) {
         d->indexOffset = value;
         Q_EMIT indexOffsetChanged(value);
+    }
+}
+
+void JEnumValue::setReadOnly(bool value)
+{
+    if (value != d->readOnly) {
+        d->readOnly = value;
+        Q_EMIT readOnlyChanged(value);
     }
 }
 

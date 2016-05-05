@@ -2,7 +2,7 @@
 /* StatusBarMgr */
   
 StatusBarMgr {
-    background: #0075c3;
+    background: #0e3e49;
 }
 
 StatusBarMgr QLabel#labelTime {
@@ -35,7 +35,7 @@ QwtScaleWidget {
 }
 
 QwtLegendLabel{
-    color: #5fd43b;
+    color: #dbdbdb;
     font-family: "Microsoft Yahei";
 } 
 */
@@ -63,7 +63,7 @@ QwtScaleWidget {
 }
 
 QwtLegendLabel {
-    color: white;
+    color:  white;
 }
 
 /* StatusBarMgr ModelMgrWidget */

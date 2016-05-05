@@ -745,6 +745,10 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JItemValue &value)
         return false;
     }
 
+    // enabled
+    if (emItem.hasAttribute("enabled")) {
+        value.setEnabled(QVariant(emItem.attribute("enabled")).toBool());
+    }
     // editable
     if (emItem.hasAttribute("editable")) {
         value.setEditable(QVariant(emItem.attribute("editable")).toBool());
@@ -1029,6 +1033,10 @@ bool JXmlTablePrivate::parse(const QDomElement &emItem, JEnumValue &value)
     // indexOffset
     if (emItem.hasAttribute("indexOffset")) {
         value.setIndexOffset(emItem.attribute("indexOffset").toInt());
+    }
+    // readOnly
+    if (emItem.hasAttribute("readOnly")) {
+        value.setReadOnly(QVariant(emItem.attribute("readOnly")).toBool());
     }
     // autoCompletion
     if (emItem.hasAttribute("autoCompletion")) {

@@ -5,9 +5,15 @@
 #include <string>
 
 //
+#if defined(WIN32) || defined(Q_OS_WIN) || defined(Q_WS_WIN)
 typedef unsigned __int64 JWPARAM;
 typedef __int64 JLPARAM;
 typedef __int64 JLRESULT;
+#else
+typedef unsigned long long JWPARAM;
+typedef long long JLPARAM;
+typedef long long JLRESULT;
+#endif
 
 //
 class JIObserver;
@@ -44,14 +50,16 @@ public:
     virtual ~INotify() {}
 
     //
-    virtual INotify& begin(JIObserver *observer) = 0;
+    virtual INotify& begin(JIObserver *observer, int delta = 0) = 0;
     virtual INotify& end() = 0;
 
+    template<typename O> INotify& begin(O *observer);
+
     //
-    virtual INotify& push(JIObserver *observer, unsigned int id) = 0;
-    virtual INotify& push(JIObserver *observer, unsigned int id, JObserverCallbackU callback) = 0;
-    virtual INotify& push(JIObserver *observer, const std::string &id) = 0;
-    virtual INotify& push(JIObserver *observer, const std::string &id, JObserverCallbackS callback) = 0;
+    virtual INotify& push(JIObserver *observer, unsigned int id, int delta = 0) = 0;
+    virtual INotify& push(JIObserver *observer, unsigned int id, JObserverCallbackU callback, int delta = 0) = 0;
+    virtual INotify& push(JIObserver *observer, const std::string &id, int delta = 0) = 0;
+    virtual INotify& push(JIObserver *observer, const std::string &id, JObserverCallbackS callback, int delta = 0) = 0;
     virtual INotify& push(unsigned int id) = 0;   // inotify().begin(this).push(.).push(.).end();
     virtual INotify& push(unsigned int id, JObserverCallbackU callback) = 0;
     virtual INotify& push(const std::string &id) = 0;
@@ -59,13 +67,13 @@ public:
 
     //
     template<typename O> INotify& push(JIObserver *observer, unsigned int id,
-                                         JLRESULT (O::*callback)(unsigned int, JWPARAM, JLPARAM));
+                                       JLRESULT (O::*callback)(unsigned int, JWPARAM, JLPARAM));
     template<typename O> INotify& push(JIObserver *observer, const std::string &id,
-                                         JLRESULT (O::*callback)(const std::string &, JWPARAM, JLPARAM));
+                                       JLRESULT (O::*callback)(const std::string &, JWPARAM, JLPARAM));
     template<typename O> INotify& push(unsigned int id,
-                                         JLRESULT (O::*callback)(unsigned int, JWPARAM, JLPARAM));
+                                       JLRESULT (O::*callback)(unsigned int, JWPARAM, JLPARAM));
     template<typename O> INotify& push(const std::string &id,
-                                         JLRESULT (O::*callback)(const std::string &, JWPARAM, JLPARAM));
+                                       JLRESULT (O::*callback)(const std::string &, JWPARAM, JLPARAM));
 
     //
     virtual INotify& pop(JIObserver *observer) = 0;     // inotify().pop(this);    // remove all identitiy of this
@@ -100,29 +108,38 @@ public:
 #pragma warning (disable : 4407)
 
 template<typename O> inline
-INotify &INotify::push(JIObserver *observer, unsigned int id,
-                           JLRESULT (O::*callback)(unsigned int, JWPARAM, JLPARAM))
+INotify &INotify::begin(O *observer)
 {
-    return push(observer, id, static_cast<JObserverCallbackU>(callback));
+    return begin(observer,
+                 reinterpret_cast<JIObserver *>(observer) - static_cast<JIObserver *>(observer));
+}
+
+template<typename O> inline
+INotify &INotify::push(JIObserver *observer, unsigned int id,
+                       JLRESULT (O::*callback)(unsigned int, JWPARAM, JLPARAM))
+{
+    return push(observer, id, static_cast<JObserverCallbackU>(callback),
+                reinterpret_cast<JIObserver *>(observer) - static_cast<JIObserver *>(observer));
 }
 
 template<typename O> inline
 INotify &INotify::push(JIObserver *observer, const std::string &id,
-                           JLRESULT (O::*callback)(const std::string &, JWPARAM, JLPARAM))
+                       JLRESULT (O::*callback)(const std::string &, JWPARAM, JLPARAM))
 {
-    return push(observer, id, static_cast<JObserverCallbackS>(callback));
+    return push(observer, id, static_cast<JObserverCallbackS>(callback),
+                reinterpret_cast<JIObserver *>(observer) - static_cast<JIObserver *>(observer));
 }
 
 template<typename O> inline
 INotify &INotify::push(unsigned int id,
-                           JLRESULT (O::*callback)(unsigned int, JWPARAM, JLPARAM))
+                       JLRESULT (O::*callback)(unsigned int, JWPARAM, JLPARAM))
 {
     return push(id, static_cast<JObserverCallbackU>(callback));
 }
 
 template<typename O> inline
 INotify &INotify::push(const std::string &id,
-                           JLRESULT (O::*callback)(const std::string &, JWPARAM, JLPARAM))
+                       JLRESULT (O::*callback)(const std::string &, JWPARAM, JLPARAM))
 {
     return push(id, static_cast<JObserverCallbackS>(callback));
 }
