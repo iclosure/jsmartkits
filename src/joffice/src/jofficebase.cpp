@@ -340,12 +340,14 @@ bool JOfficeBase::generateDocumentFile(QAxBase *axBase, const QString &filePath)
     return JOfficeBasePrivate::generateDocumentFile(axBase, filePath);
 }
 
-bool JOfficeBase::open(const QString &filePath)
+bool JOfficeBase::open(const QString &filePath, QIODevice::OpenMode mode)
 {
     Q_D(JOfficeBase);
-    if (QFile(filePath).exists()) {
-        d->workbook = d->workbooks->querySubObject("Open(QVariant)", filePath);
-    } else if (!create()) {
+    QFileInfo fileInfo(filePath);
+    if (fileInfo.exists()) {
+        d->workbook = d->workbooks->querySubObject("Open(QVariant)",
+                                                   QDir::toNativeSeparators(fileInfo.absoluteFilePath()));
+    } else if ((mode != QIODevice::ReadOnly) && !create()) {
         return false;
     }
 

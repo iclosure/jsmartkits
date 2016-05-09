@@ -40,7 +40,7 @@ public:
     bool clearSheet();
 
     bool create();
-    bool open(const QString &filePath);
+    bool open(const QString &filePath, QIODevice::OpenMode mode);
     bool saveAs(const QString &filePath);
     bool close();
     bool show(bool enabled = true);

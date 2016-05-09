@@ -20,8 +20,6 @@ class JIObserver;
 typedef JLRESULT (JIObserver::*JObserverCallbackU)(unsigned int, JWPARAM, JLPARAM);
 typedef JLRESULT (JIObserver::*JObserverCallbackS)(const std::string &, JWPARAM, JLPARAM);
 
-//template<typename O> JLRESULT (O::*jcallback)(unsigned int, JWPARAM, JLPARAM);
-
 // - class JIObserver -
 
 class JIObserver

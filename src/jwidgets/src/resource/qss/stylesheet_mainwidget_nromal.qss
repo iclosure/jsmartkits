@@ -26,12 +26,12 @@ QwtPlot {
 QwtTextLabel {
     color: #5fd43b;
     font-family: "Microsoft Yahei";
+    font-size: 10px;
 }
 
 QwtScaleWidget {
     color: #5fd43b;
     font-family: "Microsoft Yahei";
-    font-size: 15ex;
 }
 
 QwtLegendLabel{
@@ -56,7 +56,6 @@ QwtPlotZoomer {
 
 QwtTextLabel {
     font-family: "Microsoft Yahei";
-    font-size: 25px;
     color: #dbdbdb;
 }
 

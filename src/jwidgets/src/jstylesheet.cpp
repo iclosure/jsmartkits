@@ -45,7 +45,8 @@ QStringList JStyleSheet::keys() const
     QStringList l;
     l << QLatin1String("default");
     l << QLatin1String("default-normal");
-    l << QLatin1String("mainWidget");
+    l << QLatin1String("mainwidget");
+    l << QLatin1String("mainwidget_normal");
     l << QLatin1String("startPage");
     return l;
 }
@@ -64,8 +65,14 @@ QString JStyleSheet::styleSheet(const QString &name)
             return QString::null;
         }
         return file.readAll();
-    } else if (name == QLatin1String("mainWidget")) {
+    } else if (name == QLatin1String("mainwidget")) {
         QFile file(QLatin1String(":/com.smartsoft.jsmartkits.jwidgets/qss/stylesheet_mainwidget.qss"));
+        if (!file.open(QFile::ReadOnly)) {
+            return QString::null;
+        }
+        return file.readAll();
+    } else if (name == QLatin1String("mainwidget_normal")) {
+        QFile file(QLatin1String(":/com.smartsoft.jsmartkits.jwidgets/qss/stylesheet_mainwidget_normal.qss"));
         if (!file.open(QFile::ReadOnly)) {
             return QString::null;
         }
