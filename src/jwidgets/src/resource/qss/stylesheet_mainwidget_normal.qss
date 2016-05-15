@@ -57,6 +57,7 @@ QwtPlotZoomer {
 QwtTextLabel {
     font-family: "Microsoft Yahei";
     color: #dbdbdb;
+    font-size: 12px;
 }
 
 QwtScaleWidget {

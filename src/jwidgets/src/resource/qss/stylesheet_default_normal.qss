@@ -53,7 +53,7 @@ QGroupBox {
     border: 1px solid #556;
     border-radius: 0.2em;
     margin-top: 0.8em;
-    padding-top: 0.4em;
+    padding-top: 0.5em;
     color: #ddd;
 } 
 
@@ -67,7 +67,7 @@ QGroupBox::title {
     left: 0.5em;
     padding-left: 50px;
     padding-right: 50px;
-    padding-top: 3px;
+    padding-top: 2px;
     padding-bottom: 3px;
     top: 0;
 }
@@ -693,4 +693,14 @@ QMenu::indicator:exclusive:checked:selected {
 QMessageBox, QDialog {
     background: #444;
     color: #dbdbdb;
+}
+
+/** QToolTip **/
+
+QToolTip {
+    background: #444;
+    color: #dbdbdb;
+    font-family: "Microsoft Yahei";
+    border-radius: 3px;
+    border: 1px solid darkkhaki;
 }

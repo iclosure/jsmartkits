@@ -5,7 +5,7 @@
         <file alias="stylesheet_startpage.qss">qss/stylesheet_startpage.qss</file>
         <file alias="stylesheet_default-login.qss">qss/stylesheet_default-login.qss</file>
         <file alias="stylesheet_default_normal.qss">qss/stylesheet_default_normal.qss</file>
-        <file alias="stylesheet_mainwidget_nromal.qss">qss/stylesheet_mainwidget_nromal.qss</file>
+        <file alias="stylesheet_mainwidget_normal.qss">qss/stylesheet_mainwidget_normal.qss</file>
     </qresource>
     <qresource prefix="/com.smartsoft.jsmartkits.jwidgets/image"/>
     <qresource prefix="/com.smartsoft.jsmartkits.jwidgets/image/default/controls/arrow">

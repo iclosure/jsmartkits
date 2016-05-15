@@ -2,7 +2,7 @@
 #include "jofficebase.h"
 #include <ActiveQt/QAxWidget>
 
-#define J_AXBASE_GENERATE_DOCUMENT 1
+#define J_AXBASE_GENERATE_DOCUMENT 0
 
 // - class JOfficeBasePrivate -
 
