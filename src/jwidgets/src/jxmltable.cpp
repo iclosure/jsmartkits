@@ -18,7 +18,7 @@ JXmlTable::JXmlTable(const QString &filePath, QWidget *parent)
 {
     Q_D(JXmlTable);
     d->init();
-    d->data.filePath = filePath.toLocal8Bit();
+    d->data.filePath = filePath;
 }
 
 JXmlTable::~JXmlTable()
@@ -33,7 +33,7 @@ bool JXmlTable::loadConfig(const QString &filePath, const QString &tableName)
 
     clear();
 
-    if (!d->loadConfig(filePath.toLocal8Bit(), tableName)) {
+    if (!d->loadConfig(filePath, tableName)) {
         return false;
     }
 
@@ -84,7 +84,7 @@ QString JXmlTable::config() const
 void JXmlTable::setConfig(const QString &filePath)
 {
     Q_D(JXmlTable);
-    d->setConfig(filePath.toLocal8Bit());
+    d->setConfig(filePath);
 }
 
 QString JXmlTable::tableName() const

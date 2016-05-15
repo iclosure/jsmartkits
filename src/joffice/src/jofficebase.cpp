@@ -299,8 +299,9 @@ bool JOfficeBase::clearSheet()
 bool JOfficeBase::create()
 {
     Q_D(JOfficeBase);
-    d->workbooks->dynamicCall("Add(QVariant)", QApplication::applicationDirPath()
-                              .append("/../docs/templates/workbook_template_1.xltx"));
+    d->workbooks->dynamicCall("Add(QVariant)", QDir::toNativeSeparators(
+                                  QApplication::applicationDirPath()
+                                  .append("/../config/office/templates/workbook_template_1.xltx")));
     d->workbook = d->workbooks->querySubObject("Item(QVariant)",
                                                d->workbooks->property("Count"));
     if (d->workbook == 0) {
