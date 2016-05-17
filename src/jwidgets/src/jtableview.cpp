@@ -59,6 +59,8 @@ JTableView::JTableView(QWidget *parent)
 #else
     horizontalHeader()->setMovable(true);
 #endif
+    horizontalHeader()->setStretchLastSection(true);
+    horizontalHeader()->setDefaultSectionSize(150);
     //verticalHeader()->setDefaultAlignment(Qt::AlignRight | Qt::AlignVCenter);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::SingleSelection);
