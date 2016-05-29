@@ -588,7 +588,7 @@ void JXmlTablePrivate::saveHeaderSize(int logicalIndex, int newSize, Qt::Orienta
             return;
         }
         QTextStream textStream(&out);
-        data.document.save(textStream, 4);
+        data.document.save(textStream, 2);
     }
 }
 
@@ -630,7 +630,7 @@ void JXmlTablePrivate::saveSection(int logicalIndex, int oldVisualIndex, int new
         return;
     }
     QTextStream textStream(&out);
-    data.document.save(textStream, 4);
+    data.document.save(textStream, 2);
 }
 
 bool JXmlTablePrivate::parse(const QDomElement &emTable)

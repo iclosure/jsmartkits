@@ -36,6 +36,9 @@ jwidgets_headers += \
     $$PWD/jlogmanager.h \
     $$PWD/jnotify.h
 
+win32:jwidgets_headers += \
+    $$PWD/jprecitimer.h
+
 HEADERS += \
     $$jwidgets_headers \
     $$PWD/private/jspinbox_p.h \
@@ -77,6 +80,9 @@ SOURCES += \
     $$PWD/private/jdialog_p.cpp \
     $$PWD/jtreewidget.cpp \
     $$PWD/jnotify.cpp
+
+win32:SOURCES += \
+    $$PWD/jprecitimer.cpp
 
 ################################################
 ## resources
