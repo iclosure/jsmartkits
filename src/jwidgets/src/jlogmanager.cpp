@@ -29,7 +29,7 @@ JLogManager::JLogManager()
     : d_ptr(new JLogManagerPrivate(this))
 {
 #if !defined(Q_OS_MAC)
-    QString pattern("%{type} | %{time} : %{message} *** \"%{file}"
+    QString pattern("%{time} | %{type} : %{message} *** \"%{file}"
                     "\" (line:%{line} - function:%{function} ***");
 #ifdef _MSC_VER
     pattern.append("\r\n");

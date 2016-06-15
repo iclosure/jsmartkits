@@ -53,6 +53,10 @@ void JIconButton::setPixmap(const QIcon &icon)
 
 void JIconButton::paintEvent(QPaintEvent *)
 {
+    if (q_pixmap.isNull()) {
+        return;
+    }
+
     QPainter painter(this);
     painter.drawPixmap(rect(), q_pixmap, q_pixmap.rect());
 }
@@ -103,6 +107,10 @@ void JPixmapButton::setPixmap(const QPixmap &pixmap)
 
 void JPixmapButton::paintEvent(QPaintEvent *)
 {
+    if (q_pixmap.isNull()) {
+        return;
+    }
+
     QPainter painter(this);
     painter.drawPixmap(rect(), q_pixmap, QRect(q_picWidth * q_state, 0, q_picWidth, q_picHeight));
 }
