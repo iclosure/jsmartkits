@@ -69,12 +69,13 @@ void JLogManager::messageOutput(QtMsgType type, const QMessageLogContext &contex
     //static QMutex mutex;
     //mutex.lock();
 
-
     //
     if (msg.contains("libpng warning")) {
+        //mutex.unlock();
         return;     // ignore
     }
 
+    //
     switch (JLogManagerPrivate::logType) {
     case LogFile:
     {
