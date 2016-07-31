@@ -1,6 +1,7 @@
 ﻿#include "precomp.h"
 #include "jofficebase.h"
 #include <ActiveQt/QAxWidget>
+#include <sapi.h>
 
 #define J_AXBASE_GENERATE_DOCUMENT 0
 
@@ -17,7 +18,13 @@ class JOfficeBasePrivate
         workbook(0),
         officeType(officeType)
     {
-        application = new QAxObject();
+        //
+        HRESULT r = OleInitialize(0);
+        if (r != S_OK && r != S_FALSE) {
+            //qWarning(QStringLiteral("Qt:初始化Ole失败（error %x）"), (unsigned int)r);
+        }
+
+        application = new QAxObject("Excel.Application");
 
         switch (officeType) {
         case JOfficeBase::OfficeWord:
@@ -30,6 +37,7 @@ class JOfficeBasePrivate
         default:
             break;
         }
+
 
         //
         if (application->isNull()) {
@@ -53,6 +61,9 @@ class JOfficeBasePrivate
 
         delete application;
         application = 0;
+
+        //
+        ::OleUninitialize();
     }
 
     bool isValid() const;
@@ -60,10 +71,10 @@ class JOfficeBasePrivate
     static bool generateDocumentFile(QAxBase *axBase, const QString &filePath = QString());
 
 private:
-    JOfficeBase::OfficeType officeType;
     QAxObject *application;
     QAxObject *workbooks;
     QAxObject *workbook;
+    JOfficeBase::OfficeType officeType;
 };
 
 bool JOfficeBasePrivate::isValid() const
@@ -375,10 +386,10 @@ bool JOfficeBase::close()
 {
     Q_D(JOfficeBase);
     if (d->workbook) {
-        d->workbook->dynamicCall("Close()");
+        d->workbook->dynamicCall("Close(bool)", false);
     }
 
-    d->application->dynamicCall("Quit()");
+    d->application->dynamicCall("Quit(void)");
 
     return true;
 }

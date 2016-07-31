@@ -310,11 +310,6 @@ void JNotify::dispense(const JNotifyMsg &msg)
             dispense(msg.sid, msg.wParam, msg.lParam);
         }
     }
-
-    if (((unsigned int)msg.lParam) == INotify::AutoDeleteWParam
-            && ((void *)msg.wParam) != 0) {
-        delete (void *)msg.wParam;
-    }
 }
 
 JLRESULT JNotify::dispense(unsigned int id, JWPARAM wParam, JLPARAM lParam)

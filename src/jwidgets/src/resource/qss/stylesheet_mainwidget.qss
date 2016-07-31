@@ -95,8 +95,8 @@ DataAnalyseWidget QListView#listWidgetCoord {
 
 DataAnalyseWidget QListView#listWidgetCoord::item {
     border-radius: 2px;
-    border: 1px solid #557;
-    height: 2.9em;
+    border: 1px solid #88990a;
+    height: 4.2em;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
         stop: 0#446,
         stop: 0.4#445,

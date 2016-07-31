@@ -8,5 +8,5 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS += \
-    examples \
+#    examples \
     src

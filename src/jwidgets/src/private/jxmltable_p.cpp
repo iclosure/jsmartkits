@@ -2292,7 +2292,7 @@ bool JXmlItemDelegate::drawDelegateItem(QPainter *painter,
                 painter->fillRect(option.rect, option.palette.highlight());
             }
 
-            QStyleOptionProgressBarV2 optionProgressBar;
+            QStyleOptionProgressBar optionProgressBar;
             optionProgressBar.state = QStyle::State_Enabled | QStyle::State_Horizontal;
             optionProgressBar.direction = QApplication::layoutDirection();
             optionProgressBar.fontMetrics = QApplication::fontMetrics();

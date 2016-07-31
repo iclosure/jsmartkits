@@ -92,18 +92,12 @@ public:
     virtual void post(const std::string &id, JWPARAM wParam = 0, JLPARAM lParam = 0) = 0;
     virtual void post(unsigned int id, const std::string &msg, JLPARAM lParam = 0) = 0;
     virtual void post(const std::string &id, const std::string &msg, JLPARAM lParam = 0) = 0;
-
-public:
-    //
-    enum Flag
-    {
-        //
-        AutoDeleteWParam = 0xfffffffaul,
-    };
 };
 
+#if defined(_MSC_VER)
 #pragma warning (push)
 #pragma warning (disable : 4407)
+#endif
 
 template<typename O> inline
 INotify &INotify::begin(O *observer)
@@ -142,6 +136,8 @@ INotify &INotify::push(const std::string &id,
     return push(id, static_cast<JObserverCallbackS>(callback));
 }
 
+#if defined(_MSC_VER)
 #pragma warning (pop)
+#endif
 
 #endif // INOTIFY_H
