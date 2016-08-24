@@ -34,7 +34,7 @@ jwidgets_headers += \
     $$PWD/jstatusbar.h \
     $$PWD/jskinbutton.h \
     $$PWD/jlogmanager.h \
-    $$PWD/jnotify.h
+    $$PWD/jnotifier.h
 
 win32:jwidgets_headers += \
     $$PWD/jprecitimer.h
@@ -50,7 +50,7 @@ HEADERS += \
     $$PWD/private/jxmltable_p.h \
     $$PWD/private/jfiltertableview_p.h \
     $$PWD/private/jdialog_p.h \
-    $$PWD/private/jnotify_p.h
+    $$PWD/private/jnotifier_p.h
 
 SOURCES += \
     $$PWD/jwidgets_global.cpp \
@@ -79,7 +79,7 @@ SOURCES += \
     $$PWD/jlogmanager.cpp \
     $$PWD/private/jdialog_p.cpp \
     $$PWD/jtreewidget.cpp \
-    $$PWD/jnotify.cpp
+    $$PWD/jnotifier.cpp
 
 win32:SOURCES += \
     $$PWD/jprecitimer.cpp

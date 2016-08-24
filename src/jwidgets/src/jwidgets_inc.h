@@ -16,6 +16,6 @@
 #include "jtreeview.h"
 #include "jxmltable.h"
 #include "jstylesheet.h"
-#include "jnotify.h"
+#include "jnotifier.h"
 
 #endif // JWIDGETS_INC_H
