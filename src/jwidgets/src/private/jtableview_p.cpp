@@ -8,6 +8,7 @@
 JTableViewPrivate::JTableViewPrivate(JTableView *parent)
     : QObject(parent)
     , q_ptr(parent)
+    , sourceModel(0)
 {
 
 }
@@ -238,5 +239,8 @@ QModelIndex JTableViewPrivate::mapToSource(const QModelIndex &index) const
 QStandardItem *JTableViewPrivate::modelItem(const QModelIndex &index) const
 {
     //Q_Q(const JTableView);
+    if (!sourceModel) {
+        return 0;
+    }
     return sourceModel->item(index.row(), index.column());
 }

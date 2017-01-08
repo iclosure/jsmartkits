@@ -6,7 +6,6 @@ QLineEdit,
 QComboBox,
 QRadioButton {
     color: #ecf0f1;
-    font: 15px "Microsoft Yahei";
 }
 
 /** QRadioButton **/
@@ -50,7 +49,6 @@ QListView {
     background: #95a5a6;
     color: white;
     outline: none;
-    font: 15px "Microsoft Yahei";
 }
 
 QListView::item {
@@ -88,7 +86,6 @@ QComboBox QListView {
     background: white;
     color: white;
     outline: none;
-    font: 15px "Microsoft Yahei";
 }
 
 QComboBox QListView::item:hover {
@@ -103,7 +100,6 @@ QPushButton {
     color: #ecf0f1;
     min-width: 100px;
     min-height: 32px;
-    font: 15px "Microsoft Yahei";
 }
 
 QPushButton::focus {
@@ -133,7 +129,6 @@ QTableView {
     selection-background-color: darkgray;
     gridline-color: rgba(64, 64, 64, 100);
     outline: none;
-    font: 15px "Microsoft Yahei";
 }
 
 QTableView::item {
@@ -167,7 +162,6 @@ QTreeView {
     alternate-background-color: rgb(233, 237, 245);
     selection-background-color: darkgray;
     gridline-color: rgba(64, 64, 64, 100);
-    font: 15px "Microsoft Yahei";
     outline: none;
 }
 
@@ -201,7 +195,6 @@ QHeaderView {
     border: 0;
     background: #34495e;
     color: white;
-    font: 13px "Microsoft Yahei";
     outline: none;
 }
 
@@ -229,7 +222,6 @@ QLineEdit {
     border-radius: 2px;
     border: 1px solid rgba(157, 195, 199, 50);
     color: #fcf5f7;
-    font: 15px "Microsoft Yahei";
 }
 
 QLineEdit:read-only {
@@ -254,7 +246,6 @@ QComboBox {
     border-radius: 2px;
     border: 1px solid rgba(157, 195, 199, 50);
     color: #fcf5f7;
-    font: 15px "Microsoft Yahei";
 }
 
 QComboBox:read-only {
@@ -299,7 +290,6 @@ QTooltip {
 
 QCheckBox {
     color: #ecf0f1;
-    font: 15px "Microsoft Yahei";
     outline: none;
 }
 

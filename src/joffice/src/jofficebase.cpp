@@ -1,7 +1,7 @@
 ﻿#include "precomp.h"
 #include "jofficebase.h"
 #include <ActiveQt/QAxWidget>
-#include <sapi.h>
+//#include <sapi.h>
 
 #define J_AXBASE_GENERATE_DOCUMENT 0
 
@@ -386,10 +386,10 @@ bool JOfficeBase::close()
 {
     Q_D(JOfficeBase);
     if (d->workbook) {
-        d->workbook->dynamicCall("Close(bool)", false);
+        d->workbook->dynamicCall("Close()", false);
     }
 
-    d->application->dynamicCall("Quit(void)");
+    d->application->dynamicCall("Quit()");
 
     return true;
 }

@@ -2,7 +2,7 @@
 /** QPushButton **/
 
 QPushButton { 
-    border-radius: 5px; 
+    border-radius: 3px; 
     background: #6e64a0;
     color: #dbdbdb;
     padding-left: 0.6em;
@@ -10,13 +10,12 @@ QPushButton {
     padding-top: 0.2em;
     padding-bottom: 0.2em;
     outline: none;
-    font-family: "Microsoft Yahei";
 }
 
 QPushButton:hover {
     background: #6e44ad;
 }
-
+ 
 QPushButton:pressed {
     background: #0d5c91;
 }
@@ -24,6 +23,13 @@ QPushButton:pressed {
 QPushButton:disabled {
     background: #666;
     color: #bbb;
+}
+
+/* CentralWidget */
+
+QMessageBox QPushButton,
+QDialogButtonBox QPushButton {
+    min-width: 3.5em; 
 }
 
 /* CentralWidget */
@@ -37,7 +43,6 @@ QMainWindow {
 
 QLabel {
     color: #dbdbdb;
-    font-family: "Microsoft Yahei";
 }
  
 /* QGroupBox */
@@ -71,7 +76,6 @@ QGroupBox::title {
 
 QCheckBox {
     color: #dbdbdb;
-    font-family: "Microsoft Yahei";
 }
 
 /* QProgressBar */
@@ -82,7 +86,6 @@ QProgressBar {
     border-radius: 2px;
     text-align: center;
     color: darkblue;
-    font-family: "Microsoft Yahei";
 }
 
 QProgressBar::chunk {
@@ -96,27 +99,23 @@ QProgressBar::chunk {
  
 QStatusBar {
     background: #0075c3;
-    font-family: "Microsoft Yahei";
 }
 
 QStatusBar QLabel {
-    color: #e0e0e0;
+    color: #cdcdcd;
 }
 
 /** QComboBox, QSpinBox, QDoubleSpinBox **/
 
-QComboBox,QSpinBox,QDoubleSpinBox,
+QComboBox,QSpinBox,QDoubleSpinBox,QLineEdit,
 QTimeEdit,QDateEdit,QDateTimeEdit {
     background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
         stop: 0#444, stop: 1#3b3b3b);
-    border-radius: 5px;
-    border: 2px solid #555;
+    border-radius: 3px;
+    border: 1px solid #555;
     color: #ddd;
-    padding-left: 0.2em;
-    padding-top: 0.15em;
-    padding-bottom: 0.15em;
     outline: none;
-    font-family: "Microsoft Yahei";
+    min-height: 23px;
 } 
 
 QComboBox:hover,QSpinBox:hover,QDoubleSpinBox:hover,
@@ -148,7 +147,6 @@ QComboBox QListView {
     background: #404045; 
     color: #bbb;
     outline: none;
-    font-family: "Microsoft Yahei";
 }
 
 QComboBox QListView::item {
@@ -171,9 +169,7 @@ QLineEdit {
     border-radius: 2px;
     border: 1px solid #555;
     color: #ddd;
-    padding: 5px;
     outline: none;
-    font-family: "Microsoft Yahei";
 }
 
 QLineEdit:read-only {
@@ -186,7 +182,7 @@ QLineEdit:hover {
 } 
 
 QLineEdit:focus:!read-only {
-    border: 1px solid #205375;
+    border: 1px solid #707070;
     border-radius: 2px;
     background: #505050;
     color: #dbdbdb;
@@ -197,12 +193,11 @@ QLineEdit:focus:!read-only {
 /** QListView **/
 
 QListView {
-    border-radius: 2px;
+    border-radius: 3px;
     border: 1px solid #777;
     background: #95a5a6;
     color: white;
     outline: none;
-    font-family: "Microsoft Yahei";
 }
 
 QListView::item {
@@ -237,7 +232,6 @@ QListView::item:selected:!active {
 
 QCheckBox {
     outline: none;
-    font-family: "Microsoft Yahei";
 }
 /*
 QCheckBox:checked {
@@ -307,7 +301,6 @@ QCheckBox::indicator:checked:disabled {
 
 QRadioButton {
     color: #dbdbdb;
-    font-family: "Microsoft Yahei";
 }
 
 QRadioButton::indicator {
@@ -349,10 +342,10 @@ QRadioButton::indicator:checked:disabled {
 
 QScrollBar:vertical {
     background: #99a;
-    width: 20px;
+    width: 10px;
     margin: 0;
     border: 1px solid #888;
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 QScrollBar:vertical:hover {
@@ -361,9 +354,9 @@ QScrollBar:vertical:hover {
 
 QScrollBar::handle:vertical {
     background: #557;
-    min-height: 7px;
+    min-height: 8px;
     margin: 0;
-    border-radius: 7px;
+    border-radius: 3px;
 }
 
 QScrollBar::add-line:vertical {
@@ -389,10 +382,10 @@ QScrollBar::sub-page:vertical {
 
 QScrollBar:horizontal {
     background: #99a;
-    height: 20px;
+    height: 10px;
     margin: 0;
     border: 1px solid #888;
-    border-radius: 7px;
+    border-radius: 4px;
 }
 
 QScrollBar:horizontal {
@@ -400,9 +393,9 @@ QScrollBar:horizontal {
 
 QScrollBar::handle:horizontal {
     background: #557;
-    min-width: 7px;
+    min-width: 8px;
     margin: 0;
-    border-radius: 7px;
+    border-radius: 3px;
 }
 
 QScrollBar::add-line:horizontal {
@@ -429,20 +422,17 @@ QScrollBar::sub-page:horizontal {
 /** QTableView **/
 
 QTableView {
-    border: 0;
     border-radius: 2px;
-    background: #95a5a6;
-    color: #eee;
-    alternate-background-color: rgb(233, 237, 245);
-    selection-background-color: darkgray;
-    gridline-color: #555;
     border: 1px solid #666;
+    background: #34495f;
+    color: #cdcdcd;
+    alternate-background-color: #34596e;
+    selection-background-color: #405362;
+    gridline-color: #555;
     outline: none;
-    font-family: "Microsoft Yahei";
 }
 
-QTableView::item { 
-    background: #34495e;
+QTableView::item {
     padding-left: 2px;
     padding-right: 2px;
     outline: none;
@@ -475,7 +465,6 @@ QTreeView {
     gridline-color: #555;
     border: 1px solid #666;
     outline: none;
-    font-family: "Microsoft Yahei";
 }
 
 QTreeView::item {
@@ -509,13 +498,12 @@ QHeaderView {
     margin-top: 0;
     border: 0;
     background: #34495e;
-    color: white;
-    font-family: "Microsoft Yahei";
+    color: #cdcdcd;
+    font-family: "microsoft yahei";
 }
 
 QHeaderView::section {
     background: #2a3a48;
-    padding: 8px;
     outline: none;
 }
 
@@ -555,10 +543,16 @@ QHeaderView::section:vertical:checked {
     font-style: italic;
 }
 
-/** QTabWidget **/
+QTreeView QHeaderView::section:horizontal {
+    border-top: 0; 
+    border-left: 1px solid #555;
+    border-right: 0;
+}
+
+/** QTabWidget**/
 
 QTabWidget::pane {
-    border: 2px solid rgba(119, 119, 119, 150);
+    border: 1px solid rgba(119, 119, 119, 150);
     border-top-left-radius: 0.3em;
     border-top-right-radius: 0.3em;
     position: absolute;
@@ -585,7 +579,6 @@ QTabBar::tab {
     padding-top: 0.1em;
     padding-bottom: 0.1em;
     color: #222;
-    font-family: "Microsoft Yahei";
 }
 
 QTabBar::tab:hover {
@@ -608,14 +601,14 @@ QToolBox::tab {
         stop:0#44596e, stop:0.4#444f5e,
         stop:0.6#44495e, stop:1#44596e);
     border-radius: 3px;
-    border: 1px solid #666;
-    color: #dbdbdb;
+    border: 0px solid #666;
+    color: #cdcdcd;
 }
 
 QToolBox::tab:selected {
     font: italic bold;
     color: #aaaa66;
-    border: 1px solid #888;
+    border: 0px solid #888;
 }
 
 QToolBox QToolBoxButton {
@@ -628,7 +621,6 @@ QMenu {
     background: #888;
     margin: 2px;
     color: #dbdbdb;
-    font-family: "Microsoft Yahei";
 }
 
 QMenu::item {
@@ -701,7 +693,6 @@ QMenu::indicator:exclusive:checked:selected {
 QMessageBox, QDialog {
     background: #444;
     color: #dbdbdb;
-    font-family: "Microsoft Yahei";
 }
 
 /** QToolTip **/
@@ -709,7 +700,6 @@ QMessageBox, QDialog {
 QToolTip {
     background: #444;
     color: #dbdbdb;
-    font-family: "Microsoft Yahei";
     border-radius: 3px;
     border: 1px solid darkkhaki;
 }

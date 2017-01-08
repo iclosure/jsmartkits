@@ -27,3 +27,7 @@ StartPageMgr QLabel#labelMsg {
     color: white;
     font-family: "Microsoft Yahei";
 }
+
+QPushButton {
+    min-width: 3.5em;
+}

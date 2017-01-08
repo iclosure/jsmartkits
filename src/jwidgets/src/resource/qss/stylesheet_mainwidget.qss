@@ -19,24 +19,21 @@ StatusBarMgr QLabel#labelInfo {
 
 QwtPlot {
     border-radius: 3px;
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
         stop: 0 rgba(25, 25, 25, 255), stop: 1 rgba(25, 25, 25, 255));
 }
 /*
 QwtTextLabel {
     color: #5fd43b;
-    font-family: "Microsoft Yahei";
+    font-size: 10px;
 }
 
 QwtScaleWidget {
     color: #5fd43b;
-    font-family: "Microsoft Yahei";
-    font-size: 15ex;
 }
 
 QwtLegendLabel{
     color: #dbdbdb;
-    font-family: "Microsoft Yahei";
 } 
 */
 QwtPlot {
@@ -55,9 +52,8 @@ QwtPlotZoomer {
 }
 
 QwtTextLabel {
-    font-family: "Microsoft Yahei";
-    font-size: 25px;
     color: #dbdbdb;
+    font-size: 11px;
 }
 
 QwtScaleWidget {
@@ -87,16 +83,15 @@ QScrollArea #curveArea {
     background: #444;    
 }
 
-/* DataAnalyseWidget listWidgetCoord */
+/* DataAnalyseWidget tableWidgetCoord */
 
-DataAnalyseWidget QListView#listWidgetCoord {
+DataAnalyseWidget QTableView#tableWidgetCoord {
     background: #555;
 }
 
-DataAnalyseWidget QListView#listWidgetCoord::item {
+DataAnalyseWidget QTableView#tableWidgetCoord::item {
     border-radius: 2px;
-    border: 1px solid #88990a;
-    height: 4.2em;
+    border: 1px solid #557;
     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
         stop: 0#446,
         stop: 0.4#445,
